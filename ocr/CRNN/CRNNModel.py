@@ -16,15 +16,22 @@ class CRNN(OCRModel):
     def __init__(
             self,
             classes: int,
+            character_path: str,
             in_channels: int = 3,
             layers: int = 50,
             lstm_hidden_size: int = 48,
-            necks_type: str = 'rnn'
+            necks_type: str = 'rnn',
+            optimizer_name: str = 'adam',
+            lr: int = 0.01
     ):
-        super(CRNN, self).__init__()
+        super(CRNN, self).__init__(character_path=character_path)
         self.save_hyperparameters()
 
         self.loss_func = losses.get_loss('ctc')
+
+        self.optimizer_name = optimizer_name
+
+        self.lr = lr
 
         self.encoder = ResNet(in_channels=in_channels, layers=layers)
 
