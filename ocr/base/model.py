@@ -5,10 +5,15 @@
 # @explain :
 import pytorch_lightning as pl
 from . import initialization as init
-from ..utils import optim
+from ..utils import optim, CTCLabelConvert
 
 
 class OCRModel(pl.LightningModule):
+
+    def __init__(self, character_path):
+        super(OCRModel, self).__init__()
+        self.convert = CTCLabelConvert.CTCLabelConverter(
+            character=character_path)
 
     def initialize(self):
         # 以下变量都是放在self这里面的
@@ -24,10 +29,15 @@ class OCRModel(pl.LightningModule):
         return features
 
     def training_step(self, batch, batch_idx):
-        # TODO: CTC还需要两个参数
+
         x, y = batch
+        targets, targets_lengths = self.converter.encode(x)
         predict = self.forward(x)
-        loss = self.loss_func(predict, y)
+
+        batch['targets'] = targets
+        batch['targets_lengths'] = targets_lengths
+
+        loss = self.loss_func(predict, batch)
         self.log('train_loss', loss)
         return loss
 
