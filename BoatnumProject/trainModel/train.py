@@ -15,7 +15,7 @@ seed_everything(42, workers=True)
 
 conf = Config()
 
-model = CRNNModel.CRNN(classes=conf.classes)
+model = CRNNModel.CRNN(classes=conf.classes, character_path=conf.character_path)
 
 data = OCRDataModule()
 

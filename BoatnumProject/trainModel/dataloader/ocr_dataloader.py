@@ -6,6 +6,7 @@
 from typing import Optional
 
 import pytorch_lightning as pl
+import torch
 from torch.utils.data import DataLoader, random_split, Dataset
 from ocr.utils.convert import load
 import cv2
@@ -26,31 +27,32 @@ class OCRDataset(Dataset):
     def __getitem__(self, item):
         line = self.data_list[item].split(' ')
         if self.img_dir.endswith('/'):
-            img_path = self.img_dir + item[0]
+            img_path = self.img_dir + line[0]
         else:
-            img_path = self.img_dir + f'/{item[0]}'
+            img_path = self.img_dir + f'/{line[0]}'
 
         im = cv2.imread(img_path)
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-        im_size = im.shape
-
-        if (im_size[1] / (im_size[0] * 1.0)) < 6.4:
-            img_reshape = cv2.resize(im, (int(32.0 / im_size[0] * im_size[1]), self.height))
-            mat_ori = np.zeros((self.height, self.width - int(32.0 / im_size[0] * im_size[1]), 3), dtype=np.uint8)
-            out_img = np.concatenate([img_reshape, mat_ori], axis=1).transpose([1, 0, 2])
-        else:
-            out_img = cv2.resize(im, (self.width, self.height), interpolation=cv2.INTER_CUBIC)
-            out_img = np.asarray(out_img).transpose([1, 0, 2])
+        im = np.transpose(im, (2, 0, 1))
+        # im_size = im.shape
+        #
+        # if (im_size[1] / (im_size[0] * 1.0)) < 6.4:
+        #     img_reshape = cv2.resize(im, (int(32.0 / im_size[0] * im_size[1]), self.height))
+        #     mat_ori = np.zeros((self.height, self.width - int(32.0 / im_size[0] * im_size[1]), 3), dtype=np.uint8)
+        #     out_img = np.concatenate([img_reshape, mat_ori], axis=1).transpose([1, 0, 2])
+        # else:
+        #     out_img = cv2.resize(im, (self.width, self.height), interpolation=cv2.INTER_CUBIC)
+        #     out_img = np.asarray(out_img).transpose([1, 0, 2])
 
         label = line[1]
 
-        # TODO: 数据增广
-        if self.transform:
-            out_img = self.transform(out_img)
-        if self.target_transform:
-            im = self.target_transform(label)
+        # # TODO: 数据增广
+        # if self.transform:
+        #     out_img = self.transform(out_img)
+        # if self.target_transform:
+        #     im = self.target_transform(label)
 
-        return out_img, label
+        return im, label
 
     def __len__(self):
         return len(self.data_list)
