@@ -12,7 +12,7 @@ class OCRModel(pl.LightningModule):
 
     def __init__(self, character_path):
         super(OCRModel, self).__init__()
-        self.convert = CTCLabelConvert.CTCLabelConverter(
+        self.converter = CTCLabelConvert.CTCLabelConverter(
             character=character_path)
 
     def initialize(self):
@@ -31,20 +31,27 @@ class OCRModel(pl.LightningModule):
     def training_step(self, batch, batch_idx):
 
         x, y = batch
-        targets, targets_lengths = self.converter.encode(x)
+        targets, targets_lengths = self.converter.encode(y)
         predict = self.forward(x)
 
-        batch['targets'] = targets
-        batch['targets_lengths'] = targets_lengths
+        data = {
+            'targets': targets,
+            'targets_lengths': targets_lengths
+        }
 
-        loss = self.loss_func(predict, batch)
+        loss = self.loss_func(predict, data)
         self.log('train_loss', loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
+        targets, targets_lengths = self.converter.encode(y)
         predict = self.forward(x)
-        loss = self.loss_func(predict, y)
+        data = {
+            'targets': targets,
+            'targets_lengths': targets_lengths
+        }
+        loss = self.loss_func(predict, data)
         self.log('val_loss', loss)
 
     def configure_optimizers(self):

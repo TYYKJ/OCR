@@ -5,8 +5,11 @@
 # @explain :
 from typing import Optional
 
+import PIL.Image
 import pytorch_lightning as pl
 import torch
+import torchvision.transforms.functional
+from torchvision import transforms
 from torch.utils.data import DataLoader, random_split, Dataset
 from ocr.utils.convert import load
 import cv2
@@ -30,10 +33,11 @@ class OCRDataset(Dataset):
             img_path = self.img_dir + line[0]
         else:
             img_path = self.img_dir + f'/{line[0]}'
-
-        im = cv2.imread(img_path)
-        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-        im = np.transpose(im, (2, 0, 1))
+        im = torchvision.transforms.functional.to_tensor(PIL.Image.open(img_path))
+        # im = cv2.imread(img_path)
+        # im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+        # im = np.transpose(im, (2, 0, 1))
+        # im = im / 255
         # im_size = im.shape
         #
         # if (im_size[1] / (im_size[0] * 1.0)) < 6.4:
@@ -46,11 +50,10 @@ class OCRDataset(Dataset):
 
         label = line[1]
 
-        # # TODO: 数据增广
         # if self.transform:
-        #     out_img = self.transform(out_img)
+        #     im = self.transform(im)
         # if self.target_transform:
-        #     im = self.target_transform(label)
+        #     label = self.target_transform(label)
 
         return im, label
 
