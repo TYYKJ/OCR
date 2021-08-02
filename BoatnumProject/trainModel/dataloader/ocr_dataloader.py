@@ -21,8 +21,8 @@ class OCRDataset(Dataset):
         self.data_list = load(txt_path)
         self.transform = transform
         self.target_transform = target_transform
-        self.height = 32
-        self.width = 100
+        # self.height = 32
+        # self.width = 100
 
     def __getitem__(self, item):
         line = self.data_list[item].split(' ')
@@ -68,7 +68,7 @@ class OCRDataModule(pl.LightningDataModule):
     def setup(self, stage: Optional[str] = None) -> None:
         ocr_train = OCRDataset(
             self.conf.img_path,
-            self.conf.train_label_path
+            self.conf.train_label_path,
         )
         self.ocr_test = OCRDataset(
             self.conf.img_path,
