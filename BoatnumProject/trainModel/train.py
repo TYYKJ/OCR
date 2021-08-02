@@ -21,7 +21,7 @@ model = CRNNModel.CRNN(classes=conf.classes, character_path=conf.character_path)
 data = OCRDataModule()
 
 tb_logger = pl_loggers.TensorBoardLogger('logs/', log_graph=True)
-# CTCLoss的输入为[probs, labels, probs_sizes, label_sizes]，即预测结果、标签、预测结果的数目和标签数目
+
 
 trainer = pl.Trainer(
     checkpoint_callback=True,
