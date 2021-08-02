@@ -1,4 +1,4 @@
-<h1><div style="text-align: center;color: cadetblue">OCR文字识别</div></h1>
+<h1><p align="center">OCR文字识别</p></h1>
 
 ## 简介
 
