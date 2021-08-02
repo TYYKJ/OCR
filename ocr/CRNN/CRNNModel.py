@@ -4,10 +4,11 @@
 # @Software: PyCharm
 # @explain :
 
+import torch.nn as nn
+
 from ..base import CTCHead, OCRModel
 from ..encoders import ResNet
 from ..necks import EncoderWithRNN, SequenceEncoder, Im2Seq
-import torch.nn as nn
 from ..utils import losses
 
 

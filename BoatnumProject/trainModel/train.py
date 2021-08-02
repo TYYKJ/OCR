@@ -3,13 +3,14 @@
 # @File    : train
 # @Software: PyCharm
 # @explain :
-from ocr import CRNNModel
-from config.config import Config
-from pytorch_lightning import loggers as pl_loggers
 import pytorch_lightning as pl
 import torch
-from dataloader.ocr_dataloader import OCRDataModule
+from pytorch_lightning import loggers as pl_loggers
 from pytorch_lightning import seed_everything
+
+from config.config import Config
+from dataloader.ocr_dataloader import OCRDataModule
+from ocr import CRNNModel
 
 seed_everything(42, workers=True)
 

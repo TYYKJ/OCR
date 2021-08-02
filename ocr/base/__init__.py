@@ -3,5 +3,5 @@
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .model import OCRModel
 from .heads import CTCHead
+from .model import OCRModel

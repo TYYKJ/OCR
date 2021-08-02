@@ -3,9 +3,10 @@
 # @File    : heads
 # @Software: PyCharm
 # @explain :
-import torch.nn as nn
-import torch
 from collections import OrderedDict
+
+import torch
+import torch.nn as nn
 
 
 class CTCHead(nn.Module):

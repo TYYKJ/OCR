@@ -1,8 +1,5 @@
-import torch.nn as nn
-
-from . import base
 import torch
-
+import torch.nn as nn
 
 __all__ = ['get_loss']
 

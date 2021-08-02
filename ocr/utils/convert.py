@@ -3,10 +3,11 @@
 # @File    : convert
 # @Software: PyCharm
 # @explain :
+import glob
 import json
 import os
-import glob
 import pathlib
+
 from natsort import natsorted
 
 __all__ = ['load', 'save', 'get_file_list', 'show_bbox_on_image', 'load_gt']

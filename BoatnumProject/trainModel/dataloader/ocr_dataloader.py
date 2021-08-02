@@ -7,14 +7,11 @@ from typing import Optional
 
 import PIL.Image
 import pytorch_lightning as pl
-import torch
 import torchvision.transforms.functional
-from torchvision import transforms
 from torch.utils.data import DataLoader, random_split, Dataset
-from ocr.utils.convert import load
-import cv2
+
 from BoatnumProject import Config
-import numpy as np
+from ocr.utils.convert import load
 
 
 class OCRDataset(Dataset):

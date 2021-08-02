@@ -4,6 +4,7 @@
 # @Software: PyCharm
 # @explain :
 import pytorch_lightning as pl
+
 from . import initialization as init
 from ..utils import optim, CTCLabelConvert
 
@@ -29,7 +30,6 @@ class OCRModel(pl.LightningModule):
         return features
 
     def training_step(self, batch, batch_idx):
-
         x, y = batch
         targets, targets_lengths = self.converter.encode(y)
         predict = self.forward(x)

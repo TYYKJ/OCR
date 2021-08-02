@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from collections import OrderedDict
+
 import torch
 from torch import nn
 
@@ -250,7 +251,6 @@ class ResNet(nn.Module):
 
 
 if __name__ == '__main__':
-    from torchsummaryX import summary
     data = torch.ones((1, 3, 32, 32))
     model = ResNet(in_channels=3, layers=50)
     print(model(data).shape)
