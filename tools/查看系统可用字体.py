@@ -4,8 +4,9 @@
 # @Software: PyCharm
 # @explain :
 
-from matplotlib.font_manager import FontManager
 import subprocess
+
+from matplotlib.font_manager import FontManager
 
 fm = FontManager()
 mat_fonts = set(f.name for f in fm.ttflist)
