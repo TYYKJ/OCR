@@ -22,7 +22,7 @@ cache = list(set(cache_dict))
 
 cache = sorted(cache)
 
-with open('../BoatnumProject/trainModel/dict.txt', 'w') as f:
+with open('dict.txt', 'w') as f:
     for i in tqdm(range(len(cache))):
         if isinstance(cache[i], int):
             d = str(cache[i])
