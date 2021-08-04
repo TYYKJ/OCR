@@ -17,8 +17,8 @@
       - `gen_batch` 批量生成图片
       - `gen_plate_string` 生成船牌号码字符串
      
-- plate_Common.py
- - 自定义文件plate_Common.py，对生成船牌加上畸变、旋转、调灰度等功能
+- plate_common.py
+ - 自定义文件plate_common.py，对生成船牌加上畸变、旋转、调灰度等功能
     - 实现以下七个方法     
       - `rot` 对图片进行旋转
       - `image_distortion` 仿射畸变
