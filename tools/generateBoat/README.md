@@ -27,7 +27,7 @@
       - `generate_ch_characters` 生成汉字
       - `generate_en_characters` 生成英文字符
       - `random_seed` 产生随机数字
-      - 
+      
 ### genplate_scene.py 参数配置
 - `--bg_dir` 船牌的场景图片文件夹
 - `--out_dir` 生成渲染船牌图片后保存文件夹
