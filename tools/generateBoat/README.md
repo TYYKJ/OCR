@@ -8,9 +8,9 @@
 
 ### Generate Boat Plate
 
-- 通过generateBoat包里的两个文件generate_scense.py和PlateCommom.py实现渲染产生船牌图片数据
-- 自定义类GenPlateScence
-  - 自定义`GenPlateScence`
+- 通过generateBoat包里的两个文件generate_scene.py和PlateCommom.py实现渲染产生船牌图片数据
+- 自定义类GenPlateScene
+  - 自定义`GenPlateScene`
     - 实现一下四个方法 
       - `draw` 设置船牌文字位置
       - `generate` 对船牌号文字和图片进行旋转变形等操作
