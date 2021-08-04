@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from collections import OrderedDict
 
 import torch
@@ -248,6 +244,52 @@ class ResNet(nn.Module):
             x = stage(x)
         x = self.out(x)
         return x
+
+
+resnet_encoders = {
+    "resnet18vd": {
+        "encoder": ResNet,
+        "params": {
+            "in_channels": 3,
+            "layers": 18,
+        },
+    },
+    "resnet34vd": {
+        "encoder": ResNet,
+        "params": {
+            "in_channels": 3,
+            "layers": 34
+        }
+    },
+    "resnet50vd": {
+        "encoder": ResNet,
+        "params": {
+            "in_channels": 3,
+            "layers": 50
+        }
+    },
+    "resnet101vd": {
+        "encoder": ResNet,
+        "params": {
+            "in_channels": 3,
+            "layers": 101
+        }
+    },
+    "resnet152vd": {
+        "encoder": ResNet,
+        "params": {
+            "in_channels": 3,
+            "layers": 152
+        }
+    },
+    "resnet200vd": {
+        "encoder": ResNet,
+        "params": {
+            "in_channels": 3,
+            "layers": 200
+        }
+    },
+}
 
 
 if __name__ == '__main__':

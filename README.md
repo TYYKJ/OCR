@@ -1,4 +1,4 @@
-<h1><p align="center">OCR文字识别</p></h1>
+<h1><p align="center" style="color: bisque">OCR文字识别</p></h1>
 
 ## 简介
 

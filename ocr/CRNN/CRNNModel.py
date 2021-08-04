@@ -7,7 +7,7 @@
 import torch.nn as nn
 
 from ..base import CTCHead, OCRModel
-from ..encoders import ResNet
+from ..encoders import get_encoder
 from ..necks import EncoderWithRNN, SequenceEncoder, Im2Seq
 from ..utils import losses
 
@@ -18,8 +18,7 @@ class CRNN(OCRModel):
             self,
             classes: int,
             character_path: str,
-            in_channels: int = 3,
-            layers: int = 50,
+            encoder_name: str = 'resnet18vd',
             lstm_hidden_size: int = 48,
             necks_type: str = 'rnn',
             optimizer_name: str = 'adam',
@@ -34,7 +33,8 @@ class CRNN(OCRModel):
 
         self.lr = lr
 
-        self.encoder = ResNet(in_channels=in_channels, layers=layers)
+        # self.encoder = ResNet(in_channels=in_channels, layers=layers)
+        self.encoder = get_encoder(encoder_name)
 
         if necks_type == 'rnn':
             self.seq = Im2Seq(in_channels=self.encoder.out_channels)

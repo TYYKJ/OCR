@@ -18,7 +18,7 @@ class DetDataSet(Dataset):
 
     def __getitem__(self, item):
         # try:
-        base = '/home/cattree/桌面/临时数据/20210731/360万中文数据集/images/'
+        base = '/home/cattree/桌面/临时数据/20210802/360万中文数据集/images/'
         # print(self.data_list[item])
         line = self.data_list[item].split(' ')
         # print(line)
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     plt.rcParams['font.sans-serif'] = ['Noto Serif CJK JP']  # 用来正常显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 
-    json_path = '/home/cattree/桌面/临时数据/20210731/360万中文数据集/360label/360_train.txt'
+    json_path = '/home/cattree/桌面/临时数据/20210802/360万中文数据集/360label/360_train.txt'
 
     dataset = DetDataSet(json_path, transform=transforms.ToTensor())
     train_loader = DataLoader(dataset=dataset, batch_size=1, shuffle=True, num_workers=0)
