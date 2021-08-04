@@ -5,6 +5,7 @@ import cv2
 from PIL import Image
 from PIL import ImageDraw
 from math import *
+from typing import Optional
 
 INDEX_PROVINCE = {"京": 0, "沪": 1, "津": 2, "渝": 3, "冀": 4, "晋": 5, "蒙": 6, "辽": 7, "吉": 8, "黑": 9,
                   "苏": 10, "浙": 11, "皖": 12, "闽": 13, "赣": 14, "鲁": 15, "豫": 16, "鄂": 17, "湘": 18, "粤": 19,
@@ -43,9 +44,10 @@ chars = ["京", "沪", "津", "渝", "冀", "晋", "蒙", "辽", "吉", "黑", "
          "Y", "Z", "烟", "牟", "福", "蓬", "长", "海", "渔"]
 
 
-def rot(img, angel, shape, max_angel):
+def rot(img: np.ndarray, angel: float, shape: list, max_angel: float) -> np.ndarray:
     """
     对图片进行旋转
+
     :param img:输入图片
     :param angel:角度
     :param shape:图片大小
@@ -60,15 +62,16 @@ def rot(img, angel, shape, max_angel):
         pts2 = np.float32([[interval, 0], [0, size[1]], [size[0], 0], [size[0] - interval, size_o[1]]])
     else:
         pts2 = np.float32([[0, 0], [interval, size[1]], [size[0] - interval, 0], [size[0], size_o[1]]])
-    M = cv2.getPerspectiveTransform(pts1, pts2)
-    dst = cv2.warpPerspective(img, M, size)
+    m = cv2.getPerspectiveTransform(pts1, pts2)
+    dst = cv2.warpPerspective(img, m, size)
 
     return dst
 
 
-def rotRandrom(img, factor, size):
+def image_distortion(img: np.ndarray, factor: Optional[int, float], size: tuple) -> np.ndarray:
     """
     仿射畸变
+
     :param img:输入图片
     :param factor:畸变的参数
     :param size:图片尺寸
@@ -76,18 +79,19 @@ def rotRandrom(img, factor, size):
     """
     shape = size
     pts1 = np.float32([[0, 0], [0, shape[0]], [shape[1], 0], [shape[1], shape[0]]])
-    pts2 = np.float32([[r(factor), r(factor)],
-                       [r(factor), shape[0] - r(factor)],
-                       [shape[1] - r(factor), r(factor)],
-                       [shape[1] - r(factor), shape[0] - r(factor)]])
-    M = cv2.getPerspectiveTransform(pts1, pts2)
-    dst = cv2.warpPerspective(img, M, size)
+    pts2 = np.float32([[random_seed(factor), random_seed(factor)],
+                       [random_seed(factor), shape[0] - random_seed(factor)],
+                       [shape[1] - random_seed(factor), random_seed(factor)],
+                       [shape[1] - random_seed(factor), shape[0] - random_seed(factor)]])
+    m = cv2.getPerspectiveTransform(pts1, pts2)
+    dst = cv2.warpPerspective(img, m, size)
     return dst
 
 
-def tfactor(img):
+def change_gray_and_color(img: np.ndarray) -> np.ndarray:
     """
     调灰度，调颜色
+
     :param img: 输入图片
     :return: 变化后的图片
     """
@@ -100,15 +104,16 @@ def tfactor(img):
     return img
 
 
-def random_scene(img, data_set):
+def random_scene(img: np.ndarray, image_data_set: list) -> tuple:
     """
     将船牌放入自然场景图像中，并返回该图像和位置信息
+
     :param img: 输入图片
-    :param data_set: 自然场景图片
+    :param image_data_set: 自然场景图片
     :return: 图片和位置
     """
-    bg_img_path = data_set[r(len(data_set))]
-    print(len(data_set))
+    bg_img_path = image_data_set[random_seed(len(image_data_set))]
+    print(len(image_data_set))
     env = cv2.imread(bg_img_path)
     if env is None:
         print(bg_img_path, 'is not a good file')
@@ -124,8 +129,8 @@ def random_scene(img, data_set):
     if env.shape[1] <= img.shape[1] or env.shape[0] <= img.shape[0]:
         print(env.shape, '---', img.shape)
         return None, None
-    x = r(env.shape[1] - img.shape[1])
-    y = r(env.shape[0] - img.shape[0])
+    x = random_seed(env.shape[1] - img.shape[1])
+    y = random_seed(env.shape[0] - img.shape[0])
     bak = (img == 0)
     bak = bak.astype(np.uint8) * 255
     inv = cv2.bitwise_and(bak, env[y:y + new_height, x:x + new_width, :])
@@ -134,34 +139,42 @@ def random_scene(img, data_set):
     return env, (x, y, x + img.shape[1], y + img.shape[0])
 
 
-def GenCh(f, val):
+def generate_ch_characters(f, text):
     """
     生成汉字
+
     :param f:字体
-    :param val:文本内容
+    :param text:文本内容
     :return:图片矩阵
     """
     img = Image.new("RGB", (45, 70), (255, 255, 255))
     draw = ImageDraw.Draw(img)
-    draw.text((0, 3), val, (0, 0, 0), font=f)
+    draw.text((0, 3), text, (0, 0, 0), font=f)
     img = img.resize((18, 32))
-    A = np.array(img)
-    return A
+    a = np.array(img)
+    return a
 
 
-def GenCh1(f, val):
+def generate_en_characters(f, text):
     """
     生成英文字符
+
     :param f:字体
-    :param val:文本内容
+    :param text:文本内容
     :return:图片矩阵
     """
     img = Image.new("RGB", (12, 32), (255, 255, 255))
     draw = ImageDraw.Draw(img)
-    draw.text((0, 0), val.encode(encoding="utf-8").decode('utf-8'), (0, 0, 0), font=f)
-    A = np.array(img)
-    return A
+    draw.text((0, 0), text.encode(encoding="utf-8").decode('utf-8'), (0, 0, 0), font=f)
+    a = np.array(img)
+    return a
 
 
-def r(val):
-    return int(np.random.random() * val)
+def random_seed(num) -> int:
+    """
+    生成随机数
+
+    :param num: 数字
+    :return: 随机数
+    """
+    return int(np.random.random() * num)
