@@ -102,7 +102,7 @@ def tfactor(img):
 
 def random_scene(img, data_set):
     """
-    将车牌放入自然场景图像中，并返回该图像和位置信息
+    将船牌放入自然场景图像中，并返回该图像和位置信息
     :param img: 输入图片
     :param data_set: 自然场景图片
     :return: 图片和位置
