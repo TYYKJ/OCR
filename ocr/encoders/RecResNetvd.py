@@ -291,7 +291,6 @@ resnet_encoders = {
     },
 }
 
-
 if __name__ == '__main__':
     data = torch.ones((1, 3, 32, 32))
     model = ResNet(in_channels=3, layers=50)

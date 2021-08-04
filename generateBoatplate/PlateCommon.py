@@ -1,15 +1,12 @@
 # coding=utf-8
-import os
-import random
 # import sys
-import numpy as np
+from math import *
+
 import cv2
-import argparse
+import numpy as np
 # import PIL
-from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
-from math import *
 
 INDEX_PROVINCE = {"京": 0, "沪": 1, "津": 2, "渝": 3, "冀": 4, "晋": 5, "蒙": 6, "辽": 7, "吉": 8, "黑": 9,
                   "苏": 10, "浙": 11, "皖": 12, "闽": 13, "赣": 14, "鲁": 15, "豫": 16, "鄂": 17, "湘": 18, "粤": 19,
@@ -33,7 +30,7 @@ PLATE_CHARS_LETTER = {"A", "B", "C", "D", "E", "F", "G",
                       "H", "J", "K", "L", "M", "N",
                       "P", "Q", "R", "S", "T",
                       "U", "V", "W", "X", "Y", "Z"}
-PLATE_CT = {"烟","牟", "福", "蓬", "长", "海", "渔"}
+PLATE_CT = {"烟", "牟", "福", "蓬", "长", "海", "渔"}
 
 index = {"京": 0, "沪": 1, "津": 2, "渝": 3, "冀": 4, "晋": 5, "蒙": 6, "辽": 7, "吉": 8, "黑": 9, "苏": 10, "浙": 11, "皖": 12,
          "闽": 13, "赣": 14, "鲁": 15, "豫": 16, "鄂": 17, "湘": 18, "粤": 19, "桂": 20, "琼": 21, "川": 22, "贵": 23, "云": 24,
@@ -45,7 +42,7 @@ index = {"京": 0, "沪": 1, "津": 2, "渝": 3, "冀": 4, "晋": 5, "蒙": 6, "
 chars = ["京", "沪", "津", "渝", "冀", "晋", "蒙", "辽", "吉", "黑", "苏", "浙", "皖", "闽", "赣", "鲁", "豫", "鄂", "湘", "粤", "桂",
          "琼", "川", "贵", "云", "藏", "陕", "甘", "青", "宁", "新", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A",
          "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
-         "Y", "Z", "烟","牟", "福", "蓬", "长", "海", "渔"]
+         "Y", "Z", "烟", "牟", "福", "蓬", "长", "海", "渔"]
 
 
 #
@@ -82,7 +79,7 @@ def rot(img, angel, shape, max_angel):
     interval = abs(int(sin((float(angel) / 180) * 3.14) * shape[0]))
 
     pts1 = np.float32([[0, 0], [0, size_o[1]], [size_o[0], 0], [size_o[0], size_o[1]]])
-    if (angel > 0):
+    if angel > 0:
         pts2 = np.float32([[interval, 0], [0, size[1]], [size[0], 0], [size[0] - interval, size_o[1]]])
     else:
         pts2 = np.float32([[0, 0], [interval, size[1]], [size[0] - interval, 0], [size[0], size_o[1]]])

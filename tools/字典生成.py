@@ -3,14 +3,14 @@
 # @File    : 字典生成
 # @Software: PyCharm
 # @explain :
-from ocr.utils.convert import load
 from tqdm import tqdm
+
+from ocr.utils.convert import load
 
 file_path = '/home/cattree/桌面/临时数据/20210802/360万中文数据集/360label/360_train.txt'
 
 data = load(file_path)
 cache_dict = []
-
 
 for item in tqdm(data):
     line = item.split(' ')

@@ -2,16 +2,12 @@
 '''
 生成车牌数据，将车牌放到自然图像中
 '''
-import os
 # import sys
-import numpy as np
-import cv2
 import argparse
+import os
+
 # import PIL
 from PIL import ImageFont
-from PIL import Image
-from PIL import ImageDraw
-from math import *
 
 from PlateCommon import *
 
