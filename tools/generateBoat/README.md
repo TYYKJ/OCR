@@ -29,4 +29,4 @@
 - 注意
     -font文件夹里的文件需要解压
 ## 运行
-- 运行generate_scense.py
+- 运行generate_scene.py
