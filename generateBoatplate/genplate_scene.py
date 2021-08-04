@@ -17,8 +17,8 @@ PLATE_SIZE_MIN = (130, 32)
 
 
 class GenPlateScene:
-    '''车牌数据生成器，车牌放在自然场景中，位置信息存储在同名的txt文件中
-    '''
+    """车牌数据生成器，车牌放在自然场景中，位置信息存储在同名的txt文件中
+    """
 
     def __init__(self, fontCh, fontEng, NoPlates):
         self.fontC = ImageFont.truetype(fontCh, 43, 0)  # 省简称使用字体
