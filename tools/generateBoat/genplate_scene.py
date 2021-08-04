@@ -50,7 +50,7 @@ class GenPlateScene:
 
     def draw(self, val):
         """
-        设置车牌文字位置
+        设置船牌文字位置
         :param val:船牌号
         :return:返回合成之后的船牌图片
         """
@@ -70,13 +70,13 @@ class GenPlateScene:
         :return:图像和位置信息
         """
         print(text, len(text))
-        fg = self.draw(text.encode(encoding="utf-8").decode(encoding="utf-8"))  # 得到白底黑字
-        fg = cv2.bitwise_not(fg)  # 得到黑底白字
-        com = cv2.bitwise_or(fg, self.bg)  # 字放到（蓝色）车牌背景中
-        com = rot(com, r(10) - 5, com.shape, 5)  # 矩形-->平行四边形
-        com = rotRandrom(com, 6, (com.shape[1], com.shape[0]))  # 旋转
-        com = tfactor(com)  # 调灰度
-        com, loc = random_scene(com, self.noplates_path)  # 放入背景中
+        fg = self.draw(text.encode(encoding="utf-8").decode(encoding="utf-8"))
+        fg = cv2.bitwise_not(fg) 
+        com = cv2.bitwise_or(fg, self.bg) 
+        com = rot(com, r(10) - 5, com.shape, 5) 
+        com = rotRandrom(com, 6, (com.shape[1], com.shape[0])) 
+        com = tfactor(com) 
+        com, loc = random_scene(com, self.noplates_path) 
         if com is None or loc is None:
             return None, None
         return com, loc
