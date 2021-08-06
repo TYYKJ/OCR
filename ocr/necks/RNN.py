@@ -14,9 +14,14 @@ class Im2Seq(nn.Module):
 
     def forward(self, x):
         B, C, H, W = x.shape
-        # print(H)
-        assert H == 1
+
+        if H != 1:
+            raise ValueError(
+                f'H must be 1, got {H}'
+            )
+
         x = x.reshape(B, C, H * W)
+        # TODO: 原论文应该是201 WxBxC的格式
         x = x.permute((0, 2, 1))
         return x
 
