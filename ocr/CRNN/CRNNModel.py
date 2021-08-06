@@ -19,10 +19,11 @@ class CRNN(OCRModel):
             classes: int,
             character_path: str,
             encoder_name: str = 'resnet18vd',
-            lstm_hidden_size: int = 48,
+            lstm_hidden_size: int = 256,
             necks_type: str = 'rnn',
             optimizer_name: str = 'adam',
-            lr: int = 0.01
+            lr: int = 0.01,
+            bs: int = 16,
     ):
         super(CRNN, self).__init__(character_path=character_path)
         self.save_hyperparameters()
@@ -33,7 +34,8 @@ class CRNN(OCRModel):
 
         self.lr = lr
 
-        # self.encoder = ResNet(in_channels=in_channels, layers=layers)
+        self.bs = bs
+
         self.encoder = get_encoder(encoder_name)
 
         if necks_type == 'rnn':
