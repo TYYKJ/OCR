@@ -4,9 +4,9 @@
 # @Software: PyCharm
 # @explain :
 import pytorch_lightning as pl
-
 from . import initialization as init
 from ..utils import optim, CTCLabelConvert
+from ..utils.metric import RecMetric
 
 
 class OCRModel(pl.LightningModule):
@@ -15,6 +15,7 @@ class OCRModel(pl.LightningModule):
         super(OCRModel, self).__init__()
         self.converter = CTCLabelConvert.CTCLabelConverter(
             character=character_path)
+        self.metric = RecMetric(self.converter)
 
     def initialize(self):
         # 以下变量都是放在self这里面的
@@ -52,6 +53,11 @@ class OCRModel(pl.LightningModule):
             'targets_lengths': targets_lengths
         }
         loss = self.loss_func(predict, data)
+        acc_dict = self.metric(predict, y)
+        acc = acc_dict['n_correct'] / self.bs
+        # self.log('str', acc_dict['show_str'])
+        print(acc_dict['show_str'])
+        self.log('acc', acc)
         self.log('val_loss', loss)
 
     def configure_optimizers(self):
