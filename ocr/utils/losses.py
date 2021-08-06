@@ -17,7 +17,7 @@ class CTCLoss(nn.Module):
         pred = pred.permute(1, 0, 2)
         pred_lengths = torch.tensor([pred.size(0)] * batch_size, dtype=torch.long)
         loss = self.loss_func(pred, label, pred_lengths, label_length)
-        return {'loss': loss}
+        return loss
 
 
 def get_loss(name: str = 'ctc'):
