@@ -1,11 +1,12 @@
 # coding=utf-8
 
-import numpy as np
-import cv2
-from PIL import Image
-from PIL import ImageDraw
 from math import *
 from typing import Optional
+
+import cv2
+import numpy as np
+from PIL import Image
+from PIL import ImageDraw
 
 INDEX_PROVINCE = {"京": 0, "沪": 1, "津": 2, "渝": 3, "冀": 4, "晋": 5, "蒙": 6, "辽": 7, "吉": 8, "黑": 9,
                   "苏": 10, "浙": 11, "皖": 12, "闽": 13, "赣": 14, "鲁": 15, "豫": 16, "鄂": 17, "湘": 18, "粤": 19,

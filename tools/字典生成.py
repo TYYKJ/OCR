@@ -5,9 +5,9 @@
 # @explain :
 from tqdm import tqdm
 
-from ocr.utils.convert import load
+from ocr.utils import load
 
-file_path = '/home/cattree/PycharmProjects/limapOCR/BoatnumProject/data/train.txt'
+file_path = '//BoatnumProject/data/train.txt'
 
 data = load(file_path)
 cache_dict = []

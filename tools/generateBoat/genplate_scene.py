@@ -2,9 +2,9 @@
 """
 生成船牌数据，将船牌放到自然图像中
 """
+import argparse
 import os
 
-import argparse
 from PIL import ImageFont
 
 from plate_common import *

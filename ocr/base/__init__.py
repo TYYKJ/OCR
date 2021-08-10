@@ -4,5 +4,5 @@
 # @Software: PyCharm
 # @explain :
 from .heads import CTCHead
-from .necks import Feature2Seq, EncoderWithLSTM
 from .models import OCRModel
+from .necks import Feature2Seq, EncoderWithLSTM
