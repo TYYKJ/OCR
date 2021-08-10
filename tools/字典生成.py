@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 from ocr.utils.convert import load
 
-file_path = '/home/cattree/桌面/临时数据/20210802/360万中文数据集/360label/360_train.txt'
+file_path = '/home/cattree/PycharmProjects/limapOCR/BoatnumProject/data/train.txt'
 
 data = load(file_path)
 cache_dict = []
@@ -22,7 +22,7 @@ cache = list(set(cache_dict))
 
 cache = sorted(cache)
 
-with open('dict.txt', 'w') as f:
+with open('../BoatnumProject/trainModel/dict.txt', 'w') as f:
     for i in tqdm(range(len(cache))):
         if isinstance(cache[i], int):
             d = str(cache[i])

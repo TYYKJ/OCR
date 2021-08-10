@@ -1,13 +1,15 @@
-# @Time    : 2021/7/30 下午5:12
+# @Time    : 2021/8/9 下午5:13
 # @Author  : cattree
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .RecResNetvd import resnet_encoders
+from .resnetvd import resnet_encoders
+from .vgg import vgg_encoders
 
 encoders = {}
 
 encoders.update(resnet_encoders)
+encoders.update(vgg_encoders)
 
 
 def get_encoder(encoder_name: str):

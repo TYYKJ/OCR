@@ -1,6 +1,6 @@
-# @Time    : 2021/7/30 下午4:42
+# @Time    : 2021/8/9 下午5:12
 # @Author  : cattree
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .CRNN import CRNNModel
+from .crnn import CRNN
