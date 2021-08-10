@@ -46,4 +46,4 @@
 工具包中包含字典生成和数据集内容查看以及系统可用字体查看。 在使用matplotlib查看数据的时候,中文乱码问题可以使用系统自带的文字输入法来规避中文字符的乱码问题。
 
 #### 数据生成工具
-[船舶号生成文档](https://github.com/TYYKJ/limapOCR/blob/master/tools/generateBoat/README.md)
+[数据生成文档](https://github.com/TYYKJ/limapOCR/blob/master/tools/generateBoat/README.md)
