@@ -13,12 +13,14 @@ from plate_common import *
 def gen_plate_string():
     """生成船牌号码字符串"""
     plate_str = ""
-    for cpos in range(8):
+    for cpos in range(9):
         if cpos == 0:
             plate_str += chars[15]
         elif cpos == 1:
-            plate_str += chars[65 + random_seed(7)]
+            plate_str += chars[65]
         elif cpos == 2:
+            plate_str += chars[73]
+        elif cpos == 3:
             plate_str += chars[72]
         else:
             plate_str += chars[31 + random_seed(10)]
@@ -35,9 +37,9 @@ class GenPlateScene:
         :param bg_folder: 场景图片文件夹
         """
         self.fontC = ImageFont.truetype(font_ch_path, 43, 0)
-        self.fontE = ImageFont.truetype(font_en_path, 28, 0)
-        self.img = np.array(Image.new("RGB", (130, 32), (255, 255, 255)))
-        self.bg = cv2.resize(cv2.imread(TEMPLATE_IMAGE), (130, 32))
+        self.fontE = ImageFont.truetype(font_en_path, 26, 0)
+        self.img = np.array(Image.new("RGB", (123, 32), (255, 255, 255)))
+        self.bg = cv2.resize(cv2.imread(TEMPLATE_IMAGE), (123, 32))
         self.no_plates_path = []
         for parent, _, filenames in os.walk(bg_folder):
             for filename in filenames:
@@ -51,12 +53,14 @@ class GenPlateScene:
         :return:返回合成之后的船牌图片
         """
         offset = 0
-        self.img[0:32, offset + 8:offset + 8 + 18] = generate_ch_characters(self.fontC, boat_num[0])
-        self.img[0:32, offset + 8 + 18:offset + 8 + 18 + 18] = generate_ch_characters(self.fontC, boat_num[1])
-        self.img[0:32, offset + 8 + 18 + 18:offset + 8 + 18 + 18 + 18] = generate_ch_characters(self.fontC, boat_num[2])
+        self.img[0:32, offset + 8:offset + 8 + 12] = generate_ch_characters(self.fontC, boat_num[0])
+        self.img[0:32, offset + 8 + 12:offset + 8 + 12 + 12] = generate_ch_characters(self.fontC, boat_num[1])
+        self.img[0:32, offset + 8 + 12 + 12:offset + 8 + 12 + 12 + 12] = generate_ch_characters(self.fontC, boat_num[2])
+        self.img[0:32, offset + 8 + 12 + 12 + 12:offset + 8 + 12 + 12 + 12 + 12] = generate_ch_characters(self.fontC,
+                                                                                                          boat_num[3])
         for i in range(5):
-            base = offset + 8 + 18 + 18 + 18 + i * 12
-            self.img[0:32, base:base + 12] = generate_en_characters(self.fontE, boat_num[i + 3])
+            base = offset + 8 + 12 + 12 + 12 + 12 + i * 12
+            self.img[0:32, base:base + 12] = generate_en_characters(self.fontE, boat_num[i + 4])
         return self.img
 
     def generate(self, text: str) -> tuple:
@@ -104,7 +108,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--bg_dir', default='background', help='bg_img dir')
     parser.add_argument('--out_dir', default='./plate_train/', help='output dir')
-    parser.add_argument('--make_num', default=23000, type=int, help='num')
+    parser.add_argument('--make_num', default=2000, type=int, help='num')
     return parser.parse_args()
 
 
