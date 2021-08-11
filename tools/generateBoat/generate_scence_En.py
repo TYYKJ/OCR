@@ -106,7 +106,7 @@ class GenPlateScene:
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--bg_dir', default='background', help='bg_img dir')
-    parser.add_argument('--out_dir', default='./val', help='output dir')
+    parser.add_argument('--out_dir', default='./plate_train', help='output dir')
     parser.add_argument('--make_num', default=2, type=int, help='num')
     return parser.parse_args()
 
