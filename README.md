@@ -12,20 +12,53 @@
 
 本项目模型基于[PytorchLightning](https://www.pytorchlightning.ai/)开发, 训练部分可支持PytorchLighting一切功能。
 
-### Train Custom Data
+### 快速开始
+```python
+from ocr import CRNN
 
-- 通过ocr包导入CRNN模型, 设置classes参数和字典地址
-- 自定义DataLoader
-    - 通过继承`torch.utils.data`的DataSet类来自定义DataSet
-    - 自定义`DataLoader`
-        - 继承`LightningDataModule`类实现DataLoader
-        - 实现以下四个抽象方法
-            - `setup`
-            - `train_dataloader`
-            - `val_dataloader`
-            - `test_dataloader`
+model = CRNN(
+    classes=21,
+    encoder_name='vgg19_bn'
+)
+```
 
-### 其他参数配置
+### 参数配置
+
+#### 可用编码器
+
+<details>
+<summary style="margin-left: 25px;">ResNet</summary>
+<div style="margin-left: 25px;">
+
+|Encoder                           |
+|----------------------------------|
+|resnet18vd                        |
+|resnet34vd                        |
+|resnet50vd                        |
+|resnet101vd                       |
+|resnet152vd                       |
+|resnet200vd                       |
+
+</div>
+</details>
+
+<details>
+<summary style="margin-left: 25px;">VGG</summary>
+<div style="margin-left: 25px;">
+
+|Encoder                     |
+|----------------------------|
+|vgg11                       |
+|vgg11_bn                    |
+|vgg13                       |
+|vgg13_bn                    |
+|vgg16                       |
+|vgg16_bn                    |
+|vgg19                       |
+|vgg19_bn                    |
+
+</div>
+</details>
 
 #### 优化器
 
