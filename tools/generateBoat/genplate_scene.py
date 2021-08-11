@@ -114,5 +114,7 @@ def main(args):
 
 
 if __name__ == '__main__':
-    TEMPLATE_IMAGE = "./images/1.bmp"
-    main(parse_args())
+    img_folder = './images'
+    for filenames in os.listdir(img_folder):
+        TEMPLATE_IMAGE = os.path.join(img_folder,filenames)
+        main(parse_args())
