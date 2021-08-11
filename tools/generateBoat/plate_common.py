@@ -97,9 +97,9 @@ def change_gray_and_color(img: np.ndarray) -> np.ndarray:
     :return: 变化后的图片
     """
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    hsv[:, :, 0] = hsv[:, :, 0] * (0.8 + np.random.random() * 0.2)
-    hsv[:, :, 1] = hsv[:, :, 1] * (0.3 + np.random.random() * 0.7)
-    hsv[:, :, 2] = hsv[:, :, 2] * (0.2 + np.random.random() * 0.8)
+    hsv[:, :, 0] = hsv[:, :, 0] * (0.8 + 1 * 0.2)
+    hsv[:, :, 1] = hsv[:, :, 1] * (0.3 + 0.5 * 0.7)
+    hsv[:, :, 2] = hsv[:, :, 2] * (0.2 + 1 * 0.8)
 
     img = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
     return img
