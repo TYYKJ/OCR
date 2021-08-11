@@ -16,7 +16,7 @@ class CRNN(OCRModel):
             classes: int,
             encoder_name: str = 'resnet18vd',
             lstm_hidden_size: int = 256,
-            lr: int = 0.001,
+            lr: float = 0.001,
             optimizer_name: str = 'adam',
     ):
         super(CRNN, self).__init__()
