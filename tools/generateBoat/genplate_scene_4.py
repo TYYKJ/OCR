@@ -28,8 +28,8 @@ def gen_plate_string():
 
 
 class GenPlateScene:
-
     """船牌数据生成器，船牌放在自然场景中，位置信息存储在txt文件中"""
+
     def __init__(self, font_ch_path: str, font_en_path: str, bg_folder: str):
         """
         :param font_ch_path: 中文字体
@@ -72,8 +72,8 @@ class GenPlateScene:
         """
         print(text, len(text))
         fg = self.draw(text.encode(encoding="utf-8").decode(encoding="utf-8"))
-        fg = cv2.bitwise_not(fg) 
-        com = cv2.bitwise_or(fg, self.bg) 
+        fg = cv2.bitwise_not(fg)
+        com = cv2.bitwise_or(fg, self.bg)
         com = rot(com, random_seed(10) - 5, com.shape, 5)
         com = image_distortion(com, 6, (com.shape[1], com.shape[0]))
         com = change_gray_and_color(com)

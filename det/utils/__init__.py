@@ -3,3 +3,4 @@
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
+from .load import load

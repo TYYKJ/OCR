@@ -5,8 +5,9 @@
 # @explain :
 
 from PIL import Image
-from ocr.utils import load
 from torch.utils.data import Dataset, DataLoader
+
+from rec.utils import load
 
 
 class DetDataSet(Dataset):

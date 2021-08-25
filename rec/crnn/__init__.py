@@ -1,6 +1,6 @@
-# @Time    : 2021/8/12 上午10:35
+# @Time    : 2021/8/9 下午5:14
 # @Author  : cattree
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .model import FPN
+from .crnn import CRNN

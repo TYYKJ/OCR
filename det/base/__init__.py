@@ -3,5 +3,5 @@
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .head import DBHead
+from .head import Head
 from .model import OCRDetModel

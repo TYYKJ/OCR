@@ -5,7 +5,7 @@
 # @explain :
 import pytorch_lightning as pl
 
-from ocr.utils import optim
+from rec.utils import optim
 
 
 class OCRDetModel(pl.LightningModule):
@@ -18,16 +18,20 @@ class OCRDetModel(pl.LightningModule):
         return head
 
     def training_step(self, batch, batch_idx):
-        x, y = batch
-        predict = self.forward(x)
-        loss = self.loss_func(predict, batch)
+        img, gt_score, gt_geo, ignored_map = batch
+        pred_score, pred_geo = self.forward(img)
+
+        loss = self.loss_func(gt_score, pred_score, gt_geo, pred_geo, ignored_map)
+
         self.log('train_loss', loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
-        x, y = batch
-        predict = self.forward(x)
-        loss = self.loss_func(predict, batch)
+        img, gt_score, gt_geo, ignored_map = batch
+        pred_score, pred_geo = self.forward(img)
+
+        loss = self.loss_func(gt_score, pred_score, gt_geo, pred_geo, ignored_map)
+
         self.log('val_loss', loss)
 
     def configure_optimizers(self):

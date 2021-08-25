@@ -1,6 +1,5 @@
-# @Time    : 2021/8/12 上午10:35
+# @Time    : 2021/8/20 下午1:22
 # @Author  : cattree
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .model import FPN

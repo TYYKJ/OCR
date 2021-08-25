@@ -6,13 +6,14 @@
 import torch.utils.model_zoo as model_zoo
 
 from .resnet import resnet_encoders
+from .vgg import vgg_encoders
 
 encoders = {}
 encoders.update(resnet_encoders)
+encoders.update(vgg_encoders)
 
 
 def get_encoder(name, in_channels=3, depth=5, weights=None):
-
     try:
         Encoder = encoders[name]["encoder"]
     except KeyError:

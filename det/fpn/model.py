@@ -6,9 +6,9 @@
 from typing import Optional
 
 from .decoder import FPNDecoder
-from ..base import OCRDetModel, DBHead
+from ..base import OCRDetModel, Head
 from ..encoders import get_encoder
-from ..utils.losses import DBLoss
+from ..utils.losses import EASTLoss
 
 
 class FPN(OCRDetModel):
@@ -25,10 +25,11 @@ class FPN(OCRDetModel):
             optimizer_name: str = 'adam'
     ):
         super(FPN, self).__init__()
+        self.save_hyperparameters()
 
         self.optimizer_name = optimizer_name
         self.lr = lr
-        self.loss_func = DBLoss()
+        self.loss_func = EASTLoss()
 
         self.encoder = get_encoder(
             name=encoder_name,
@@ -42,7 +43,7 @@ class FPN(OCRDetModel):
             merge_policy=decoder_merge_policy,
         )
 
-        self.head = DBHead(
+        self.head = Head(
             in_channels=self.decoder.out_channels
         )
         # self.initialize()
