@@ -8,6 +8,9 @@ import torch
 from torch import nn
 
 
+__all__ = ['resnet_encoders']
+
+
 class ConvBNACT(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, groups=1, act=None):
         super().__init__()
