@@ -3,6 +3,7 @@
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
+from .mobilenet import mobilenetV3_encoders
 from .resnetvd import resnet_encoders
 from .vgg import vgg_encoders
 
@@ -10,6 +11,7 @@ encoders = {}
 
 encoders.update(resnet_encoders)
 encoders.update(vgg_encoders)
+encoders.update(mobilenetV3_encoders)
 
 
 def get_encoder(encoder_name: str):
