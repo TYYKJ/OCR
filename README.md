@@ -2,18 +2,23 @@
 
 ## 简介
 
-内部自用OCR识别框架。
-
-## 注意
-
-本项目基于torch 1.8开发
+基于PL的OCR检测识别。
 
 ## 文档
 
-本项目模型基于[PytorchLightning](https://www.pytorchlightning.ai/)开发, 训练部分可支持PytorchLighting一切功能。
+本项目模型基于[PytorchLightning](https://www.pytorchlightning.ai/)以及torch 1.8开发, 训练部分可支持PytorchLighting一切功能。
 
 ### 快速开始
 
+#### 检测模型
+
+```python
+from det import FPN
+
+model = FPN(encoder_name='resnet50')
+```
+
+#### 识别模型
 ```python
 from rec import CRNN
 
@@ -25,7 +30,49 @@ model = CRNN(
 
 ### 参数配置
 
-#### 可用编码器
+#### 检测网络可用编码器
+
+<details>
+<summary style="margin-left: 25px;">ResNet</summary>
+<div style="margin-left: 25px;">
+
+|Encoder                         |
+|--------------------------------|
+|resnet18                        |
+|resnet34                        |
+|resnet50                        |
+|resnet101                       |
+|resnet152                       |
+|resnext50_32x4d                 |
+|resnext101_32x4d                |
+|resnext101_32x8d                |
+|resnext101_32x16d               |
+|resnext101_32x32d               |
+|resnext101_32x48d               |
+
+</div>
+</details>
+
+
+<details>
+<summary style="margin-left: 25px;">VGG</summary>
+<div style="margin-left: 25px;">
+
+|Encoder                     |
+|----------------------------|
+|vgg11                       |
+|vgg11_bn                    |
+|vgg13                       |
+|vgg13_bn                    |
+|vgg16                       |
+|vgg16_bn                    |
+|vgg19                       |
+|vgg19_bn                    |
+
+</div>
+</details>
+
+#### 识别网络可用编码器
 
 <details>
 <summary style="margin-left: 25px;">ResNet</summary>
@@ -61,6 +108,18 @@ model = CRNN(
 </div>
 </details>
 
+<details>
+<summary style="margin-left: 25px;">MobilenetV3</summary>
+<div style="margin-left: 25px;">
+
+|Encoder                     |
+|----------------------------|
+|mobilenetV3_small           |
+|mobilenetV3_large           |
+
+</div>
+</details>
+
 #### 优化器
 
 本项目提供五种优化器方案, 具体配置可在实例化模型的时候填写, 默认优化器为Adam。 可用优化器:
@@ -82,3 +141,10 @@ model = CRNN(
 #### 数据生成工具
 
 [数据生成文档](https://github.com/TYYKJ/limapOCR/blob/master/tools/generateBoat/README.md)
+
+## 致谢
+
+本项目在开发过程中参考了 [PyTorchOCR](https://github.com/WenmuZhou/PytorchOCR/blob/master/)项目以及 [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)项目,感谢大佬们的开源~
+
+
+
