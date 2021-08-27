@@ -6,7 +6,7 @@
 
 ## 文档
 
-本项目模型基于[PytorchLightning](https://www.pytorchlightning.ai/)以及torch 1.8开发, 训练部分可支持PytorchLighting一切功能。
+本项目基于[PytorchLightning](https://www.pytorchlightning.ai/)以及torch 1.8开发, 训练部分可支持PytorchLighting一切功能。
 
 ### 快速开始
 
