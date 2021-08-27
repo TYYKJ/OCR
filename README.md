@@ -28,6 +28,8 @@ model = CRNN(
 )
 ```
 
+识别模型的Dataloader需要返回`x, y, y_len`
+
 ### 参数配置
 
 #### 检测网络可用编码器

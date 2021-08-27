@@ -14,6 +14,8 @@ class CRNN(OCRModel):
             lstm_hidden_size: int = 256,
             lr: float = 0.001,
             optimizer_name: str = 'adam',
+            train_loss_name: str = 'train_loss',
+            val_loss_name: str = 'val_loss',
     ):
         super(CRNN, self).__init__()
         self.save_hyperparameters()
@@ -23,6 +25,9 @@ class CRNN(OCRModel):
         self.optimizer_name = optimizer_name
 
         self.lr = lr
+
+        self.train_loss_name = train_loss_name
+        self.val_loss_name = val_loss_name
 
         self.encoder = get_encoder(encoder_name)
 
@@ -34,3 +39,5 @@ class CRNN(OCRModel):
             in_channels=lstm_hidden_size * 2,
             n_class=classes
         )
+
+        self.initialize()
