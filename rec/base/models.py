@@ -1,11 +1,16 @@
 
 import pytorch_lightning as pl
 import torch
-
+from ..base import initialization as init
 from ..utils import optim
 
 
 class OCRModel(pl.LightningModule):
+
+    def initialize(self):
+        init.initialize_backbone(self.encoder)
+        init.initialize_neck(self.neck)
+        init.initialize_head(self.head)
 
     def forward(self, x):
         features = self.encoder(x)
@@ -27,7 +32,7 @@ class OCRModel(pl.LightningModule):
 
         loss = self.loss_func(log_probs, y, input_lengths, target_lengths)
 
-        self.log(name='train', value=loss)
+        self.log(name=self.train_loss_name, value=loss)
 
         return loss
 
@@ -43,7 +48,7 @@ class OCRModel(pl.LightningModule):
 
         loss = self.loss_func(log_probs, y, input_lengths, target_lengths)
 
-        self.log(name='val', value=loss)
+        self.log(name=self.val_loss_name, value=loss)
 
         return loss
 
