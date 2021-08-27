@@ -144,7 +144,7 @@ model = CRNN(
 
 ## 致谢
 
-本项目在开发过程中参考了 [PyTorchOCR](https://github.com/WenmuZhou/PytorchOCR/blob/master/)项目以及 [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)项目,感谢大佬们的开源~
+本项目在开发过程中参考了 [PyTorchOCR](https://github.com/WenmuZhou/PytorchOCR/)项目以及 [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)项目,感谢大佬们的开源~
 
 
 
