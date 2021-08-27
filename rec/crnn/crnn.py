@@ -1,8 +1,4 @@
-# @Time    : 2021/8/9 下午5:39
-# @Author  : cattree
-# @File    : crnn
-# @Software: PyCharm
-# @explain :
+
 import torch.nn
 
 from ..base import CTCHead, OCRModel, EncoderWithLSTM, Feature2Seq

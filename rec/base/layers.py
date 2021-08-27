@@ -1,8 +1,4 @@
-# @Time    : 2021/8/26 下午6:04
-# @Author  : cattree
-# @File    : layers
-# @Software: PyCharm
-# @explain :
+
 
 from torch import nn
 

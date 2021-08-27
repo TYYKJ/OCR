@@ -1,8 +1,4 @@
-# @Time    : 2021/8/26 下午6:06
-# @Author  : cattree
-# @File    : mobilenet
-# @Software: PyCharm
-# @explain :
+
 
 from ..base import *
 

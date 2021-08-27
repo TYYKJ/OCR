@@ -1,13 +1,4 @@
-# @Time    : 2021/8/23 下午2:00
-# @Author  : cattree
-# @File    : vgg
-# @Software: PyCharm
-# @explain :
-# @Time    : 2021/7/16 下午2:32
-# @Author  : cattree
-# @File    : vgg
-# @Software: PyCharm
-# @explain :
+
 import torch.nn as nn
 from pretrainedmodels.models.torchvision_models import pretrained_settings
 from torchvision.models.vgg import VGG

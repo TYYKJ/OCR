@@ -1,8 +1,4 @@
-# @Time    : 2021/8/12 下午2:54
-# @Author  : cattree
-# @File    : head
-# @Software: PyCharm
-# @explain :
+
 import math
 
 import torch

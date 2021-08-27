@@ -1,8 +1,4 @@
-# @Time    : 2021/8/12 下午2:25
-# @Author  : cattree
-# @File    : model
-# @Software: PyCharm
-# @explain :
+
 from typing import Optional
 
 from .decoder import FPNDecoder

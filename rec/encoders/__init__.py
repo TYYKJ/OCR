@@ -1,8 +1,4 @@
-# @Time    : 2021/8/9 下午5:13
-# @Author  : cattree
-# @File    : __init__.py
-# @Software: PyCharm
-# @explain :
+
 from .mobilenet import mobilenetV3_encoders
 from .resnetvd import resnet_encoders
 from .vgg import vgg_encoders

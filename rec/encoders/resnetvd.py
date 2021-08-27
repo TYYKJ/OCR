@@ -1,8 +1,3 @@
-# @Time    : 2021/8/9 下午5:14
-# @Author  : cattree
-# @File    : resnetvd
-# @Software: PyCharm
-# @explain :
 
 import torch
 from torch import nn

@@ -1,13 +1,4 @@
-# @Time    : 2021/8/12 上午10:49
-# @Author  : cattree
-# @File    : resnetvd
-# @Software: PyCharm
-# @explain :
-# @Time    : 2021/7/19 下午1:10
-# @Author  : cattree
-# @File    : resnet
-# @Software: PyCharm
-# @explain :
+
 from copy import deepcopy
 
 import torch.nn as nn

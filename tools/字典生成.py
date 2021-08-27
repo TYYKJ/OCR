@@ -1,8 +1,4 @@
-# @Time    : 2021/8/2 上午9:43
-# @Author  : cattree
-# @File    : 字典生成
-# @Software: PyCharm
-# @explain :
+
 from tqdm import tqdm
 
 from rec.utils import load

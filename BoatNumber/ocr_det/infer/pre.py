@@ -1,3 +1,4 @@
+import math
 import os
 
 import lanms
@@ -9,7 +10,6 @@ from torchvision import transforms
 # from dataset import get_rotate_mat
 # from model import EAST
 from det.fpn import FPN
-import math
 
 
 def get_rotate_mat(theta):

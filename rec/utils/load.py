@@ -1,8 +1,4 @@
-# @Time    : 2021/8/10 上午8:43
-# @Author  : cattree
-# @File    : load
-# @Software: PyCharm
-# @explain :
+
 import json
 import pathlib
 

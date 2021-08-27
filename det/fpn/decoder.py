@@ -1,8 +1,4 @@
-# @Time    : 2021/8/12 下午1:33
-# @Author  : cattree
-# @File    : decoder
-# @Software: PyCharm
-# @explain :
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

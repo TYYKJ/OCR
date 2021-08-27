@@ -1,8 +1,4 @@
-# @Time    : 2021/8/12 上午8:45
-# @Author  : cattree
-# @File    : __init__.py
-# @Software: PyCharm
-# @explain :
+
 import torch.utils.model_zoo as model_zoo
 
 from .resnet import resnet_encoders

@@ -1,8 +1,4 @@
-# @Time    : 2021/8/24 下午2:10
-# @Author  : cattree
-# @File    : model_export
-# @Software: PyCharm
-# @explain :
+
 import torch
 
 from rec import CRNN

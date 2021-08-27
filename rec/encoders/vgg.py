@@ -1,8 +1,4 @@
-# @Time    : 2021/8/10 下午1:25
-# @Author  : cattree
-# @File    : vgg
-# @Software: PyCharm
-# @explain :
+
 from typing import Union, List, Dict, Any, cast, Tuple
 
 import torch

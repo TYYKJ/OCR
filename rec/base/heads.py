@@ -1,8 +1,4 @@
-# @Time    : 2021/8/9 下午5:13
-# @Author  : cattree
-# @File    : heads
-# @Software: PyCharm
-# @explain :
+
 import torch.nn as nn
 
 

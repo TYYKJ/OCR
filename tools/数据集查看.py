@@ -1,8 +1,4 @@
-# @Time    : 2021/7/30 下午3:06
-# @Author  : cattree
-# @File    : main
-# @Software: PyCharm
-# @explain :
+
 
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader

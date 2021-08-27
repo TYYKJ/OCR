@@ -1,8 +1,4 @@
-# @Time    : 2021/8/9 下午5:13
-# @Author  : cattree
-# @File    : models
-# @Software: PyCharm
-# @explain :
+
 import pytorch_lightning as pl
 import torch
 

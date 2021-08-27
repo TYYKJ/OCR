@@ -1,8 +1,4 @@
-# @Time    : 2021/8/12 下午4:20
-# @Author  : cattree
-# @File    : losses
-# @Software: PyCharm
-# @explain :
+
 import torch
 import torch.nn as nn
 

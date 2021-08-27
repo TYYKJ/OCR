@@ -3,11 +3,11 @@
 # @File    : infer_ts
 # @Software: PyCharm
 # @explain :
-from torch import jit
-import cv2
 import PIL
+import cv2
 import torch
 import torchvision.transforms.functional
+from torch import jit
 
 from BoatNumber.ocr_rec.inference.ctc_decoder import ctc_decode
 

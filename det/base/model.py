@@ -1,8 +1,4 @@
-# @Time    : 2021/8/12 下午2:26
-# @Author  : cattree
-# @File    : model
-# @Software: PyCharm
-# @explain :
+
 import pytorch_lightning as pl
 
 from rec.utils import optim

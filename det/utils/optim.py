@@ -1,8 +1,4 @@
-# @Time    : 2021/6/29 4:47 下午
-# @Author  : cattree
-# @File    : optim
-# @Software: PyCharm
-# @explain :
+
 
 
 import math
