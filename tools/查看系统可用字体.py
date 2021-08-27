@@ -1,8 +1,4 @@
-# @Time    : 2021/7/31 上午10:22
-# @Author  : cattree
-# @File    : test
-# @Software: PyCharm
-# @explain :
+
 
 import subprocess
 

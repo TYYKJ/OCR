@@ -13,8 +13,9 @@
 本项目模型基于[PytorchLightning](https://www.pytorchlightning.ai/)开发, 训练部分可支持PytorchLighting一切功能。
 
 ### 快速开始
+
 ```python
-from ocr import CRNN
+from rec import CRNN
 
 model = CRNN(
     classes=21,
@@ -79,4 +80,5 @@ model = CRNN(
 工具包中包含字典生成和数据集内容查看以及系统可用字体查看。 在使用matplotlib查看数据的时候,中文乱码问题可以使用系统自带的文字输入法来规避中文字符的乱码问题。
 
 #### 数据生成工具
+
 [数据生成文档](https://github.com/TYYKJ/limapOCR/blob/master/tools/generateBoat/README.md)

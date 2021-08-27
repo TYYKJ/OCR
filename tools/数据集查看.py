@@ -1,12 +1,9 @@
-# @Time    : 2021/7/30 下午3:06
-# @Author  : cattree
-# @File    : main
-# @Software: PyCharm
-# @explain :
+
 
 from PIL import Image
-from ocr.utils import load
 from torch.utils.data import Dataset, DataLoader
+
+from rec.utils import load
 
 
 class DetDataSet(Dataset):
