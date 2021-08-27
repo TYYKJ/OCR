@@ -16,7 +16,7 @@ class ConvBNACT(nn.Module):
         self.bn = nn.BatchNorm2d(out_channels)
         if act == 'relu':
             self.act = nn.ReLU()
-        elif act is None:
+        else:
             self.act = nn.Identity()
 
     def forward(self, x):

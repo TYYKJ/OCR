@@ -20,7 +20,7 @@ class ResidualUnit(nn.Module):
                                          stride=stride,
                                          padding=int((kernel_size - 1) // 2), act=act, groups=num_mid_filter)
         if use_se:
-            self.se = SEBlock(in_channels=num_mid_filter, out_channels=num_mid_filter, hsigmoid_type='paddle')
+            self.se = SEBlock(in_channels=num_mid_filter, out_channels=num_mid_filter)
         else:
             self.se = None
 
@@ -128,22 +128,14 @@ class MobileNetV3(nn.Module):
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
         self.out_channels = self.make_divisible(scale * cls_ch_squeeze)
 
-    def make_divisible(self, v, divisor=8, min_value=None):
+    @staticmethod
+    def make_divisible(v, divisor=8, min_value=None):
         if min_value is None:
             min_value = divisor
         new_v = max(min_value, int(v + divisor / 2) // divisor * divisor)
         if new_v < 0.9 * v:
             new_v += divisor
         return new_v
-
-    def load_3rd_state_dict(self, _3rd_name, _state):
-        if _3rd_name == 'paddle':
-            self.conv1.load_3rd_state_dict(_3rd_name, _state, 'conv1')
-            for m_block_index, m_block in enumerate(self.blocks, 2):
-                m_block.load_3rd_state_dict(_3rd_name, _state, m_block_index)
-            self.conv2.load_3rd_state_dict(_3rd_name, _state, 'conv_last')
-        else:
-            pass
 
     def forward(self, x):
         x = self.conv1(x)
