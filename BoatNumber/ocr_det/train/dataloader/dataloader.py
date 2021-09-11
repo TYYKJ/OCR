@@ -279,9 +279,10 @@ class OCRDataset(data.Dataset):
     def __getitem__(self, index):
         with open(self.gt_files[index], 'r') as f:
             lines = f.readlines()
-        # 	坐标 是否难以识别 模糊0 清晰1
-        vertices, labels = extract_vertices(lines)
 
+        # 坐标 是否难以识别 模糊0 清晰1
+        vertices, labels = extract_vertices(lines)
+        # print(self.img_files[index])
         img = Image.open(self.img_files[index])
         img, vertices = adjust_height(img, vertices)
         img, vertices = rotate_img(img, vertices)
@@ -319,7 +320,7 @@ class DetDataModule(pytorch_lightning.LightningDataModule):
         )
 
     def train_dataloader(self):
-        return DataLoader(self.train_ds, batch_size=4, num_workers=8, shuffle=True)
+        return DataLoader(self.train_ds, batch_size=16, num_workers=16, shuffle=True, persistent_workers=True)
 
     def val_dataloader(self):
-        return DataLoader(self.val_ds, batch_size=4, num_workers=8)
+        return DataLoader(self.val_ds, batch_size=16, num_workers=16, persistent_workers=True)

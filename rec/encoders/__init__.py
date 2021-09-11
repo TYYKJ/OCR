@@ -1,4 +1,3 @@
-
 from .mobilenet import mobilenetV3_encoders
 from .resnetvd import resnet_encoders
 from .vgg import vgg_encoders

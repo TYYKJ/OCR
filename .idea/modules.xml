@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/limapOCR.iml" filepath="$PROJECT_DIR$/.idea/limapOCR.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/torch-ocr.iml" filepath="$PROJECT_DIR$/.idea/torch-ocr.iml" />
     </modules>
   </component>
 </project>

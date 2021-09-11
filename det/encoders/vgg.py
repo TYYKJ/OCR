@@ -1,10 +1,7 @@
-
 import torch.nn as nn
 from pretrainedmodels.models.torchvision_models import pretrained_settings
 from torchvision.models.vgg import VGG
 from torchvision.models.vgg import make_layers
-
-from ._base import EncoderMixin
 
 # fmt: off
 cfg = {
@@ -15,7 +12,7 @@ cfg = {
 }
 
 
-class VGGEncoder(VGG, EncoderMixin):
+class VGGEncoder(VGG):
 
     def __init__(self, out_channels, config, batch_norm=False, depth=5, **kwargs):
         # 返回VGG模型, 在self参数里
@@ -29,15 +26,19 @@ class VGGEncoder(VGG, EncoderMixin):
         raise ValueError("'VGG' models do not support dilated mode due to Max Pooling"
                          " operations for down sampling!")
 
+    @property
+    def out_channels(self):
+        return self._out_channels[1:-1]
+
     def get_stages(self):
         stages = []
         stage_modules = []
 
         for module in self.features:
+            stage_modules.append(module)
             if isinstance(module, nn.MaxPool2d):
                 stages.append(nn.Sequential(*stage_modules))
                 stage_modules = []
-            stage_modules.append(module)
         stages.append(nn.Sequential(*stage_modules))
         return stages
 
@@ -48,14 +49,14 @@ class VGGEncoder(VGG, EncoderMixin):
         for i in range(self._depth + 1):
             x = stages[i](x)
             features.append(x)
-        # input: 1x3x224x224
-        # 0-> 1x64x224x224
-        # 1-> 1x128x112x112
-        # 2-> 1x256x56x56
-        # 3-> 1x512x28x28
-        # 4-> 1x512x14x14
-        # 5-> 1x512x7x7
-        return features[2:]
+
+        # 0-> 1x64x320x320
+        # 1-> 1x128x160x160
+        # 2-> 1x256x80x80
+        # 3-> 1x512x40x40
+        # 4-> 1x512x20x20
+        # 5-> 1x512x20x20
+        return features[1:-1]
 
     def load_state_dict(self, state_dict, **kwargs):
         keys = list(state_dict.keys())

@@ -4,13 +4,18 @@
 # @Software: PyCharm
 # @explain :
 import PIL
-import torch
-import torchvision.transforms.functional
-import torch.hub
 import cv2
-from BoatNumber.ocr_rec.inference.ctc_decoder import ctc_decode
+import numpy as np
+import torch
+import torch.hub
+import torchvision.transforms.functional
 
-CHARS = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ开养海渔烟牟福莱蓬长鲁'
+from BoatNumber.ocr_rec.inference.ctc_decoder import ctc_decode
+from rec import CRNN
+
+CHARS = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ养开文海渔烟牟福莱蓬长鱼鲁'
+
+
 # CHAR2LABEL = {char: i + 1 for i, char in enumerate(CHARS)}
 # LABEL2CHAR = {label: char for char, label in CHAR2LABEL.items()}
 #
@@ -53,24 +58,48 @@ CHARS = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ开养海渔烟牟福莱蓬长鲁'
 
 # cv2.imshow('', det_img)
 # cv2.waitKey(9000)
+class Resize:
+    def __init__(self, img_h, img_w, pad=True, **kwargs):
+        self.img_h = img_h
+        self.img_w = img_w
+        self.pad = pad
 
-model = torch.load('/home/cattree/PycharmProjects/torch-rec/BoatNumber/ocr_rec/inference/ocr_rec.pt')
-img_path = '/home/cattree/PycharmProjects/torch-ocr/BoatNumber/ocr_rec/inference/1.jpg'
+    def __call__(self, img: np.ndarray):
+        """
+        对图片进行处理，先按照高度进行resize，resize之后如果宽度不足指定宽度，就补黑色像素，否则就强行缩放到指定宽度
+        :param img_path: 图片地址
+        :return: 处理为指定宽高的图片
+        """
+        img_h = self.img_h
+        img_w = self.img_w
+        h, w = img.shape[:2]
+        ratio_h = self.img_h / h
+        new_w = int(w * ratio_h)
+        if new_w < img_w and self.pad:
+            img = cv2.resize(img, (new_w, img_h))
+            if len(img.shape) == 2:
+                img = np.expand_dims(img, 2)
+            step = np.zeros((img_h, img_w - new_w, img.shape[-1]), dtype=img.dtype)
+            img = np.column_stack((img, step))
+        else:
+            img = cv2.resize(img, (img_w, img_h))
+            if len(img.shape) == 2:
+                img = np.expand_dims(img, 2)
+        if img.shape[-1] == 1:
+            img = img[:, :, 0]
+        return img
 
+
+# model = torch.load('/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_rec/inference/ocr_rec.pt')
+model = CRNN.load_from_checkpoint(
+    '/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_rec/weights/torchOCR-BoatNumber_ocr_rec_train/1bys7quw/checkpoints/epoch=29-step=18539.ckpt')
+
+# img_path = '/home/cattree/下载/0.jpg'
+img_path = '/home/cattree/下载/EAST-master/result/0c04b1eadaa8244bfae1135051df482db.jpg'
+model.freeze()
 model.eval()
 
 
-#
-# im = torchvision.transforms.functional.to_tensor(PIL.Image.open(img_path))
-# im = torch.unsqueeze(im, dim=0)
-# y_hat = model(im)
-#
-# log_probs = y_hat.log_softmax(dim=2)
-#
-# preds = ctc_decode(log_probs, method='beam_search', beam_size=10,
-#                    label2char=LABEL2CHAR)
-# text = show_result(im, preds)
-# print(text)
 def get_ocr_result(chars: str, model, img_path):
     def get_str(paths, predict):
         for path, pred in zip(paths, predict):
@@ -80,8 +109,9 @@ def get_ocr_result(chars: str, model, img_path):
     CHAR2LABEL = {char: i + 1 for i, char in enumerate(chars)}
     LABEL2CHAR = {label: char for char, label in CHAR2LABEL.items()}
     model.eval()
+    resize = Resize(32, 140)
     im = cv2.imread(img_path)
-    im = cv2.resize(im, (140, 32), interpolation=cv2.INTER_LINEAR)
+    im = resize(im)
     im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
     im = PIL.Image.fromarray(im)
 
@@ -90,9 +120,10 @@ def get_ocr_result(chars: str, model, img_path):
     y_hat = model(im)
     log_probs = y_hat.log_softmax(dim=2)
 
-    preds = ctc_decode(log_probs, method='beam_search', beam_size=10,
+    preds = ctc_decode(log_probs, method='beam_search', beam_size=18,
                        label2char=LABEL2CHAR)
     text = get_str(im, preds)
+
     return text
 
 

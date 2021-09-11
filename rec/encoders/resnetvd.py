@@ -1,7 +1,5 @@
-
 import torch
 from torch import nn
-
 
 __all__ = ['resnet_encoders']
 

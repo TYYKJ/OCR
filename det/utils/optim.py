@@ -1,6 +1,3 @@
-
-
-
 import math
 from typing import Iterator
 

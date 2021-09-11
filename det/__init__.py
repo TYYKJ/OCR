@@ -1,2 +1,1 @@
-
-from .fpn import FPN
+from .east import East

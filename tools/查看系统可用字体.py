@@ -1,5 +1,3 @@
-
-
 import subprocess
 
 from matplotlib.font_manager import FontManager

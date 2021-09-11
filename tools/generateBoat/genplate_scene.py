@@ -116,5 +116,5 @@ def main(args):
 if __name__ == '__main__':
     img_folder = './images'
     for filenames in os.listdir(img_folder):
-        TEMPLATE_IMAGE = os.path.join(img_folder,filenames)
+        TEMPLATE_IMAGE = os.path.join(img_folder, filenames)
         main(parse_args())

@@ -19,6 +19,7 @@ model = FPN(encoder_name='resnet50')
 ```
 
 #### 识别模型
+
 ```python
 from rec import CRNN
 

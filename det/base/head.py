@@ -1,11 +1,10 @@
-
 import math
 
 import torch
 import torch.nn as nn
 
 
-class Head(nn.Module):
+class EastHead(nn.Module):
     def __init__(self, in_channels):
         super().__init__()
 

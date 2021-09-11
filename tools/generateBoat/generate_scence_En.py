@@ -2,9 +2,9 @@
 """
 生成船牌数据，将船牌放到自然图像中
 """
+import argparse
 import os
 
-import argparse
 from PIL import ImageFont
 
 from plate_common import *
@@ -15,17 +15,17 @@ def gen_plate_string():
     plate_str = ""
     for cpos in range(5):
         if cpos == 0:
-            plate_str += chars[41+random_seed(24)]
+            plate_str += chars[41 + random_seed(24)]
         elif cpos == 1:
-            plate_str += chars[41+random_seed(24)]
+            plate_str += chars[41 + random_seed(24)]
         else:
-            plate_str += chars[31+random_seed(10)]
+            plate_str += chars[31 + random_seed(10)]
     return plate_str
 
 
 class GenPlateScene:
-
     """船牌数据生成器，船牌放在自然场景中，位置信息存储在txt文件中"""
+
     def __init__(self, font_ch_path: str, font_en_path: str, bg_folder: str):
         """
         :param font_ch_path: 中文字体
@@ -119,5 +119,5 @@ def main(args):
 if __name__ == '__main__':
     img_folder = './images'
     for filenames in os.listdir(img_folder):
-        TEMPLATE_IMAGE = os.path.join(img_folder,filenames)
+        TEMPLATE_IMAGE = os.path.join(img_folder, filenames)
         main(parse_args())

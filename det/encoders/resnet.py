@@ -1,4 +1,3 @@
-
 from copy import deepcopy
 
 import torch.nn as nn
@@ -8,10 +7,8 @@ from torchvision.models.resnet import BasicBlock
 from torchvision.models.resnet import Bottleneck
 from torchvision.models.resnet import ResNet
 
-from ._base import EncoderMixin
 
-
-class ResNetEncoder(ResNet, EncoderMixin):
+class ResNetEncoder(ResNet):
     def __init__(self, out_channels, depth=4, **kwargs):
         super(ResNetEncoder, self).__init__(**kwargs)
         self._depth = depth
@@ -30,6 +27,10 @@ class ResNetEncoder(ResNet, EncoderMixin):
             self.layer3,
             self.layer4
         ]
+
+    @property
+    def out_channels(self):
+        return self._out_channels
 
     def forward(self, x: Tensor) -> list:
         stages = self.get_stages()

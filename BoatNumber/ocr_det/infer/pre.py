@@ -1,5 +1,4 @@
 import math
-import os
 
 import lanms
 import numpy as np
@@ -9,7 +8,7 @@ from torchvision import transforms
 
 # from dataset import get_rotate_mat
 # from model import EAST
-from det.fpn import FPN
+from det.east import East
 
 
 def get_rotate_mat(theta):
@@ -205,36 +204,58 @@ def draw_mask(polygon, height, width):
 if __name__ == '__main__':
 
     import cv2
+    import os
+    from tqdm import tqdm
 
-    img_path = '/home/cattree/PycharmProjects/torch-ocr/BoatNumber/ocr_det/infer/屏幕截图.png'
-    model_path = '/BoatNumber/ocr_det/infer/epoch=57-step=93205.ckpt'
-    # res_img = '/home/cattree/PycharmProjects/torch-ocr/BoatNumber/ocr_det/infer/4.jpg'
+    model_path = '/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_det/train/weights/torchOCR-BoatNumber_ocr_det_train/415slemc/checkpoints/epoch=10-step=5598.ckpt'
+    # res_img = '/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_det/infer/4.jpg'
     # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     # model = EAST().to(device)
     # model.load_state_dict(torch.load(model_path))
-    model = FPN.load_from_checkpoint(model_path)
+    model = East.load_from_checkpoint(model_path)
 
+    model.freeze()
     model.eval()
-    img = Image.open(img_path)
+    img_dir = '/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_det/infer/test_img'
+    img_files = os.listdir(img_dir)
 
-    boxes = detect(img, model)
+    file_num = len(img_files)
+    right_num = 0
+    error_num = 0
 
-    im = np.asarray(img)
-    # if boxes:
-    for box in boxes:
-        box = box[:-1]
-        box = [box[i: i + 2] for i in range(0, len(box), 2)]
-        box = np.array(box)
+    for img_file in tqdm(img_files):
+        img_path = f'{img_dir}/{img_file}'
+        img = Image.open(img_path)
+        boxes = detect(img, model)
+        im = np.asarray(img)
+        if boxes is not None:
+            for box in boxes:
+                box = box[:-1]
+                box = [box[i: i + 2] for i in range(0, len(box), 2)]
+                box = np.array(box)
 
-        mask = draw_mask(box, im.shape[0], width=im.shape[1])
-        contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        for cidx, cnt in enumerate(contours):
-            minAreaRect = cv2.minAreaRect(cnt)
-            # 将浮点数坐标转换成整数
-            rectCnt = np.int64(cv2.boxPoints(minAreaRect))
-            cv2.drawContours(im, [rectCnt], 0, (0, 255, 0), 3)
+                mask = draw_mask(box, im.shape[0], width=im.shape[1])
+                contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+                for i, contour in enumerate(contours):
+                    ares = cv2.contourArea(contour)  # 计算包围形状的面积
+                    # if ares < 15:  # 过滤面积小于15的形状
+                    #     continue
 
-        cv2.imwrite("test.png", im)
+                    rect = cv2.boundingRect(contour)
+                    # 矩形左上角坐标(x, y), 与矩形的宽度w 高度h
+                    x, y, w, h = rect
+                    im = im[y:y + h, x:x + w]
+                    im = cv2.resize(im, (140, 32), interpolation=cv2.INTER_LINEAR)
 
-    # else:
-    #     print('没有检测到文本')
+                    # im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+                    im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
+                    cv2.imwrite(
+                        f'/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_det/infer/result/{img_file}_{i}.jpg',
+                        im)
+            right_num += 1
+        else:
+            img.save(f'/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_det/infer/error/{img_file}')
+            error_num += 1
+
+    print(f'acc: {right_num / file_num}')
+    print(f'error: {error_num / file_num}')

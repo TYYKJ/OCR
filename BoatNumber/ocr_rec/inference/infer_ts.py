@@ -42,5 +42,5 @@ def get_ocr_result(chars: str, model, img_path):
     return text
 
 
-img_path = '/home/cattree/PycharmProjects/torch-ocr/BoatNumber/ocr_rec/inference/1.jpg'
+img_path = '//BoatNumber/ocr_rec/inference/1.jpg'
 print(get_ocr_result(CHARS, model, img_path))

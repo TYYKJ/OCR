@@ -1,4 +1,3 @@
-
 import torch.nn
 
 from ..base import CTCHead, OCRModel, EncoderWithLSTM, Feature2Seq
@@ -20,7 +19,7 @@ class CRNN(OCRModel):
         super(CRNN, self).__init__()
         self.save_hyperparameters()
 
-        self.loss_func = torch.nn.CTCLoss()
+        self.loss_func = torch.nn.CTCLoss(zero_infinity=True)
 
         self.optimizer_name = optimizer_name
 

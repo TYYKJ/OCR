@@ -1,3 +1,2 @@
-
-from .head import Head
+from .head import EastHead
 from .model import OCRDetModel
