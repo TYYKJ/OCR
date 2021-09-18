@@ -14,9 +14,9 @@ class Feature2Seq(nn.Module):
                 f'feature height must be 1, but got `{height}`'
             )
 
-        x = x.view(batch, channel * height, width)
+        x = x.view(batch, channel, height*width)
         # width batch feature
-        x = x.permute(2, 0, 1)
+        x = x.permute((0, 2, 1))
         return x
 
 

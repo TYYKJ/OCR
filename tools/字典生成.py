@@ -2,13 +2,13 @@ from tqdm import tqdm
 
 from rec.utils import load
 
-file_path = '/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_rec/data/0909recDatanoresize/recDatanoresize/trainnoresize.txt'
+file_path = '/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_rec/data/0916datarec/train.txt'
 
 data = load(file_path)
 cache_dict = []
 
 for item in tqdm(data):
-    line = item.split(' ')
+    line = item.split('\t')
     for i in line[-1]:
 
         if i not in cache_dict:
@@ -17,7 +17,7 @@ for item in tqdm(data):
 cache = list(set(cache_dict))
 
 cache = sorted(cache)
-print(cache)
+# print(cache)
 
 s = ''
 for item in cache:
@@ -25,11 +25,12 @@ for item in cache:
 print(s)
 print(len(s))
 
-with open('dict.txt', 'w') as f:
+with open('../BoatNumber/ocr_rec/data/dict.txt', 'w') as f:
     for i in tqdm(range(len(cache))):
         if isinstance(cache[i], int):
             d = str(cache[i])
         else:
             d = cache[i]
         f.write(d)
-        f.write('\n')
+        if i != len(cache) - 1:
+            f.write('\n')

@@ -1,1 +1,2 @@
-from .east import East
+
+from .db import DBDetModel

@@ -2,6 +2,7 @@ import torch.nn
 
 from ..base import CTCHead, OCRModel, EncoderWithLSTM, Feature2Seq
 from ..encoders import get_encoder
+from ..utils import CTCLabelConverter, CTCLoss
 
 
 class CRNN(OCRModel):
@@ -9,7 +10,9 @@ class CRNN(OCRModel):
     def __init__(
             self,
             classes: int,
+            charset_path: str,
             encoder_name: str = 'resnet18vd',
+            blank_idx: int = 0,
             lstm_hidden_size: int = 256,
             lr: float = 0.001,
             optimizer_name: str = 'adam',
@@ -19,7 +22,9 @@ class CRNN(OCRModel):
         super(CRNN, self).__init__()
         self.save_hyperparameters()
 
-        self.loss_func = torch.nn.CTCLoss(zero_infinity=True)
+        self.convert = CTCLabelConverter(character=charset_path)
+
+        self.loss_func = CTCLoss(blank_idx=blank_idx)
 
         self.optimizer_name = optimizer_name
 
