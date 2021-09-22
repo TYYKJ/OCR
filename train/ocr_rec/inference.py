@@ -8,8 +8,8 @@ import os.path
 
 import numpy as np
 import torch
+from dataloader import RecDataProcess
 
-from BoatNumber.ocr_rec.train.dataloader.dataloader import RecDataProcess
 from rec import CRNN
 from rec.utils import CTCLabelConverter
 

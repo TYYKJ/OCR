@@ -5,11 +5,12 @@
 # @explain :
 import os
 
+import pytorch_lightning as pl
+import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
-import torch
+
 from rec.utils.CreateRecAug import *
-import pytorch_lightning as pl
 
 
 class RecDataProcess:
@@ -261,7 +262,7 @@ class RecDataLoader:
             return self.pack(batch_data)
 
 
-class BoaNumberDataModule(pl.LightningDataModule):
+class OCRDataModule(pl.LightningDataModule):
     def __init__(
             self,
             charset_path,
@@ -275,7 +276,7 @@ class BoaNumberDataModule(pl.LightningDataModule):
             batch_size=16,
             num_workers=8,
     ):
-        super(BoaNumberDataModule, self).__init__()
+        super(OCRDataModule, self).__init__()
 
         self.num_workers = num_workers
         self.bs = batch_size
@@ -320,7 +321,7 @@ class BoaNumberDataModule(pl.LightningDataModule):
 
 # if __name__ == '__main__':
 #     import matplotlib.pyplot as plt
-#     from rec import CRNN
+#     from ocr_rec import CRNN
 #
 #     model = CRNN(
 #         # 类别+1

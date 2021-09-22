@@ -1,4 +1,3 @@
-import torch.nn
 
 from ..base import CTCHead, OCRModel, EncoderWithLSTM, Feature2Seq
 from ..encoders import get_encoder

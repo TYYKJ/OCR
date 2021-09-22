@@ -3,8 +3,9 @@
 # @File    : transfer_data
 # @Software: PyCharm
 # @explain :
-import pathlib
 import json
+import os
+import pathlib
 
 
 def load(file_path: str):
@@ -26,10 +27,17 @@ def load_txt(file_path: str):
     return content
 
 
-file = load('/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_rec/data/0909recDatanoresize/recDatanoresize/valnoresize.txt')
-with open('/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_rec/data/0909recDatanoresize/recDatanoresize/val.txt', 'w') as f:
-    for item in file:
-        data = item.split(' ')
-        filename, label = data[0], data[1]
-        f.write(f'{filename}\t{label}\n')
+base_path = '/home/cattree/PycharmProjects/torchOCR/data'
+split_type = ' '
+
+files = os.listdir(base_path)
+for file in files:
+    if file.endswith('txt'):
+        data = load(os.path.join(base_path, file))
+
+        with open(file, 'w') as f:
+            for item in data:
+                line = item.split(split_type)
+                filename, label = line[0], line[1]
+                f.write(f'{filename}\t{label}\n')
 

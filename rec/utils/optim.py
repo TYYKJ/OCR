@@ -10,7 +10,7 @@ __all__ = ['get_optimizer']
 
 class RAdam(Optimizer):
 
-    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0, degenerated_to_sgd=False):
+    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0., degenerated_to_sgd=False):
         if not 0.0 <= lr:
             raise ValueError("Invalid learning rate: {}".format(lr))
         if not 0.0 <= eps:
@@ -258,7 +258,7 @@ class AdamW(Optimizer):
 def get_optimizer(params: Iterator[nn.parameter.Parameter],
                   optimizers_name: str,
                   lr: float):
-    names = ['adam', 'sparseadam', 'adamw', 'radam', 'plainradam']
+    names = ['adam', 'sparseadam', 'adamw', 'radam', 'sgd']
     optim_name = optimizers_name.lower()
 
     if optim_name not in names:
@@ -267,12 +267,12 @@ def get_optimizer(params: Iterator[nn.parameter.Parameter],
         )
 
     if optim_name == 'adam':
-        return torch.optim.Adam(params, lr)
+        return torch.optim.Adam(params, lr, weight_decay=1e-4)
     elif optim_name == 'sparseadam':
         return torch.optim.SparseAdam(params, lr)
     elif optim_name == 'adamw':
-        return torch.optim.AdamW(params, lr)
+        return torch.optim.AdamW(params, lr, weight_decay=1e-4)
     elif optim_name == 'radam':
-        return RAdam(params, lr)
-    elif optim_name == 'plainradam':
-        return PlainRAdam(params, lr)
+        return RAdam(params, lr, weight_decay=1e-4)
+    elif optim_name == 'sgd':
+        return torch.optim.SGD(params, lr, momentum=0.9, weight_decay=1e-4)

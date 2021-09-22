@@ -4,9 +4,10 @@
 # @Software: PyCharm
 # @explain :
 
-import numpy as np
-import cv2
 import os
+
+import cv2
+import numpy as np
 
 # img_h, img_w = 32, 32
 img_h, img_w = 32, 140  # 根据自己数据集适当调整，影响不大

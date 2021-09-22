@@ -42,7 +42,7 @@ class CTCLabelConverter(object):
             t = [self.dict[char] for char in s]
             t.extend([0] * (batch_max_length - len(s)))
             d.append(t)
-        return (torch.tensor(d, dtype=torch.long), torch.tensor(length, dtype=torch.long))
+        return torch.tensor(d, dtype=torch.long), torch.tensor(length, dtype=torch.long)
 
     def decode(self, preds, raw=False):
         """ convert text-index into text-label. """

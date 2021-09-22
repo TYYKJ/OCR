@@ -1,8 +1,9 @@
 import pytorch_lightning as pl
 import torch
+import wandb
 
 from ..base import initialization as init
-from ..utils import optim
+from ..utils import optim, RecMetric
 
 
 class OCRModel(pl.LightningModule):
@@ -29,7 +30,7 @@ class OCRModel(pl.LightningModule):
 
         loss = self.loss_func(predict, batch)
 
-        self.log(name=self.train_loss_name, value=loss)
+        self.log(name=self.train_loss_name, value=loss, on_step=False, on_epoch=True)
 
         return loss
 
@@ -42,7 +43,17 @@ class OCRModel(pl.LightningModule):
 
         loss = self.loss_func(predict, batch)
 
-        self.log(name=self.val_loss_name, value=loss)
+        cur_batch_size = batch['img'].shape[0]
+        metric = RecMetric(self.convert)
+        acc_dict = metric(predict, batch['label'])
+        acc = acc_dict['n_correct'] / cur_batch_size
+        norm_edit_dis = 1 - acc_dict['norm_edit_dis'] / cur_batch_size
+
+        self.log(name=self.val_loss_name, value=loss, on_step=False, on_epoch=True)
+        self.log(name='acc', value=acc, on_step=False, on_epoch=True)
+        self.log(name='norm_edit_dis', value=norm_edit_dis, on_step=False, on_epoch=True)
+
+        print(acc_dict['show_str'])
 
         return loss
 

@@ -2,7 +2,7 @@ from tqdm import tqdm
 
 from rec.utils import load
 
-file_path = '/home/cattree/PycharmProjects/torchOCR/BoatNumber/ocr_rec/data/0916datarec/train.txt'
+file_path = '/home/cattree/PycharmProjects/torchOCR/data/train.txt'
 
 data = load(file_path)
 cache_dict = []
@@ -25,7 +25,7 @@ for item in cache:
 print(s)
 print(len(s))
 
-with open('../BoatNumber/ocr_rec/data/dict.txt', 'w') as f:
+with open('dict.txt', 'w') as f:
     for i in tqdm(range(len(cache))):
         if isinstance(cache[i], int):
             d = str(cache[i])

@@ -112,6 +112,8 @@ class EastRandomCropData():
         h_array = np.zeros(h, dtype=np.int32)
         w_array = np.zeros(w, dtype=np.int32)
         for points in text_polys:
+
+            points = points.astype(float)
             points = np.round(points, decimals=0).astype(np.int32)
             minx = np.min(points[:, 0])
             maxx = np.max(points[:, 0])
