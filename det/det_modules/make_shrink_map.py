@@ -1,7 +1,9 @@
-import numpy as np
 import cv2
+import numpy as np
 
 __all__ = ['MakeShrinkMap']
+
+
 def shrink_polygon_py(polygon, shrink_ratio):
     """
     对框进行缩放，返回去的比例为1/shrink_ratio 即可
@@ -22,14 +24,14 @@ def shrink_polygon_pyclipper(polygon, shrink_ratio):
     padding = pyclipper.PyclipperOffset()
     padding.AddPath(subject, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
     shrinked = padding.Execute(-distance)
-    if shrinked == []:
+    if not shrinked:
         shrinked = np.array(shrinked)
     else:
         shrinked = np.array(shrinked[0]).reshape(-1, 2)
     return shrinked
 
 
-class MakeShrinkMap():
+class MakeShrinkMap:
     r'''
     Making binary mask from detection data with ICDAR format.
     Typically following the process of class `MakeICDARData`.
@@ -93,7 +95,8 @@ class MakeShrinkMap():
                 polygons[i] = polygons[i][::-1, :]
         return polygons, ignore_tags
 
-    def polygon_area(self, polygon):
+    @staticmethod
+    def polygon_area(polygon):
         return cv2.contourArea(polygon)
         # edge = 0
         # for i in range(polygon.shape[0]):
@@ -102,22 +105,22 @@ class MakeShrinkMap():
         #
         # return edge / 2.
 
-
-if __name__ == '__main__':
-    from shapely.geometry import Polygon
-    import pyclipper
-
-    polygon = np.array([[0, 0], [100, 10], [100, 100], [10, 90]])
-    a = shrink_polygon_py(polygon, 0.4)
-    print(a)
-    print(shrink_polygon_py(a, 1 / 0.4))
-    b = shrink_polygon_pyclipper(polygon, 0.4)
-    print(b)
-    poly = Polygon(b)
-    distance = poly.area * 1.5 / poly.length
-    offset = pyclipper.PyclipperOffset()
-    offset.AddPath(b, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
-    expanded = np.array(offset.Execute(distance))
-    bounding_box = cv2.minAreaRect(expanded)
-    points = cv2.boxPoints(bounding_box)
-    print(points)
+#
+# if __name__ == '__main__':
+#     from shapely.geometry import Polygon
+#     import pyclipper
+#
+#     polygon = np.array([[0, 0], [100, 10], [100, 100], [10, 90]])
+#     a = shrink_polygon_py(polygon, 0.4)
+#     print(a)
+#     print(shrink_polygon_py(a, 1 / 0.4))
+#     b = shrink_polygon_pyclipper(polygon, 0.4)
+#     print(b)
+#     poly = Polygon(b)
+#     distance = poly.area * 1.5 / poly.length
+#     offset = pyclipper.PyclipperOffset()
+#     offset.AddPath(b, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
+#     expanded = np.array(offset.Execute(distance))
+#     bounding_box = cv2.minAreaRect(expanded)
+#     points = cv2.boxPoints(bounding_box)
+#     print(points)

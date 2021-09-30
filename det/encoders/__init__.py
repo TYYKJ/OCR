@@ -5,7 +5,6 @@
 # @explain :
 from .resnetvd import resnet_encoders
 
-
 encoders = {}
 
 encoders.update(resnet_encoders)

@@ -4,8 +4,8 @@
 # @Software: PyCharm
 # @explain :
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class DBFpn(nn.Module):
@@ -15,7 +15,7 @@ class DBFpn(nn.Module):
         :param kwargs:
         """
         super().__init__()
-        inplace = True
+        # inplace = True
         self.out_channels = out_channels
         # reduce layers
         self.in2_conv = nn.Conv2d(in_channels[0], self.out_channels, kernel_size=1, bias=False)
@@ -28,10 +28,12 @@ class DBFpn(nn.Module):
         self.p3_conv = nn.Conv2d(self.out_channels, self.out_channels // 4, kernel_size=3, padding=1, bias=False)
         self.p2_conv = nn.Conv2d(self.out_channels, self.out_channels // 4, kernel_size=3, padding=1, bias=False)
 
-    def _upsample_add(self, x, y):
+    @staticmethod
+    def _upsample_add(x, y):
         return F.interpolate(x, scale_factor=2) + y
 
-    def _upsample_cat(self, p2, p3, p4, p5):
+    @staticmethod
+    def _upsample_cat(p2, p3, p4, p5):
         p3 = F.interpolate(p3, scale_factor=2)
         p4 = F.interpolate(p4, scale_factor=4)
         p5 = F.interpolate(p5, scale_factor=8)

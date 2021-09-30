@@ -7,8 +7,9 @@ __all__ = ['EastRandomCropData', 'PSERandomCrop']
 
 
 # random crop algorithm similar to https://github.com/argman/EAST
-class EastRandomCropData():
-    def __init__(self, size=(640, 640), max_tries=50, min_crop_side_ratio=0.1, require_original_image=False, keep_ratio=True):
+class EastRandomCropData:
+    def __init__(self, size=(640, 640), max_tries=50, min_crop_side_ratio=0.1, require_original_image=False,
+                 keep_ratio=True):
         self.size = size
         self.max_tries = max_tries
         self.min_crop_side_ratio = min_crop_side_ratio
@@ -47,22 +48,22 @@ class EastRandomCropData():
         text_polys_crop = []
         ignore_tags_crop = []
         texts_crop = []
-        try:
-            for poly, text, tag in zip(text_polys, texts, ignore_tags):
-                poly = ((np.array(poly) - (crop_x, crop_y)) * scale).astype('float32')
-                if not self.is_poly_outside_rect(poly, 0, 0, w, h):
-                    text_polys_crop.append(poly)
-                    ignore_tags_crop.append(tag)
-                    texts_crop.append(text)
-            data['img'] = img
-            data['text_polys'] = text_polys_crop
-            data['ignore_tags'] = ignore_tags_crop
-            data['texts'] = texts_crop
-        except:
-            a = 1
+
+        for poly, text, tag in zip(text_polys, texts, ignore_tags):
+            poly = ((np.array(poly) - (crop_x, crop_y)) * scale).astype('float32')
+            if not self.is_poly_outside_rect(poly, 0, 0, w, h):
+                text_polys_crop.append(poly)
+                ignore_tags_crop.append(tag)
+                texts_crop.append(text)
+        data['img'] = img
+        data['text_polys'] = text_polys_crop
+        data['ignore_tags'] = ignore_tags_crop
+        data['texts'] = texts_crop
+
         return data
 
-    def is_poly_in_rect(self, poly, x, y, w, h):
+    @staticmethod
+    def is_poly_in_rect(poly, x, y, w, h):
         poly = np.array(poly)
         if poly[:, 0].min() < x or poly[:, 0].max() > x + w:
             return False
@@ -70,7 +71,8 @@ class EastRandomCropData():
             return False
         return True
 
-    def is_poly_outside_rect(self, poly, x, y, w, h):
+    @staticmethod
+    def is_poly_outside_rect(poly, x, y, w, h):
         poly = np.array(poly)
         if poly[:, 0].max() < x or poly[:, 0].min() > x + w:
             return True
@@ -78,7 +80,8 @@ class EastRandomCropData():
             return True
         return False
 
-    def split_regions(self, axis):
+    @staticmethod
+    def split_regions(axis):
         regions = []
         min_axis = 0
         for i in range(1, axis.shape[0]):
@@ -88,7 +91,8 @@ class EastRandomCropData():
                 regions.append(region)
         return regions
 
-    def random_select(self, axis, max_size):
+    @staticmethod
+    def random_select(axis, max_size):
         xx = np.random.choice(axis, size=2)
         xmin = np.min(xx)
         xmax = np.max(xx)
@@ -96,7 +100,8 @@ class EastRandomCropData():
         xmax = np.clip(xmax, 0, max_size - 1)
         return xmin, xmax
 
-    def region_wise_random_select(self, regions, max_size):
+    @staticmethod
+    def region_wise_random_select(regions):
         selected_index = list(np.random.choice(len(regions), 2))
         selected_values = []
         for index in selected_index:
@@ -112,7 +117,6 @@ class EastRandomCropData():
         h_array = np.zeros(h, dtype=np.int32)
         w_array = np.zeros(w, dtype=np.int32)
         for points in text_polys:
-
             points = points.astype(float)
             points = np.round(points, decimals=0).astype(np.int32)
             minx = np.min(points[:, 0])
@@ -133,11 +137,11 @@ class EastRandomCropData():
 
         for i in range(self.max_tries):
             if len(w_regions) > 1:
-                xmin, xmax = self.region_wise_random_select(w_regions, w)
+                xmin, xmax = self.region_wise_random_select(w_regions)
             else:
                 xmin, xmax = self.random_select(w_axis, w)
             if len(h_regions) > 1:
-                ymin, ymax = self.region_wise_random_select(h_regions, h)
+                ymin, ymax = self.region_wise_random_select(h_regions)
             else:
                 ymin, ymax = self.random_select(h_axis, h)
 

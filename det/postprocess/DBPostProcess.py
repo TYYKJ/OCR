@@ -1,7 +1,7 @@
-import numpy as np
 import cv2
-from pyclipper import PyclipperOffset
+import numpy as np
 import pyclipper
+from pyclipper import PyclipperOffset
 from shapely.geometry import Polygon
 
 
@@ -45,6 +45,7 @@ class DBPostProcess:
             tmp_points.append(rotated_points)
 
             m_available_mask = np.zeros_like(available_region, dtype=np.uint8)
+
             cv2.drawContours(m_available_mask, [m_contour, ], 0, 255, thickness=-1)
             m_region_mask = cv2.bitwise_and(available_region, available_region, mask=m_available_mask)
             m_mask_count = np.count_nonzero(m_available_mask)

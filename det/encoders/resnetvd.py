@@ -3,10 +3,6 @@
 # @File    : resnetvd
 # @Software: PyCharm
 # @explain :
-
-from collections import OrderedDict
-import os
-import torch
 from torch import nn
 
 

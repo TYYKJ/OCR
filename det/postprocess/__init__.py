@@ -5,4 +5,3 @@
 from .DBPostProcess import DBPostProcess
 
 support_post_process = ['DBPostProcess', 'DetModel']
-

@@ -8,7 +8,7 @@ from shapely.geometry import Polygon
 __all__ = ['MakeBorderMap']
 
 
-class MakeBorderMap():
+class MakeBorderMap:
     def __init__(self, shrink_ratio=0.4, thresh_min=0.3, thresh_max=0.7):
         self.shrink_ratio = shrink_ratio
         self.thresh_min = thresh_min
@@ -87,19 +87,21 @@ class MakeBorderMap():
                 xmin_valid - xmin:xmax_valid - xmax + width],
             canvas[ymin_valid:ymax_valid + 1, xmin_valid:xmax_valid + 1])
 
-    def distance(self, xs, ys, point_1, point_2):
-        '''
+    @staticmethod
+    def distance(xs, ys, point_1, point_2):
+        """
         compute the distance from point to a line
         ys: coordinates in the first axis
         xs: coordinates in the second axis
         point_1, point_2: (x, y), the end of the line
-        '''
-        height, width = xs.shape[:2]
+        """
+        # height, width = xs.shape[:2]
         square_distance_1 = np.square(xs - point_1[0]) + np.square(ys - point_1[1])
         square_distance_2 = np.square(xs - point_2[0]) + np.square(ys - point_2[1])
         square_distance = np.square(point_1[0] - point_2[0]) + np.square(point_1[1] - point_2[1])
 
-        cosin = (square_distance - square_distance_1 - square_distance_2) / (2 * np.sqrt(square_distance_1 * square_distance_2))
+        cosin = (square_distance - square_distance_1 - square_distance_2) / (
+                2 * np.sqrt(square_distance_1 * square_distance_2))
         square_sin = 1 - np.square(cosin)
         square_sin = np.nan_to_num(square_sin)
 

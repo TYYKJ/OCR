@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019/12/4 18:06
 # @Author  : zhoujun
-import numpy as np
 import imgaug
 import imgaug.augmenters as iaa
+import numpy as np
 
 
 class AugmenterBuilder(object):
@@ -25,13 +25,14 @@ class AugmenterBuilder(object):
         else:
             raise RuntimeError('unknown augmenter arg: ' + str(args))
 
-    def to_tuple_if_list(self, obj):
+    @staticmethod
+    def to_tuple_if_list(obj):
         if isinstance(obj, list):
             return tuple(obj)
         return obj
 
 
-class IaaAugment():
+class IaaAugment:
     def __init__(self, augmenter_args=None):
         if augmenter_args is None:
             augmenter_args = [{'type': 'Fliplr', 'args': {'p': 0.5}},
@@ -60,7 +61,8 @@ class IaaAugment():
         data['text_polys'] = np.array(line_polys, dtype=object)
         return data
 
-    def may_augment_poly(self, aug, img_shape, poly):
+    @staticmethod
+    def may_augment_poly(aug, img_shape, poly):
         keypoints = [imgaug.Keypoint(p[0], p[1]) for p in poly]
         keypoints = aug.augment_keypoints(
             [imgaug.KeypointsOnImage(keypoints, shape=img_shape)])[0].keypoints
