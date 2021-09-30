@@ -1,7 +1,6 @@
-
-from .heads import CTCHead
-from .layers import *
-from .models import OCRModel
-from .necks import Feature2Seq, EncoderWithLSTM
-from .initialization import *
-
+# @Time    : 2021/9/26 下午2:33
+# @Author  : 
+# @File    : __init__.py
+# @Software: PyCharm
+# @explain :
+from .models import BaseModel

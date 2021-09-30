@@ -1,35 +1,29 @@
-
-import torch.utils.model_zoo as model_zoo
-
-from .resnet import resnet_encoders
-from .vgg import vgg_encoders
+# @Time    : 2021/9/11 上午10:59
+# @Author  : 
+# @File    : __init__.py
+# @Software: PyCharm
+# @explain :
+from .resnetvd import resnet_encoders
 
 encoders = {}
+
 encoders.update(resnet_encoders)
-encoders.update(vgg_encoders)
 
 
-def get_encoder(name, in_channels=3, depth=5, weights=None):
+def get_encoder(encoder_name: str):
+    """
+    获取编码器
+
+    :param encoder_name: 编码器名称
+    :return:
+    """
+
     try:
-        Encoder = encoders[name]["encoder"]
+        encoder_model = encoders[encoder_name]['encoder']
     except KeyError:
-        raise KeyError("Wrong encoder name `{}`, supported encoders: {}".format(name, list(encoders.keys())))
+        raise KeyError("Wrong encoder name `{}`, supported encoders: {}".format(encoder_name, list(encoders.keys())))
 
-    params = encoders[name]["params"]
-    params.update(depth=depth)
-    encoder = Encoder(**params)
-
-    if weights is not None:
-        try:
-            settings = encoders[name]["pretrained_settings"][weights]
-        except KeyError:
-            raise KeyError("Wrong pretrained weights `{}` for encoder `{}`. Available options are: {}".format(
-                weights, name, list(encoders[name]["pretrained_settings"].keys()),
-            ))
-        encoder.load_state_dict(model_zoo.load_url(settings["url"]))
+    params = encoders[encoder_name]['params']
+    encoder = encoder_model(**params)
 
     return encoder
-
-
-def get_encoder_names():
-    return list(encoders.keys())
