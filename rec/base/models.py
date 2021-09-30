@@ -1,12 +1,18 @@
+# @Time    : 2021/9/26 下午2:34
+# @Author  : 
+# @File    : models
+# @Software: PyCharm
+# @explain :
+
 import pytorch_lightning as pl
 import torch
-import wandb
 
 from ..base import initialization as init
-from ..utils import optim, RecMetric
+from ..metric import RecMetric
+from ..optimizers import get_optimizer
 
 
-class OCRModel(pl.LightningModule):
+class BaseModel(pl.LightningModule):
 
     def initialize(self):
         init.initialize_backbone(self.encoder)
@@ -53,12 +59,25 @@ class OCRModel(pl.LightningModule):
         self.log(name='acc', value=acc, on_step=False, on_epoch=True)
         self.log(name='norm_edit_dis', value=norm_edit_dis, on_step=False, on_epoch=True)
 
-        print(acc_dict['show_str'])
-
         return loss
 
-    def configure_optimizers(self):
-        optimizer = optim.get_optimizer(self.parameters(), self.optimizer_name, self.lr)
-        lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+    def on_train_epoch_start(self) -> None:
+        if self.current_epoch == self.optimizer_change_epoch:
+            self.trainer.accelerator.setup_optimizers(self.trainer)
 
-        return {"optimizer": optimizer, "lr_scheduler": lr_scheduler, "monitor": "val_loss"}
+    def configure_optimizers(self):
+        if self.optimizer_change:
+            if self.current_epoch == self.optimizer_change_epoch:
+                optimizer = get_optimizer(self.parameters(), 'sgd', self.lr)
+                lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+                lr_scheduler.load_state_dict(self.trainer.lr_schedulers[0].state_dict())
+                # only if you want to load the current state of the old learning rate.
+            else:
+                optimizer = get_optimizer(self.parameters(), 'adam', self.lr)
+                lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+
+            return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": self.val_loss_name}
+        else:
+            optimizer = get_optimizer(self.parameters(), self.optimizer_name, self.lr)
+            lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+            return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": self.val_loss_name}
