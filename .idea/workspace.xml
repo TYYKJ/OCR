@@ -1,55 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="87fcf6f2-4eb9-425d-959d-62a645c41afc" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/BoatNumber/ocr_rec/inference/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BoatNumber/ocr_rec/inference/3.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/torch-ocr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/torch-ocr.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BoatNumber/ocr_det/infer/image_0.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BoatNumber/ocr_det/infer/pre.py" beforeDir="false" afterPath="$PROJECT_DIR$/BoatNumber/ocr_det/infer/pre.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BoatNumber/ocr_det/infer/屏幕截图.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BoatNumber/ocr_rec/inference/1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/BoatNumber/ocr_rec/inference/1.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BoatNumber/ocr_rec/inference/infer1.py" beforeDir="false" afterPath="$PROJECT_DIR$/BoatNumber/ocr_rec/inference/infer1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/det/base/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/base/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/det/base/head.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/base/head.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/det/base/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/base/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/det/encoders/_base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/det/encoders/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/encoders/resnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/det/encoders/vgg.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/encoders/vgg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/det/fpn/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/fpn/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rec/base/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rec/base/necks.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/base/necks.py" afterDir="false" />
+    <list default="true" id="dc7116e7-9c62-44fc-9a08-7ae12df5fc2d" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/torchOCR.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/det/DBNet/dbnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/DBNet/dbnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/det/base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/base/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/det/criteria/losses.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/criteria/losses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/det/datamodule/json_datamodule.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/datamodule/json_datamodule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/det/datamodule/json_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/det/datamodule/json_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/ocr_data_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/ocr_data_tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/train/det_train/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/train/det_train/train.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
-  </component>
-  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
-    <envs>
-      <env key="FLASK_APP" value="app" />
-    </envs>
-    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
-    <option name="myEnvs">
-      <map>
-        <entry key="FLASK_APP" value="app" />
-      </map>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1xIpApesnCMWMjD9KykGl8lBwq9" />
+  <component name="ProjectId" id="1zM7bEHJzZ9eJ8NJIGmU9ct8UCU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -58,21 +32,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/BoatNumber/ocr_det/infer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../yolov5-6.0" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/BoatNumber/ocr_det/infer" />
-      <recent name="$PROJECT_DIR$/BoatNumber/ocr_rec/inference" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/BoatNumber" />
-      <recent name="$PROJECT_DIR$/rec/encoders/resnet_fpn" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Python.infer1">
-    <configuration name="infer1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.train">
+    <configuration name="ocr_data_tools" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="torch-ocr" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -80,78 +44,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/BoatNumber/ocr_rec/inference" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tools" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BoatNumber/ocr_rec/inference/infer1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pre" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="torch-ocr" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/BoatNumber/ocr_det/infer" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BoatNumber/ocr_det/infer/pre.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="resnet_fpn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="torch-ocr" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/rec/srn" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rec/srn/resnet_fpn.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="torch-ocr" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/BoatNumber" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BoatNumber/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tools/ocr_data_tools.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -168,12 +66,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/BoatNumber/ocr_rec/train" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tools/train/det_train" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BoatNumber/ocr_rec/train/train.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tools/train/det_train/train.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -184,28 +82,25 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.infer1" />
-        <item itemvalue="Python.pre" />
         <item itemvalue="Python.train" />
-        <item itemvalue="Python.test" />
-        <item itemvalue="Python.resnet_fpn" />
+        <item itemvalue="Python.ocr_data_tools" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="默认任务">
-      <changelist id="87fcf6f2-4eb9-425d-959d-62a645c41afc" name="更改" comment="" />
-      <created>1630052315490</created>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dc7116e7-9c62-44fc-9a08-7ae12df5fc2d" name="Changes" comment="" />
+      <created>1633946172162</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1630052315490</updated>
-      <workItem from="1630052316733" duration="21742000" />
-      <workItem from="1630282576931" duration="2099000" />
-      <workItem from="1630287556312" duration="1952000" />
-      <workItem from="1630305910880" duration="1219000" />
-      <workItem from="1630307999738" duration="28000" />
-      <workItem from="1630310065452" duration="20000" />
+      <updated>1633946172162</updated>
+      <workItem from="1633946173491" duration="829000" />
+      <workItem from="1633947418498" duration="18897000" />
+      <workItem from="1634115811893" duration="4195000" />
+      <workItem from="1634170791712" duration="1009000" />
+      <workItem from="1634179121998" duration="5665000" />
+      <workItem from="1634211504887" duration="1864000" />
     </task>
     <servers />
   </component>
@@ -226,6 +121,18 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/det/det_modules/random_crop_data.py</url>
+          <line>119</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tools/ocr_data_tools.py</url>
+          <line>116</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -236,11 +143,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/torch_ocr$train.coverage" NAME="train 覆盖结果" MODIFIED="1630127032854" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BoatNumber/ocr_rec/train" />
-    <SUITE FILE_PATH="coverage/torch_ocr$pre.coverage" NAME="pre 覆盖结果" MODIFIED="1630283331359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BoatNumber/ocr_det/infer" />
-    <SUITE FILE_PATH="coverage/torch_ocr$test.coverage" NAME="test 覆盖结果" MODIFIED="1630057529302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BoatNumber" />
-    <SUITE FILE_PATH="coverage/torch_ocr$resnet_fpn.coverage" NAME="resnet_fpn 覆盖结果" MODIFIED="1630056016849" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rec/srn" />
-    <SUITE FILE_PATH="coverage/torch_ocr$infer1.coverage" NAME="infer1 覆盖结果" MODIFIED="1630283369938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BoatNumber/ocr_rec/inference" />
-    <SUITE FILE_PATH="coverage/torch_ocr$resnetvd.coverage" NAME="resnetvd 覆盖结果" MODIFIED="1630052619218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/rec/encoders" />
+    <SUITE FILE_PATH="coverage/torch_ocr$ocr_data_tools.coverage" NAME="ocr_data_tools 覆盖结果" MODIFIED="1634091394848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tools" />
+    <SUITE FILE_PATH="coverage/torch_ocr$train.coverage" NAME="train 覆盖结果" MODIFIED="1634211579960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tools/train/det_train" />
   </component>
 </project>

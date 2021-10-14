@@ -1,2 +1,3 @@
 /tools/train/rec_train/*.txt
 /tools/inference/dict.txt
+.idea
