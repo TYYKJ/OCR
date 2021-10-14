@@ -11,14 +11,14 @@ from .json_dataset import JsonDataset
 
 
 class DetDataModule(pl.LightningDataModule):
-    def __init__(self, train_data_list, val_data_list, batch_size, num_workers):
+    def __init__(self, train_data_path, val_data_path, batch_size, num_workers):
         super(DetDataModule, self).__init__()
 
         self.bs = batch_size
         self.nw = num_workers
 
-        self.train = JsonDataset(data_list=train_data_list, is_train=True)
-        self.val = JsonDataset(data_list=val_data_list, is_train=False)
+        self.train = JsonDataset(data_list=train_data_path, is_train=True)
+        self.val = JsonDataset(data_list=train_data_path, is_train=False)
         self.collate_fn = DetCollectFN()
 
     def train_dataloader(self):

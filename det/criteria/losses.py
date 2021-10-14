@@ -12,7 +12,7 @@ __all__ = ['DBLoss']
 
 
 class BalanceCrossEntropyLoss(nn.Module):
-    '''
+    """
     Balanced cross entropy loss.
     Shape:
         - Input: :math:`(N, 1, H, W)`
@@ -28,7 +28,7 @@ class BalanceCrossEntropyLoss(nn.Module):
         >>> target = torch.empty(3).random_(2)
         >>> output = loss(m(input), target)
         >>> output.backward()
-    '''
+    """
 
     def __init__(self, negative_ratio=3.0, eps=1e-6):
         super(BalanceCrossEntropyLoss, self).__init__()
@@ -57,11 +57,11 @@ class BalanceCrossEntropyLoss(nn.Module):
 
 
 class DiceLoss(nn.Module):
-    '''
+    """
     Loss function from https://arxiv.org/abs/1707.03237,
     where iou computation is introduced heatmap manner to measure the
     diversity bwtween tow heatmaps.
-    '''
+    """
 
     def __init__(self, eps=1e-6):
         super(DiceLoss, self).__init__()

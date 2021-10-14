@@ -112,7 +112,11 @@ class JsonDataset(Dataset):
         data = copy.deepcopy(self.data_list[index])
         im = cv2.imread(data['img_path'])
         if self.img_mode == 'RGB':
-            im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+            try:
+                im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+            except cv2.error:
+                print(data['img_path'])
+                exit(-1)
         data['img'] = im
         data['shape'] = [im.shape[0], im.shape[1]]
         data = self.apply_pre_processes(data)
@@ -142,7 +146,7 @@ class JsonDataset(Dataset):
 #
 #     from matplotlib import pyplot as plt
 #
-#     dataset = JsonDataset(data_list='/home/data/OCRData/icdar2017_ocr/train.json')
+#     dataset = JsonDataset(data_list='/home/data/OCRData/icdar2017_ocr/val.json')
 #     train_loader = DataLoader(dataset=dataset, batch_size=8, shuffle=True, num_workers=0)
 #     for i, data in enumerate(tqdm(train_loader)):
 #         img = data['img']

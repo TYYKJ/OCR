@@ -24,8 +24,6 @@ class DBDetModel(DetModel):
             weight_decay: float = 1e-4,
             lr: float = 0.001,
             optimizer_name: str = 'adam',
-            optimizer_change: bool = False,
-            optimizer_change_epoch: int = 100,
             train_loss_name: str = 'train_loss',
             val_loss_name: str = 'val_loss',
     ):
@@ -39,8 +37,6 @@ class DBDetModel(DetModel):
         self.optimizer_name = optimizer_name
         self.train_loss_name = train_loss_name
         self.val_loss_name = val_loss_name
-        self.optimizer_change = optimizer_change
-        self.optimizer_change_epoch = optimizer_change_epoch
         self.weight_decay = weight_decay
 
         self.encoder = get_encoder(encoder_name)

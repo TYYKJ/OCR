@@ -5,23 +5,23 @@
 # @explain :
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
-
+from pytorch_lightning.plugins import DDPPlugin
 from det import DBDetModel, DetDataModule
 import pytorch_lightning as pl
 
 pl.seed_everything(1997)
 
 model = DBDetModel(
-    encoder_name='resnet18vd',
+    encoder_name='resnet50vd',
     lr=0.01,
     optimizer_name='sgd',
 )
 
 data = DetDataModule(
-    train_data_list='/home/data/OCRData/icdar2017_ocr/train.json',
-    val_data_list='/home/data/OCRData/icdar2017_ocr/val.json',
-    batch_size=16,
-    num_workers=16
+    train_data_path='/home/cat/文档/icdar2017/detection/train.json',
+    val_data_path='/home/cat/文档/icdar2017/detection/val.json',
+    batch_size=8,
+    num_workers=8
 )
 
 logger = WandbLogger()
@@ -38,14 +38,17 @@ checkpoint_callback = ModelCheckpoint(
 # DP 一机多卡
 trainer = pl.Trainer(
     # open this, must drop last
+    weights_summary='full',
     benchmark=True,
     checkpoint_callback=True,
-    gpus=[0],
+    gpus=2,
+    accelerator='ddp',
     max_epochs=1200,
     min_epochs=300,
     logger=[logger],
     callbacks=[early_stop, checkpoint_callback],
-    # resume_from_checkpoint='../weights/DB-epoch=130-hmean=0.70.ckpt'
+    plugins=DDPPlugin(find_unused_parameters=False),
+    resume_from_checkpoint='../weights/last.ckpt'
 )
 
 trainer.fit(model, data)

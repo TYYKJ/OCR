@@ -47,23 +47,7 @@ class DetModel(pl.LightningModule):
         self.log('hmean', value=metric['fmeasure'].avg)
         return {'hmean': metric['fmeasure'].avg}
 
-    def on_train_epoch_start(self) -> None:
-        if self.current_epoch == self.optimizer_change_epoch:
-            self.trainer.accelerator.setup_optimizers(self.trainer)
-
     def configure_optimizers(self):
-        if self.optimizer_change:
-            if self.current_epoch == self.optimizer_change_epoch:
-                optimizer = get_optimizer(self.parameters(), 'sgd', self.lr)
-                lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
-                lr_scheduler.load_state_dict(self.trainer.lr_schedulers[0].state_dict())
-                # only if you want to load the current state of the old learning rate.
-            else:
-                optimizer = get_optimizer(self.parameters(), 'adam', self.lr)
-                lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
-
-            return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": self.val_loss_name}
-        else:
-            optimizer = get_optimizer(self.parameters(), self.optimizer_name, self.lr)
-            lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
-            return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": 'hmean'}
+        optimizer = get_optimizer(self.parameters(), self.optimizer_name, self.lr)
+        lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+        return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": 'hmean'}
