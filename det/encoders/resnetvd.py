@@ -184,7 +184,7 @@ class ResNet(nn.Module):
         return out
 
 
-resnet_encoders = {
+resnetvd_encoders = {
     "resnet18vd": {
         "encoder": ResNet,
         "params": {

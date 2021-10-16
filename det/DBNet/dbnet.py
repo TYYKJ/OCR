@@ -23,9 +23,10 @@ class DBDetModel(DetModel):
             unclip_ratio: float = 1.5,
             weight_decay: float = 1e-4,
             lr: float = 0.001,
-            optimizer_name: str = 'adam',
+            optimizer_name: str = 'sgd',
             train_loss_name: str = 'train_loss',
             val_loss_name: str = 'val_loss',
+            weights: str = 'imagenet',
     ):
         super(DBDetModel, self).__init__()
 
@@ -39,7 +40,7 @@ class DBDetModel(DetModel):
         self.val_loss_name = val_loss_name
         self.weight_decay = weight_decay
 
-        self.encoder = get_encoder(encoder_name)
+        self.encoder = get_encoder(encoder_name, weights)
         self.neck = DBFpn(self.encoder.out_channels)
         self.head = DBHead(in_channels=self.neck.out_channels)
 
