@@ -2,12 +2,13 @@
 # @Time    : 2020/6/18 10:34
 # @Author  : zhoujun
 import math
+
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 
-def draw_ocr_box_txt(image, boxes, txts = None):
-    if isinstance(image,np.ndarray):
+def draw_ocr_box_txt(image, boxes, txts=None):
+    if isinstance(image, np.ndarray):
         image = Image.fromarray(image)
     h, w = image.height, image.width
     img_left = image.copy()
@@ -18,7 +19,7 @@ def draw_ocr_box_txt(image, boxes, txts = None):
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
-    for i,box in enumerate(boxes):
+    for i, box in enumerate(boxes):
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         draw_left.polygon(box, fill=color)
         draw_right.polygon([box[0][0], box[0][1],
@@ -49,7 +50,6 @@ def draw_ocr_box_txt(image, boxes, txts = None):
     else:
         img_show = np.array(img_left)
     return np.array(img_show)
-
 
 
 def show_img(imgs: np.ndarray, title='img'):
