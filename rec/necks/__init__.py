@@ -3,4 +3,4 @@
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .necks import EncoderWithLSTM, Feature2Seq
+from .necks import SequenceEncoder

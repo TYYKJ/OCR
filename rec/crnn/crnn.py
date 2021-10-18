@@ -3,7 +3,7 @@ from ..convert import CTCLabelConverter
 from ..criteria import CTCLoss
 from ..encoders import get_encoder
 from ..heads import CTCHead
-from ..necks import EncoderWithLSTM, Feature2Seq
+from ..necks import SequenceEncoder
 
 
 class CRNN(BaseModel):
@@ -44,8 +44,6 @@ class CRNN(BaseModel):
             lstm_hidden_size: int = 256,
             lr: float = 0.001,
             optimizer_name: str = 'adam',
-            optimizer_change: bool = False,
-            optimizer_change_epoch: int = 100,
             train_loss_name: str = 'train_loss',
             val_loss_name: str = 'val_loss',
     ):
@@ -59,12 +57,11 @@ class CRNN(BaseModel):
         self.lr = lr
         self.train_loss_name = train_loss_name
         self.val_loss_name = val_loss_name
-        self.optimizer_change = optimizer_change
-        self.optimizer_change_epoch = optimizer_change_epoch
 
         self.encoder = get_encoder(encoder_name)
-        self.im_seq = Feature2Seq()
-        self.neck = EncoderWithLSTM(in_channels=self.encoder.out_channels, hidden_size=lstm_hidden_size)
+        self.neck = SequenceEncoder(in_channels=self.encoder.out_channels)
+        # self.im_seq = Feature2Seq()
+        # self.neck = EncoderWithLSTM(in_channels=self.encoder.out_channels, hidden_size=lstm_hidden_size)
         self.head = CTCHead(
             in_channels=lstm_hidden_size * 2,
             n_class=classes

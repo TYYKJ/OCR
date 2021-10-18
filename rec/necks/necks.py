@@ -1,12 +1,13 @@
 from torch import nn
 
-__all__ = ['EncoderWithLSTM', 'Feature2Seq']
+__all__ = ['SequenceEncoder']
 
 
-class Feature2Seq(nn.Module):
+class Im2Seq(nn.Module):
 
-    def __init__(self):
-        super(Feature2Seq, self).__init__()
+    def __init__(self, in_channels):
+        super(Im2Seq, self).__init__()
+        self.in_channels = in_channels
 
     def forward(self, x):
         batch, channel, height, width = x.shape
@@ -22,13 +23,42 @@ class Feature2Seq(nn.Module):
         return x
 
 
-class EncoderWithLSTM(nn.Module):
+class EncoderWithRNN(nn.Module):
+
     def __init__(self, in_channels, **kwargs):
-        super(EncoderWithLSTM, self).__init__()
-        hidden_size = kwargs.get('hidden_size')
+        super(EncoderWithRNN, self).__init__()
+        hidden_size = kwargs.get('hidden_size', 256)
         self.out_channels = hidden_size * 2
-        self.lstm = nn.LSTM(in_channels, hidden_size, bidirectional=True, num_layers=2)
+        self.lstm = nn.LSTM(in_channels, hidden_size, bidirectional=True, num_layers=2, batch_first=True)
 
     def forward(self, x):
         x, _ = self.lstm(x)
+        return x
+
+
+class SequenceEncoder(nn.Module):
+    def __init__(self, in_channels, encoder_type='rnn',  **kwargs):
+        super(SequenceEncoder, self).__init__()
+        self.encoder_reshape = Im2Seq(in_channels)
+        self.out_channels = self.encoder_reshape.out_channels
+        if encoder_type == 'reshape':
+            self.only_reshape = True
+        else:
+            support_encoder_dict = {
+                'reshape': Im2Seq,
+                'rnn': EncoderWithRNN
+            }
+            assert encoder_type in support_encoder_dict, '{} must in {}'.format(
+                encoder_type, support_encoder_dict.keys())
+
+            self.encoder = support_encoder_dict[encoder_type](
+                self.encoder_reshape.out_channels,**kwargs)
+            self.out_channels = self.encoder.out_channels
+            self.only_reshape = False
+
+    def forward(self, x):
+        x = self.encoder_reshape(x)
+        if not self.only_reshape:
+            x = self.encoder(x)
+
         return x
