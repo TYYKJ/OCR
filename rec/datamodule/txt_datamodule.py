@@ -40,7 +40,7 @@ class OCRDataModule(pl.LightningDataModule):
             input_h=self.input_h,
             mean=self.mean,
             std=self.std,
-            augmentation=True
+            augmentation=False
         )
 
         self.val = RecTextDataset(
@@ -65,9 +65,10 @@ class OCRDataModule(pl.LightningDataModule):
         )
 
     def val_dataloader(self):
-        return RecDataLoader(
+        return DataLoader(
             self.val,
             batch_size=self.bs,
             shuffle=False,
             num_workers=self.num_workers,
+            collate_fn=RecCollateFn(RecDataProcess(input_h=self.input_h, mean=self.mean, std=self.std))
         )

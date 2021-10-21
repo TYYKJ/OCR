@@ -35,6 +35,7 @@ class DetInfer:
         if len(box_list) > 0:
             idx = [x.sum() > 0 for x in box_list]
             box_list = [box_list[i] for i, v in enumerate(idx) if v]
+
             score_list = [score_list[i] for i, v in enumerate(idx) if v]
         else:
             box_list, score_list = [], []
@@ -80,7 +81,7 @@ if __name__ == '__main__':
     import cv2
 
     img = cv2.imread('/home/cat/PycharmProjects/torch-ocr/tools/inference/20210731172458.jpg')[130:-130, :, :]
-    model = DetInfer('../train/weights/resnetvd/DB-epoch=27-hmean=0.56.ckpt')
+    model = DetInfer('../train/weights/DB-epoch=34-hmean=0.61.ckpt')
     bl, sl = model.predict(img)
     if len(bl) != 0:
         imgs = [get_rotate_crop_image(img, box) for box in bl]

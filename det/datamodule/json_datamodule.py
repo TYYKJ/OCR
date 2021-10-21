@@ -18,7 +18,7 @@ class DetDataModule(pl.LightningDataModule):
         self.nw = num_workers
 
         self.train = JsonDataset(data_list=train_data_path, is_train=True)
-        self.val = JsonDataset(data_list=train_data_path, is_train=False)
+        self.val = JsonDataset(data_list=val_data_path, is_train=False)
         self.collate_fn = DetCollectFN()
 
     def train_dataloader(self):

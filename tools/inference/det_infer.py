@@ -40,9 +40,9 @@ class DetInfer:
 #     from matplotlib import pyplot as plt
 #     from det.utils import draw_ocr_box_txt, draw_bbox
 #
-#     img = cv2.imread('1a.jpg')
+#     img = cv2.imread('1.jpg')
 #     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-#     model = DetInfer('../train/weights/DB-epoch=20-hmean=0.61.ckpt')
+#     model = DetInfer('../train/weights/DB-epoch=17-hmean=0.62.ckpt')
 #     box_list, score_list = model.predict(img)
 #     img = draw_ocr_box_txt(img, box_list)
 #     img = draw_bbox(img, box_list)

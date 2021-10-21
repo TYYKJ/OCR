@@ -16,13 +16,12 @@ class ConvBNACT(nn.Module):
         elif act == 'hard_swish':
             self.act = nn.Hardswish()
         elif act is None:
-            self.act = None
+            self.act = nn.Identity()
 
     def forward(self, x):
         x = self.conv(x)
         x = self.bn(x)
-        if self.act is not None:
-            x = self.act(x)
+        x = self.act(x)
         return x
 
 

@@ -4,6 +4,7 @@ from ..criteria import CTCLoss
 from ..encoders import get_encoder
 from ..heads import CTCHead
 from ..necks import SequenceEncoder
+from ..metric import RecMetric
 
 
 class CRNN(BaseModel):
@@ -24,8 +25,6 @@ class CRNN(BaseModel):
         optimizer_name: select a optimizer, if optimizer_change is False,
             model will use one optimizer, else will use Adam in the first ``'optimizer_change_epoch'`` epoch,
             and then use SGD optimizer.
-        optimizer_change: change one optimizer to Adam+SGD.
-        optimizer_change_epoch: change the optimizer to Adam+SGD epoch num.
         train_loss_name: custom train loss name.
         val_loss_name: custom val loss name
 
@@ -63,9 +62,11 @@ class CRNN(BaseModel):
         # self.im_seq = Feature2Seq()
         # self.neck = EncoderWithLSTM(in_channels=self.encoder.out_channels, hidden_size=lstm_hidden_size)
         self.head = CTCHead(
-            in_channels=lstm_hidden_size * 2,
+            in_channels=self.encoder.out_channels,
             n_class=classes
         )
         self.loss_func = CTCLoss(blank_idx=blank_idx)
 
-        self.initialize()
+        self.metric = RecMetric(self.convert)
+
+        # self.initialize()

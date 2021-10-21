@@ -7,7 +7,7 @@ class Im2Seq(nn.Module):
 
     def __init__(self, in_channels):
         super(Im2Seq, self).__init__()
-        self.in_channels = in_channels
+        self.out_channels = in_channels
 
     def forward(self, x):
         batch, channel, height, width = x.shape
@@ -52,7 +52,7 @@ class SequenceEncoder(nn.Module):
                 encoder_type, support_encoder_dict.keys())
 
             self.encoder = support_encoder_dict[encoder_type](
-                self.encoder_reshape.out_channels,**kwargs)
+                self.encoder_reshape.out_channels, **kwargs)
             self.out_channels = self.encoder.out_channels
             self.only_reshape = False
 

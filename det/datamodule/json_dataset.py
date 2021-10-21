@@ -62,6 +62,7 @@ class JsonDataset(Dataset):
             self.aug.append(IaaAugment(augmenter_args=[{'type': 'Fliplr', 'args': {'p': 0.5}},
                                                        {'type': 'Affine', 'args': {'rotate': [-10, 10]}},
                                                        {'type': 'Resize', 'args': {'size': [0.5, 3]}}]))
+            # self.aug.append(EastRandomCropData(size=(640, 640), max_tries=50, keep_ratio=True))
             self.aug.append(EastRandomCropData(size=(640, 640), max_tries=50, keep_ratio=True))
             self.aug.append(MakeBorderMap(shrink_ratio=0.4, thresh_min=0.3, thresh_max=0.7))
             self.aug.append(MakeShrinkMap(shrink_ratio=0.4, min_text_size=8))

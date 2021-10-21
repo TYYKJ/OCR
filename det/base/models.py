@@ -40,7 +40,6 @@ class DetModel(pl.LightningModule):
         return raw_metric
 
     def validation_epoch_end(self, outputs):
-
         metric = self.metric.gather_measure(outputs)
         self.log('recall', value=metric['recall'].avg)
         self.log('precision', value=metric['precision'].avg)

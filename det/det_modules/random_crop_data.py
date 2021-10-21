@@ -117,6 +117,7 @@ class EastRandomCropData:
         h_array = np.zeros(h, dtype=np.int32)
         w_array = np.zeros(w, dtype=np.int32)
         for points in text_polys:
+            points = np.array(points)
             points = points.astype(float)
             points = np.round(points, decimals=0).astype(np.int32)
             minx = np.min(points[:, 0])
@@ -160,12 +161,12 @@ class EastRandomCropData:
         return 0, 0, w, h
 
 
-class PSERandomCrop():
+class PSERandomCrop:
     def __init__(self, size):
         self.size = size
 
     def __call__(self, data):
-        imgs = data['imgs']
+        imgs = data['img']
 
         h, w = imgs[0].shape[0:2]
         th, tw = self.size

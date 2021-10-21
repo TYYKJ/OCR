@@ -11,6 +11,8 @@ import cv2
 from tqdm import tqdm
 import shutil
 
+from det.det_modules import EastRandomCropData
+
 
 class MakeDetJsonDataset:
 
@@ -36,7 +38,8 @@ class MakeDetJsonDataset:
                 txt_data = f.readlines()
                 for item in txt_data:
                     item = item.strip('\n').split(',')
-                    points = [[int(item[0]), int(item[1])], [int(item[2]), int(item[3])], [int(item[4]), int(item[5])], [int(item[6]), int(item[7])]]
+                    points = [[int(item[0]), int(item[1])], [int(item[2]), int(item[3])], [int(item[4]), int(item[5])],
+                              [int(item[6]), int(item[7])]]
                     label = item[-1]
 
                     if int(item[-2]):
@@ -129,8 +132,8 @@ class MakeDetJsonDataset:
         len_data_list = len(data_list) // 2
         d1 = data_list[:len_data_list]
         d2 = data_list[len_data_list:]
-        t1 = threading.Thread(target=get_shape, args=(d1, ))
-        t2 = threading.Thread(target=get_shape, args=(d2, ))
+        t1 = threading.Thread(target=get_shape, args=(d1,))
+        t2 = threading.Thread(target=get_shape, args=(d2,))
 
         t1.start()
         t2.start()
@@ -152,9 +155,96 @@ class MakeDetJsonDataset:
         else:
             print('img is very gooooooooooooood!')
 
+    @staticmethod
+    def del_not_ndarray(json_path):
+        ignore_tags = ['#']
+        with open(json_path, 'r') as f:
+            data = json.loads(f.read())['data_list']
+            for item in data:
+                img_name = item.get('img_name')
+                annotations = item.get('annotations')
+                all_care_polys = [annotations[i] for i, tag in enumerate(ignore_tags) if not tag]
+                for points in all_care_polys:
+                    points = points.astype(float)
+
+
+class RecDatasetTools:
+
+    @staticmethod
+    def remove_space(txt_path):
+        ...
+
+    @staticmethod
+    def del_info(txt_path):
+        with open(txt_path, 'r') as f:
+            content = f.readlines()
+
+        with open('test.txt', 'w') as f:
+            for line in tqdm(content, desc='write info:'):
+                data = line.split('\t')
+                image_name = data[0].split('\\')[-1]
+                label = data[1]
+                write_content = image_name + '\t' + label + '\n'
+                f.write(write_content)
+
+    @staticmethod
+    def del_space(txt_path):
+        """
+        该函数仅支持 文件名\t标注 格式
+        """
+        with open(txt_path, 'r') as f:
+            content = f.readlines()
+
+        with open('train-no-space.txt', 'w') as f:
+            for line in tqdm(content, desc='write info:'):
+                data = line.split('\t')
+                image_name = data[0]
+                label = data[1].strip('\n')
+                s = ''
+                for char in label:
+                    if char != ' ':
+                        s += char
+                write_info = image_name + '\t' + s + '\n'
+                f.write(write_info)
+
+    @staticmethod
+    def make_dict(txt_path):
+        with open(txt_path, 'r') as f:
+            content = f.readlines()
+
+        cache_dict = []
+        for item in tqdm(content):
+            line = item.split('\t')
+            for i in line[-1].strip('\n'):
+                if i not in cache_dict:
+                    cache_dict.append(i)
+        cache = list(set(cache_dict))
+        cache = sorted(cache)
+        print(cache)
+
+        s = ''
+        for item in cache:
+            s += item
+        print(s)
+        print(len(s))
+
+        with open(f'dict.txt', 'w') as f:
+            for i in tqdm(range(len(cache))):
+                if isinstance(cache[i], int):
+                    d = str(cache[i])
+                else:
+                    d = cache[i]
+                f.write(d)
+                f.write('\n')
+
 
 if __name__ == '__main__':
     jd = MakeDetJsonDataset()
     # jd.txt_to_json('/home/data/OCRData/det0902/val/gt', '/home/data/OCRData/MTWI2018/detection/val.json')
+    jd.del_not_ndarray('/home/cat/文档/lsvt/lsvt2/detection/train.json')
     # jd.split_det_dataset('/media/cat/data/OCRData/MTWI2018/detection/val.json')
-    jd.check_img('/home/cat/PycharmProjects/torch-ocr/tools/val.json', '/media/cat/data/OCRData/MTWI2018/detection/imgs')
+    # jd.check_img('/home/cat/PycharmProjects/torch-ocr/tools/val.json', '/media/cat/data/OCRData/MTWI2018/detection/imgs')
+    # recd = RecDatasetTools()
+    # recd.del_info('/home/cat/文档/icdar2015/recognition/test.txt')
+    # recd.del_space('/home/cat/PycharmProjects/torch-ocr/tools/test.txt')
+    # recd.make_dict('/home/cat/文档/icdar2015/recognition/train-no-space.txt')
