@@ -7,11 +7,14 @@
 from torchvision import transforms
 from det import DBPostProcess, ResizeShortSize, DBDetModel
 import numpy as np
+import torch
 
 
 class DetInfer:
-    def __init__(self, model_path):
+    def __init__(self, model_path, device='cuda:0'):
+        self.device = device
         self.model = DBDetModel.load_from_checkpoint(model_path)
+        self.model.to(self.device)
         self.model.eval()
         self.model.freeze()
 
@@ -24,18 +27,22 @@ class DetInfer:
 
     def predict(self, img):
         # 预处理根据训练来
+        # model.to(device)
+        # data.to(device)
+        # with torch.no_grad():
+        #     out = model(data)
         data = {'img': img, 'shape': [img.shape[:2]], 'text_polys': []}
         data = self.resize(data)
         tensor = self.transform(data['img'])
         tensor = tensor.unsqueeze(dim=0)
-        # tensor = tensor.to(self.device)
-        out = self.model(tensor)
-        box_list, score_list = self.post_process(out, data['shape'])
+        tensor = tensor.to(self.device)
+        with torch.no_grad():
+            out = self.model(tensor)
+        box_list, score_list = self.post_process(out.cpu(), data['shape'])
         box_list, score_list = box_list[0], score_list[0]
         if len(box_list) > 0:
             idx = [x.sum() > 0 for x in box_list]
             box_list = [box_list[i] for i, v in enumerate(idx) if v]
-
             score_list = [score_list[i] for i, v in enumerate(idx) if v]
         else:
             box_list, score_list = [], []
@@ -79,9 +86,12 @@ def get_rotate_crop_image(img, points):
 
 if __name__ == '__main__':
     import cv2
+    import time
 
     img = cv2.imread('/home/cat/PycharmProjects/torch-ocr/tools/inference/20210731172458.jpg')[130:-130, :, :]
-    model = DetInfer('../train/weights/DB-epoch=34-hmean=0.61.ckpt')
+    model = DetInfer('../train/weights/DB-resnet50-epoch=94-hmean=0.68-recall=0.97-precision=0.52.ckpt')
+
+    start = time.time()
     bl, sl = model.predict(img)
     if len(bl) != 0:
         imgs = [get_rotate_crop_image(img, box) for box in bl]
@@ -90,3 +100,5 @@ if __name__ == '__main__':
             cv2.imwrite(f'{index}.jpg', im)
     else:
         print('no image')
+    end = time.time()
+    print(f'{end-start}s')
