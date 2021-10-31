@@ -1,11 +1,59 @@
-# @Time    : 2021/9/26 下午3:30
-# @Author  : 
-# @File    : txt_dataloader
-# @Software: PyCharm
-# @explain :
-import numpy as np
+import six
+import cv2
 import torch
-from torch.utils.data import DataLoader
+import numpy as np
+from PIL import Image
+from torch.utils.data import Dataset, DataLoader
+from ..utils import RecDataProcess, pil2cv, cv2pil
+import os
+
+
+class RecTextLineDataset(Dataset):
+
+    def __init__(
+            self,
+            alphabet_path: str,
+            image_path: str,
+            label_path: str,
+            input_h: int = 32,
+            mean: float = 0.5,
+            std: float = 0.5,
+            use_augmentation: bool = False,
+    ):
+        self.augmentation = use_augmentation
+        self.process = RecDataProcess(input_h=input_h, mean=mean, std=std)
+        self.image_path = image_path
+
+        with open(alphabet_path, 'r', encoding='utf-8') as file:
+            alphabet = ''.join([s.strip('\n') for s in file.readlines()])
+        alphabet += ' '
+        self.str2idx = {c: i for i, c in enumerate(alphabet)}
+        self.labels = []
+        with open(label_path, 'r', encoding='utf-8') as f_reader:
+            for m_line in f_reader.readlines():
+                params = m_line.split('\t')
+                if len(params) == 2:
+                    m_image_name, m_gt_text = params
+                    if True in [c not in self.str2idx for c in m_gt_text.strip('\n')]:
+                        continue
+                    self.labels.append((m_image_name, m_gt_text.strip('\n')))
+
+    def _find_max_length(self):
+        return max({len(_[1]) for _ in self.labels})
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, index):
+        # get img_path and trans
+        img_name, trans = self.labels[index]
+        # read img
+        img = cv2.imread(os.path.join(self.image_path, img_name))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        # do aug
+        if self.augmentation:
+            img = pil2cv(self.process.aug_img(cv2pil(img)))
+        return {'img': img, 'label': trans}
 
 
 class RecDataLoader:
@@ -21,7 +69,7 @@ class RecDataLoader:
         """
         self.dataset = dataset
         self.process = dataset.process
-        self.len_thresh = self.dataset.find_max_length() // 2
+        self.len_thresh = self.dataset._find_max_length() // 2
         self.batch_size = batch_size
         self.shuffle = shuffle
         self.num_workers = num_workers
@@ -54,10 +102,11 @@ class RecDataLoader:
         return batch
 
     def build(self):
-        self.dataiter = DataLoader(self.dataset, batch_size=1, shuffle=self.shuffle, num_workers=self.num_workers, drop_last=True).__iter__()
+        self.dataiter = DataLoader(self.dataset, batch_size=1, shuffle=self.shuffle,
+                                   num_workers=self.num_workers).__iter__()
 
     def __next__(self):
-        if self.dataiter is None:
+        if self.dataiter == None:
             self.build()
         if self.iteration == len(self.dataset) and len(self.queue_2):
             batch_data = self.queue_2
@@ -71,7 +120,6 @@ class RecDataLoader:
         try:
             while True:
                 # get data from origin dataloader
-
                 temp = self.dataiter.__next__()
                 self.iteration += 1
                 # to different queue

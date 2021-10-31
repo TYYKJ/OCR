@@ -1,10 +1,5 @@
-# @Time    : 2021/9/14 下午5:41
-# @Author  : 
-# @File    : losses
-# @Software: PyCharm
-# @explain :
+from torch import nn
 import torch
-import torch.nn as nn
 
 
 class CTCLoss(nn.Module):
@@ -20,4 +15,4 @@ class CTCLoss(nn.Module):
         pred = pred.permute(1, 0, 2)
         preds_lengths = torch.tensor([pred.size(0)] * batch_size, dtype=torch.long)
         loss = self.loss_func(pred, label, preds_lengths, label_length)
-        return loss
+        return {'loss': loss}

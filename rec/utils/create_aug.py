@@ -1,7 +1,6 @@
+import cv2
 import abc
 import random
-
-import cv2
 import numpy as np
 from PIL import Image, ImageEnhance, ImageFilter, ImageOps, ImageDraw
 
@@ -468,7 +467,7 @@ class DataAug:
 
 
 if __name__ == '__main__':
-    img = Image.open('/home/cattree/PycharmProjects/torchOCR/full.jpg')
+    img = Image.open('./test_image.png')
     data_augment = DataAug()
     augmented_img = data_augment.aug_img(img)
     augmented_img.show()

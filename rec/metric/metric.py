@@ -1,8 +1,3 @@
-# @Time    : 2021/9/18 下午2:42
-# @Author  : 
-# @File    : metric
-# @Software: PyCharm
-# @explain :
 import Levenshtein
 
 
@@ -23,7 +18,7 @@ class RecMetric:
         show_str = []
         for (pred, pred_conf), target in zip(preds_str, labels):
             norm_edit_dis += Levenshtein.distance(pred, target) / max(len(pred), len(target))
-            show_str.append([pred, target])
+            show_str.append(f'{pred} -> {target}')
             if pred == target:
                 n_correct += 1
         return {'n_correct': n_correct, 'norm_edit_dis': norm_edit_dis, 'show_str': show_str}

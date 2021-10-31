@@ -22,8 +22,8 @@ model = DBDetModel(
 # model(example)
 
 data = DetDataModule(
-    train_data_path='/home/cat/文档/lsvt/lsvt2/detection/train.json',
-    val_data_path='/home/cat/文档/icdar2017/detection/val.json',
+    train_data_path='/home/cat/文档/渔船数据/train.json',
+    val_data_path='/home/cat/文档/渔船数据/val.json',
     batch_size=16,
     num_workers=16
 )
@@ -48,11 +48,11 @@ trainer = pl.Trainer(
     gpus=[1],
     # accelerator='ddp',
     max_epochs=1200,
-    min_epochs=300,
+    min_epochs=110,
     logger=[logger],
     callbacks=[early_stop, checkpoint_callback],
     # plugins=DDPPlugin(find_unused_parameters=False),
-    resume_from_checkpoint='../weights/DB-epoch=34-hmean=0.61.ckpt'
+    resume_from_checkpoint='../weights/DB-resnet50-epoch=35-hmean=0.68-recall=0.61-precision=0.77.ckpt'
 )
 
 trainer.fit(model, data)

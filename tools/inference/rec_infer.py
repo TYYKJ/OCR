@@ -12,7 +12,8 @@ from rec import CRNN, RecDataProcess, CTCLabelConverter
 
 class RecInfer:
     def __init__(self, model_path, dict_path, batch_size=1):
-        self.model = CRNN.load_from_checkpoint(model_path)
+        CRNN(charset_path=dict_path, classes=18)
+        self.model = CRNN.load_from_checkpoint(model_path, charset_path=dict_path)
         self.model.eval()
         self.model.freeze()
 
@@ -50,16 +51,16 @@ if __name__ == '__main__':
     from tqdm import tqdm
 
     # args = init_args()
-    data = load('/home/cat/文档/icdar2015/recognition/test-no-space.txt')
+    data = load('/home/cat/文档/newcut/valcut.txt')
     model = RecInfer(
-        '/home/cat/PycharmProjects/torch-ocr/tools/train/weights/CRNN-epoch=24-val_loss=1.36--eval_acc=0.39.ckpt',
+        '/home/cat/PycharmProjects/torch-ocr/tools/train/weights/CRNN-epoch=31-val_loss=2.82--eval_acc=0.31.ckpt',
         dict_path='/home/cat/PycharmProjects/torch-ocr/tools/train/rec_train/dict.txt')
     total = len(data)
     correct = 0
     not_correct_im = []
-    for item in tqdm(data):
+    for item in tqdm(data[:100]):
         im_name, label = item.split('\t')
-        im_path = os.path.join('/home/cat/文档/icdar2015/recognition/test',
+        im_path = os.path.join('/home/cat/文档/newcut/valcut',
                                im_name)
 
         img = cv2.imread(im_path)

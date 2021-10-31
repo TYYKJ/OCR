@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# @Time    : 2020/6/15 14:29
-# @Author  : zhoujun
 import torch
 
 
@@ -21,9 +18,7 @@ class CTCLabelConverter(object):
         for i, char in enumerate(dict_character):
             # NOTE: 0 is reserved for 'blank' token required by CTCLoss
             self.dict[char] = i + 1
-        # TODO replace ‘ ’ with special symbol
-        self.character = ['[blank]'] + dict_character + [' ']
-        # dummy '[blank]' token for CTCLoss (index 0)
+        self.character = ['[blank]'] + dict_character+[' ']  # dummy '[blank]' token for CTCLoss (index 0)
 
     def encode(self, text, batch_max_length=None):
         """convert text-label into text-index.

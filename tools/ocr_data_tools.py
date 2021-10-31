@@ -11,8 +11,6 @@ import cv2
 from tqdm import tqdm
 import shutil
 
-from det.det_modules import EastRandomCropData
-
 
 class MakeDetJsonDataset:
 
@@ -156,16 +154,43 @@ class MakeDetJsonDataset:
             print('img is very gooooooooooooood!')
 
     @staticmethod
-    def del_not_ndarray(json_path):
-        ignore_tags = ['#']
-        with open(json_path, 'r') as f:
-            data = json.loads(f.read())['data_list']
-            for item in data:
-                img_name = item.get('img_name')
-                annotations = item.get('annotations')
-                all_care_polys = [annotations[i] for i, tag in enumerate(ignore_tags) if not tag]
-                for points in all_care_polys:
-                    points = points.astype(float)
+    def labelme_format_transform(parent_path):
+        cache = {
+            'data_root': '',
+            'data_list': []
+        }
+        files = glob.glob(os.path.join(parent_path, '*.json'))
+        for file in files:
+            with open(file, 'r') as f:
+                data = json.loads(f.read())
+                img_name = data['imagePath']
+                annotations = []
+                for item in data['shapes']:
+                    annotations.append(
+                        {
+                            'polygon': item['points'],
+                            'text': item['label'],
+                            'illegibility': False,
+                            "language": "Latin",
+                            "chars": [
+                                {
+                                    "polygon": [],
+                                    "char": "",
+                                    "illegibility": False,
+                                    "language": "Latin"
+                                }
+                            ]
+                        }
+                    )
+                cache['data_list'].append(
+                    {
+                        'img_name': img_name,
+                        'annotations': annotations
+                    }
+                )
+
+        with open('train.json', 'w') as f:
+            json.dump(cache, f, indent=4)
 
 
 class RecDatasetTools:
@@ -241,10 +266,10 @@ class RecDatasetTools:
 if __name__ == '__main__':
     jd = MakeDetJsonDataset()
     # jd.txt_to_json('/home/data/OCRData/det0902/val/gt', '/home/data/OCRData/MTWI2018/detection/val.json')
-    jd.del_not_ndarray('/home/cat/文档/lsvt/lsvt2/detection/train.json')
+    # jd.labelme_format_transform('/home/cat/文档/渔船数据/Boatdet')
     # jd.split_det_dataset('/media/cat/data/OCRData/MTWI2018/detection/val.json')
     # jd.check_img('/home/cat/PycharmProjects/torch-ocr/tools/val.json', '/media/cat/data/OCRData/MTWI2018/detection/imgs')
-    # recd = RecDatasetTools()
+    recd = RecDatasetTools()
     # recd.del_info('/home/cat/文档/icdar2015/recognition/test.txt')
     # recd.del_space('/home/cat/PycharmProjects/torch-ocr/tools/test.txt')
-    # recd.make_dict('/home/cat/文档/icdar2015/recognition/train-no-space.txt')
+    recd.make_dict('/home/cat/文档/icdar2017/recognition/train-no-space.txt')

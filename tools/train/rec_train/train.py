@@ -14,25 +14,18 @@ pl.seed_everything(1997)
 
 model = CRNN(
     # 类别+1
-    classes=83 + 1,
-    encoder_name='resnet18vd',
+    classes=3463 + 1,
+    encoder_name='resnet50vd',
     lr=0.001,
-    optimizer_name='sgd',
-    lstm_hidden_size=512,
-    charset_path='dict.txt',
+    alphabet_path='./dict.txt',
 )
 
 data = OCRDataModule(
-    charset_path='dict.txt',
-    train_txt_path='/home/cat/文档/icdar2015/recognition/train-no-space.txt',
-    val_txt_path='/home/cat/文档/icdar2015/recognition/test-no-space.txt',
-    train_img_path='/home/cat/文档/icdar2015/recognition/train',
-    val_img_path='/home/cat/文档/icdar2015/recognition/test',
-    mean=0.5,
-    std=0.5,
-    input_h=32,
-    batch_size=16,
-    num_workers=16,
+    alphabet_path='./dict.txt',
+    image_path='/home/cat/文档/icdar2017/recognition/train',
+    train_label_path='/home/cat/文档/icdar2017/recognition/train-no-space.txt',
+    val_label_path='/home/cat/文档/icdar2017/recognition/val.txt',
+    batch_size=8
 )
 
 logger = WandbLogger()
@@ -53,7 +46,7 @@ trainer = pl.Trainer(
     weights_summary='full',
     # benchmark=True,
     checkpoint_callback=True,
-    gpus=[0],
+    gpus=[1],
     # accelerator='ddp',
     max_epochs=200,
     min_epochs=100,

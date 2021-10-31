@@ -1,28 +1,15 @@
-# @Time    : 2021/9/26 下午3:25
-# @Author  : 
-# @File    : txt_dataset
-# @Software: PyCharm
-# @explain :
-import os
-
-import cv2
-import numpy as np
-from torch.utils.data import Dataset
-
-from ..transform import *
-from ..transform.create_rec_aug import pil2cv, cv2pil
+from .create_aug import *
 
 
 class RecDataProcess:
     def __init__(self, input_h, mean, std):
         """
         文本是被数据增广类
-
         """
 
-        self.input_h = input_h
         self.mean = mean
         self.std = std
+        self.input_h = input_h
 
         self.random_contrast = RandomContrast(probability=0.3)
         self.random_brightness = RandomBrightness(probability=0.3)
@@ -76,8 +63,7 @@ class RecDataProcess:
         """
         return (_img.astype(np.float32) / 255 - self.mean) / self.std
 
-    @staticmethod
-    def width_pad_img(_img, _target_width, _pad_value=0):
+    def width_pad_img(self, _img, _target_width, _pad_value=0):
         """
         将图像进行高度不变，宽度的调整的pad
         :param _img:    待pad的图像
@@ -89,58 +75,3 @@ class RecDataProcess:
         to_return_img = np.ones([_height, _target_width, _channels], dtype=_img.dtype) * _pad_value
         to_return_img[:_height, :_width, :] = _img
         return to_return_img
-
-
-class RecTextDataset(Dataset):
-
-    def __init__(
-            self,
-            charset_path,
-            txt_file_path,
-            img_path,
-            input_h=32,
-            mean=0.5,
-            std=0.5,
-            augmentation=False
-    ):
-        self.img_path = img_path
-        self.augmentation = augmentation
-        self.process = RecDataProcess(
-            input_h=input_h,
-            mean=mean,
-            std=std
-        )
-        with open(charset_path, 'r', encoding='utf-8') as file:
-            alphabet = ''.join([s.strip('\n') for s in file.readlines()])
-        alphabet += ' '
-        self.str2idx = {c: i for i, c in enumerate(alphabet)}
-        self.labels = []
-        with open(txt_file_path, 'r', encoding='utf-8') as f_reader:
-            for m_line in f_reader.readlines():
-                params = m_line.split('\t')
-                if len(params) == 2:
-                    m_image_name, m_gt_text = params
-                    if m_gt_text.endswith('\n'):
-                        m_gt_text = m_gt_text.strip('\n')
-                    if True in [c not in self.str2idx for c in m_gt_text]:
-                        continue
-                    self.labels.append((m_image_name, m_gt_text))
-
-    def find_max_length(self):
-        return max({len(_[1]) for _ in self.labels})
-
-    def __len__(self):
-        return len(self.labels)
-
-    def __getitem__(self, index):
-        # get img_path and trans
-        img_name, trans = self.labels[index]
-        # read img
-        img_path = os.path.join(self.img_path, img_name)
-        img = cv2.imread(img_path)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-        if self.augmentation:
-            img = pil2cv(self.process.aug_img(cv2pil(img)))
-
-        return {'img': img, 'label': trans}
