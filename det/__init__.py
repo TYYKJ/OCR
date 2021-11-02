@@ -5,5 +5,5 @@
 # @explain :
 from .DBNet import DBDetModel
 from .datamodule import DetDataModule
-from .det_modules import ResizeShortSize
+from .detmodules import ResizeShortSize
 from .postprocess import DBPostProcess

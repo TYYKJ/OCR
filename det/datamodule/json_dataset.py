@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from tqdm import tqdm
 
-from ..det_modules import *
+from ..detmodules import *
 
 
 def load_json(file_path: str):
