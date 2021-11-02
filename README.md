@@ -36,6 +36,19 @@ model = CRNN(
 )
 ```
 
+#### 训练
+
+- CRNN
+  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/rec_train/train.py
+- DB
+  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/det_train/train.py
+
+#### 推理
+- CRNN
+  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/rec_infer.py
+- DB
+  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/det_infer.py
+
 ### 参数配置
 
 #### 检测网络可用编码器
@@ -132,10 +145,6 @@ model = CRNN(
 - adamw
 - radam
 - plainradam
-
-#### 损失函数
-
-目前仅支持CTC Loss, 需要注意的是, `blank_idx`需要设置为字典第一个数据
 
 ### 工具包
 
