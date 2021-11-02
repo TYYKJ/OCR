@@ -18,7 +18,7 @@ class DBDetModel(DetModel):
 
     def __init__(
             self,
-            encoder_name: str = 'resnet50vd',
+            encoder_name: str = 'resnet50',
             thresh: float = 0.3,
             unclip_ratio: float = 1.5,
             weight_decay: float = 1e-4,
