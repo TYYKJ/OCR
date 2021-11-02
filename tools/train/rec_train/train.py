@@ -6,6 +6,7 @@
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
+from pytorch_lightning.callbacks import LearningRateMonitor
 from pytorch_lightning.loggers import WandbLogger
 
 from rec import CRNN, OCRDataModule
@@ -40,6 +41,8 @@ checkpoint_callback = ModelCheckpoint(
     save_weights_only=False,
 )
 
+lr_monitor = LearningRateMonitor(logging_interval='epoch')
+
 trainer = pl.Trainer(
     # fast_dev_run=True,
     # open this, must drop last
@@ -51,7 +54,7 @@ trainer = pl.Trainer(
     max_epochs=200,
     min_epochs=100,
     logger=[logger],
-    callbacks=[early_stop, checkpoint_callback],
+    callbacks=[early_stop, checkpoint_callback, lr_monitor],
     gradient_clip_algorithm='value',
     gradient_clip_val=5,
     # plugins=DDPPlugin(find_unused_parameters=False),

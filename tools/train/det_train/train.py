@@ -6,6 +6,7 @@
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.plugins import DDPPlugin
+from pytorch_lightning.callbacks import LearningRateMonitor
 from det import DBDetModel, DetDataModule
 import pytorch_lightning as pl
 
@@ -39,6 +40,8 @@ checkpoint_callback = ModelCheckpoint(
     save_last=True,
 )
 
+lr_monitor = LearningRateMonitor(logging_interval='epoch')
+
 # DP 一机多卡
 trainer = pl.Trainer(
     # open this, must drop last
@@ -50,7 +53,7 @@ trainer = pl.Trainer(
     max_epochs=1200,
     min_epochs=110,
     logger=[logger],
-    callbacks=[early_stop, checkpoint_callback],
+    callbacks=[early_stop, checkpoint_callback, lr_monitor],
     # plugins=DDPPlugin(find_unused_parameters=False),
     resume_from_checkpoint='../weights/DB-resnet50-epoch=35-hmean=0.68-recall=0.61-precision=0.77.ckpt'
 )
