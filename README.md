@@ -13,9 +13,13 @@
 #### 检测模型
 
 ```python
-from det import FPN
+from det import DBDetModel
 
-model = FPN(encoder_name='resnet50')
+model = DBDetModel(
+    encoder_name='resnet50',
+    lr=0.001,
+    optimizer_name='adam',
+)
 ```
 
 #### 识别模型
@@ -24,12 +28,13 @@ model = FPN(encoder_name='resnet50')
 from rec import CRNN
 
 model = CRNN(
-    classes=21,
-    encoder_name='vgg19_bn'
+    # 类别+1
+    classes=3463 + 1,
+    encoder_name='resnet50vd',
+    lr=0.001,
+    alphabet_path='./dict.txt',
 )
 ```
-
-识别模型的Dataloader需要返回`x, y, y_len`
 
 ### 参数配置
 
@@ -58,19 +63,44 @@ model = CRNN(
 
 
 <details>
-<summary style="margin-left: 25px;">VGG</summary>
+<summary style="margin-left: 25px;">mobilenet_v2</summary>
 <div style="margin-left: 25px;">
 
 |Encoder                     |
 |----------------------------|
-|vgg11                       |
-|vgg11_bn                    |
-|vgg13                       |
-|vgg13_bn                    |
-|vgg16                       |
-|vgg16_bn                    |
-|vgg19                       |
-|vgg19_bn                    |
+|mobilenet_v2                |
+
+</div>
+</details>
+
+<details>
+<summary style="margin-left: 25px;">DPN</summary>
+<div style="margin-left: 25px;">
+
+|Encoder                     |
+|----------------------------|
+|dpn68                |
+|dpn68b                |
+|dpn92                |
+|dpn98                |
+|dpn107                |
+|dpn131                |
+
+</div>
+</details>
+
+<details>
+<summary style="margin-left: 25px;">SENet</summary>
+<div style="margin-left: 25px;">
+
+|Encoder                     |
+|----------------------------|
+|se_resnet50                |
+|se_resnet101                |
+|se_resnet152                |
+|se_resnext50_32x4d                |
+|se_resnext101_32x4d                |
+|senet154                |
 
 </div>
 </details>
@@ -89,36 +119,6 @@ model = CRNN(
 |resnet101vd                       |
 |resnet152vd                       |
 |resnet200vd                       |
-
-</div>
-</details>
-
-<details>
-<summary style="margin-left: 25px;">VGG</summary>
-<div style="margin-left: 25px;">
-
-|Encoder                     |
-|----------------------------|
-|vgg11                       |
-|vgg11_bn                    |
-|vgg13                       |
-|vgg13_bn                    |
-|vgg16                       |
-|vgg16_bn                    |
-|vgg19                       |
-|vgg19_bn                    |
-
-</div>
-</details>
-
-<details>
-<summary style="margin-left: 25px;">MobilenetV3</summary>
-<div style="margin-left: 25px;">
-
-|Encoder                     |
-|----------------------------|
-|mobilenetV3_small           |
-|mobilenetV3_large           |
 
 </div>
 </details>
