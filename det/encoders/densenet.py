@@ -22,7 +22,7 @@ class TransitionWithSkip(nn.Module):
 class DenseNetEncoder(DenseNet):
     def __init__(self, out_channels, depth=5, **kwargs):
         super().__init__(**kwargs)
-        self.out_channels = out_channels
+        self.out_channels = out_channels[2:]
         self._depth = depth
         self._in_channels = 3
         del self.classifier
