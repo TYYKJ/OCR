@@ -9,12 +9,10 @@ from .densenet import densenet_encoders
 from .dpn import dpn_encoders
 from .mobilenet import mobilenet_encoders
 from .resnet import resnet_encoders
-from .resnetvd import resnetvd_encoders
 from .senet import senet_encoders
 
 encoders = {}
 
-encoders.update(resnetvd_encoders)
 encoders.update(resnet_encoders)
 encoders.update(senet_encoders)
 encoders.update(densenet_encoders)
