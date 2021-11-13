@@ -18,13 +18,9 @@ model = DBDetModel(
     optimizer_name='adam',
 )
 
-# import torch
-# example = torch.ones((1, 3, 224, 224))
-# model(example)
-
 data = DetDataModule(
-    train_data_path='/home/cat/文档/渔船数据/train.json',
-    val_data_path='/home/cat/文档/渔船数据/val.json',
+    train_data_path='/home/cat/Documents/PreTrainOCRData/train.json',
+    val_data_path='/home/cat/Documents/PreTrainOCRData/val.json',
     batch_size=16,
     num_workers=16
 )
@@ -36,7 +32,7 @@ checkpoint_callback = ModelCheckpoint(
     monitor='hmean',
     mode='max',
     dirpath='../weights',
-    filename='DB-resnet50-{epoch:02d}-{hmean:.2f}-{recall:.2f}-{precision:.2f}',
+    filename='DB-' + model.encoder_name + '-{epoch:02d}-{hmean:.2f}-{recall:.2f}-{precision:.2f}',
     save_last=True,
 )
 
@@ -50,12 +46,12 @@ trainer = pl.Trainer(
     # checkpoint_callback=True,
     gpus=[1],
     # accelerator='ddp',
-    max_epochs=1200,
-    min_epochs=110,
+    max_epochs=100,
+    min_epochs=80,
     logger=[logger],
     callbacks=[early_stop, checkpoint_callback, lr_monitor],
     # plugins=DDPPlugin(find_unused_parameters=False),
-    resume_from_checkpoint='../weights/DB-resnet50-epoch=35-hmean=0.68-recall=0.61-precision=0.77.ckpt'
+    # resume_from_checkpoint='../weights/DB-resnet50-epoch=35-hmean=0.68-recall=0.61-precision=0.77.ckpt'
 )
 
 trainer.fit(model, data)
