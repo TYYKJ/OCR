@@ -32,6 +32,8 @@ class DBDetModel(DetModel):
 
         self.save_hyperparameters()
 
+        self.encoder_name = encoder_name
+
         self.loss_func = DBLoss()
 
         self.lr = lr

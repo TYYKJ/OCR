@@ -6,7 +6,7 @@ class MobileNetV2Encoder(torchvision.models.MobileNetV2):
     def __init__(self, out_channels, depth=5, **kwargs):
         super().__init__(**kwargs)
         self._depth = depth
-        self.out_channels = out_channels[2:]
+        self._out_channels = out_channels[2:]
         self._in_channels = 3
         del self.classifier
 

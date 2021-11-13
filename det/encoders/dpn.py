@@ -9,10 +9,9 @@ from pretrainedmodels.models.dpn import pretrained_settings
 class DPNEncoder(DPN):
     def __init__(self, stage_idxs, out_channels, depth=5, **kwargs):
         super().__init__(**kwargs)
-        self.out_channels = out_channels[2:]
         self._stage_idxs = stage_idxs
         self._depth = depth
-        self._out_channels = out_channels
+        self._out_channels = out_channels[2:]
         self._in_channels = 3
 
         del self.last_linear
