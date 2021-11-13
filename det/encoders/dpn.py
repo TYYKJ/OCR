@@ -11,7 +11,7 @@ class DPNEncoder(DPN):
         super().__init__(**kwargs)
         self._stage_idxs = stage_idxs
         self._depth = depth
-        self._out_channels = out_channels[2:]
+        self.out_channels = out_channels[2:]
         self._in_channels = 3
 
         del self.last_linear

@@ -242,11 +242,11 @@ if __name__ == '__main__':
 
     # det.split_det_dataset(det_dataset_path='/home/cat/Documents/PreTrainOCRData/train.json',
     #                       img_path='/home/cat/Documents/PreTrainOCRData/image')
-    # det.check_img(
-    #     '/home/cat/Documents/PreTrainOCRData/train.json',
-    #     img_path='/home/cat/Documents/PreTrainOCRData/image',
-    #     save_path='/home/cat/Documents/PreTrainOCRData/train.json'
-    # )
+    det.check_img(
+        '/home/cat/Documents/PreTrainOCRData/train.json',
+        img_path='/home/cat/Documents/PreTrainOCRData/image',
+        save_path='/home/cat/Documents/PreTrainOCRData/train.json'
+    )
     det.check_img(
         '/home/cat/Documents/PreTrainOCRData/val.json',
         img_path='/home/cat/Documents/PreTrainOCRData/val_img',
