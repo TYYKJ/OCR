@@ -7,20 +7,22 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.plugins import DDPPlugin
 from pytorch_lightning.callbacks import LearningRateMonitor
+from pytorch_lightning.callbacks import RichProgressBar
 from det import DBDetModel, DetDataModule
 import pytorch_lightning as pl
 
 pl.seed_everything(1997)
 
 model = DBDetModel(
-    encoder_name='resnet50',
+    encoder_name='resnet18',
     lr=0.001,
-    optimizer_name='adam',
+    optimizer_name='sgd',
+    weights='imagenet'
 )
 
 data = DetDataModule(
-    train_data_path='/home/cat/Documents/PreTrainOCRData/train.json',
-    val_data_path='/home/cat/Documents/PreTrainOCRData/val.json',
+    train_data_path='/home/cat/Documents/ICDAR/ICDAR2019/train.json',
+    val_data_path='/home/cat/Documents/icdar2015-ok/detection/train.json',
     batch_size=16,
     num_workers=16
 )
@@ -37,21 +39,18 @@ checkpoint_callback = ModelCheckpoint(
 )
 
 lr_monitor = LearningRateMonitor(logging_interval='epoch')
+rp = RichProgressBar(leave=True)
 
 # DP 一机多卡
 trainer = pl.Trainer(
     # open this, must drop last
-    weights_summary='full',
     benchmark=True,
-    # checkpoint_callback=True,
+    # gpus=2, strategy="ddp",
     gpus=[1],
-    # accelerator='ddp',
     max_epochs=100,
     min_epochs=80,
     logger=[logger],
-    callbacks=[early_stop, checkpoint_callback, lr_monitor],
-    # plugins=DDPPlugin(find_unused_parameters=False),
-    # resume_from_checkpoint='../weights/DB-resnet50-epoch=35-hmean=0.68-recall=0.61-precision=0.77.ckpt'
+    callbacks=[early_stop, checkpoint_callback, lr_monitor, rp],
 )
 
 trainer.fit(model, data)
