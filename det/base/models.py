@@ -48,5 +48,5 @@ class DetModel(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = get_optimizer(self.parameters(), self.optimizer_name, self.lr)
-        lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+        lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max')
         return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": 'hmean'}

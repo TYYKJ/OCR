@@ -239,19 +239,27 @@ class MakeDetJsonDataset:
 
 if __name__ == '__main__':
     det = MakeDetJsonDataset()
+    det.move_img_file(
+        source_paths=[
+            '/home/cat/Downloads/train_full_images_0',
+            '/home/cat/Downloads/train_full_images_1'
+        ],
+        obj_path='/home/cat/Downloads/image'
+    )
+    # det.remove_img('/home/cat/Documents/PreTrainOCRData/val_img/COCO_train2014_000000393297.jpg')
 
     # det.split_det_dataset(det_dataset_path='/home/cat/Documents/PreTrainOCRData/train.json',
     #                       img_path='/home/cat/Documents/PreTrainOCRData/image')
-    det.check_img(
-        '/home/cat/Documents/PreTrainOCRData/train.json',
-        img_path='/home/cat/Documents/PreTrainOCRData/image',
-        save_path='/home/cat/Documents/PreTrainOCRData/train.json'
-    )
-    det.check_img(
-        '/home/cat/Documents/PreTrainOCRData/val.json',
-        img_path='/home/cat/Documents/PreTrainOCRData/val_img',
-        save_path='/home/cat/Documents/PreTrainOCRData/val.json'
-    )
+    # det.check_img(
+    #     '/home/cat/Documents/PreTrainOCRData/train.json',
+    #     img_path='/home/cat/Documents/PreTrainOCRData/image',
+    #     save_path='/home/cat/Documents/PreTrainOCRData/train.json'
+    # )
+    # det.check_img(
+    #     '/home/cat/Documents/PreTrainOCRData/val.json',
+    #     img_path='/home/cat/Documents/PreTrainOCRData/val_img',
+    #     save_path='/home/cat/Documents/PreTrainOCRData/val.json'
+    # )
 
     # det.concat_ocr_detect_dataset(
     #     img_source_paths=[
@@ -270,7 +278,7 @@ if __name__ == '__main__':
     #     img_source_paths=[
     #         '/home/cat/Documents/Art/detection/train_images',
     #         '/home/cat/Documents/COCO_Text-ok/detection/train',
-    #         '/home/cat/Documents/icdar2015-ok/detection/train/imgs',
+    #         # '/home/cat/Documents/icdar2015-ok/detection/train/imgs',
     #         '/home/cat/Documents/icdar2017rctw/icdar2017/detection/imgs',
     #         '/home/cat/Documents/LSVT/lstvall/detection/imgs',
     #         '/home/cat/Documents/ReCTS/detection/img',
@@ -279,7 +287,7 @@ if __name__ == '__main__':
     #     json_file_paths=[
     #         '/home/cat/Documents/Art/detection/train.json',
     #         '/home/cat/Documents/COCO_Text-ok/detection/train.json',
-    #         '/home/cat/Documents/icdar2015-ok/detection/train.json',
+    #         # '/home/cat/Documents/icdar2015-ok/detection/train.json',
     #         '/home/cat/Documents/icdar2017rctw/icdar2017/detection/train.json',
     #         '/home/cat/Documents/ReCTS/detection/train.json',
     #     ],

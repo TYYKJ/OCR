@@ -10,20 +10,23 @@ from pytorch_lightning.callbacks import LearningRateMonitor
 from pytorch_lightning.callbacks import RichProgressBar
 from det import DBDetModel, DetDataModule
 import pytorch_lightning as pl
+import logging
 
+
+logging.getLogger("lightning").setLevel(logging.ERROR)
 pl.seed_everything(1997)
 
 model = DBDetModel(
-    encoder_name='resnet18',
-    lr=0.001,
+    encoder_name='resnet50',
+    lr=0.01,
     optimizer_name='sgd',
     weights='imagenet'
 )
 
 data = DetDataModule(
     train_data_path='/home/cat/Documents/ICDAR/ICDAR2019/train.json',
-    val_data_path='/home/cat/Documents/icdar2015-ok/detection/train.json',
-    batch_size=16,
+    val_data_path='/home/cat/Documents/ICDAR/ICDAR2017/val.json',
+    batch_size=32,
     num_workers=16
 )
 
@@ -33,7 +36,7 @@ early_stop = EarlyStopping(patience=20, monitor='hmean', mode='max')
 checkpoint_callback = ModelCheckpoint(
     monitor='hmean',
     mode='max',
-    dirpath='../weights',
+    dirpath='/home/cat/PycharmProjects/torch-ocr/tools/train/weights',
     filename='DB-' + model.encoder_name + '-{epoch:02d}-{hmean:.2f}-{recall:.2f}-{precision:.2f}',
     save_last=True,
 )
@@ -44,7 +47,7 @@ rp = RichProgressBar(leave=True)
 # DP 一机多卡
 trainer = pl.Trainer(
     # open this, must drop last
-    benchmark=True,
+    # benchmark=True,
     # gpus=2, strategy="ddp",
     gpus=[1],
     max_epochs=100,
