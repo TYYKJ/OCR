@@ -3,6 +3,7 @@
 # @File    : model
 # @Software: PyCharm
 # @explain :
+
 import pytorch_lightning as pl
 import torch
 
@@ -12,9 +13,15 @@ from ..optimizers import get_optimizer
 class DetModel(pl.LightningModule):
 
     def forward(self, x):
-        features = self.encoder(x)
-        features = self.neck(features)
-        features = self.head(features)
+        if self.finetune:
+            with torch.no_grad():
+                features = self.encoder(x)
+            features = self.neck(features)
+            features = self.head(features)
+        else:
+            features = self.encoder(x)
+            features = self.neck(features)
+            features = self.head(features)
 
         return features
 
