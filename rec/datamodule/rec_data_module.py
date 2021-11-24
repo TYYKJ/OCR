@@ -1,7 +1,8 @@
-from torch.utils.data import DataLoader
 import pytorch_lightning as pl
-from .rec_dataset import RecTextLineDataset, RecDataLoader
+from torch.utils.data import DataLoader
+
 from .rec_collate_fn import RecCollateFn
+from .rec_dataset import RecTextLineDataset, RecDataLoader
 
 
 class OCRDataModule(pl.LightningDataModule):

@@ -27,9 +27,11 @@ class DBDetModel(DetModel):
             train_loss_name: str = 'train_loss',
             val_loss_name: str = 'val_loss',
             weights: str = 'imagenet',
+            finetune: bool = False
     ):
         super(DBDetModel, self).__init__()
 
+        self.finetune = finetune
         self.save_hyperparameters()
 
         self.encoder_name = encoder_name

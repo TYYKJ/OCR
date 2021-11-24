@@ -39,15 +39,16 @@ model = CRNN(
 #### 训练
 
 - CRNN
-  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/rec_train/train.py
+    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/rec_train/train.py
 - DB
-  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/det_train/train.py
+    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/det_train/train.py
 
 #### 推理
+
 - CRNN
-  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/rec_infer.py
+    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/rec_infer.py
 - DB
-  - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/det_infer.py
+    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/det_infer.py
 
 ### 参数配置
 

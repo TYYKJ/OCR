@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2020/6/16 17:06
 # @Author  : zhoujun
-import torch
-import numpy as np
 import cv2
+import numpy as np
+import torch
 from torchvision import transforms
+
 from ..utils.rec_data_process import RecDataProcess
 
 

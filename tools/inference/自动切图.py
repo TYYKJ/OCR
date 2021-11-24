@@ -93,6 +93,7 @@ if __name__ == '__main__':
 
     start = time.time()
     bl, sl = model.predict(img)
+    print(sl)
     if len(bl) != 0:
         imgs = [get_rotate_crop_image(img, box) for box in bl]
         for index, im in enumerate(imgs):
@@ -101,4 +102,4 @@ if __name__ == '__main__':
     else:
         print('no image')
     end = time.time()
-    print(f'{end-start}s')
+    print(f'{end - start}s')

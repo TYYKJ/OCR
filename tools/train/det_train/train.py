@@ -12,22 +12,22 @@ from det import DBDetModel, DetDataModule
 import pytorch_lightning as pl
 import logging
 
-
 logging.getLogger("lightning").setLevel(logging.ERROR)
 pl.seed_everything(1997)
 
 model = DBDetModel(
-    encoder_name='resnet50',
+    encoder_name='dpn92',
     lr=0.01,
     optimizer_name='sgd',
-    weights='imagenet'
+    weights='imagenet+5k',
+    finetune=False
 )
 
 data = DetDataModule(
     train_data_path='/home/cat/Documents/ICDAR/ICDAR2019/train.json',
     val_data_path='/home/cat/Documents/ICDAR/ICDAR2017/val.json',
-    batch_size=32,
-    num_workers=16
+    batch_size=8,
+    num_workers=8
 )
 
 logger = WandbLogger()

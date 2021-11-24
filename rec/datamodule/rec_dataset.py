@@ -1,11 +1,11 @@
-import six
-import cv2
-import torch
-import numpy as np
-from PIL import Image
-from torch.utils.data import Dataset, DataLoader
-from ..utils import RecDataProcess, pil2cv, cv2pil
 import os
+
+import cv2
+import numpy as np
+import torch
+from torch.utils.data import Dataset, DataLoader
+
+from ..utils import RecDataProcess, pil2cv, cv2pil
 
 
 class RecTextLineDataset(Dataset):

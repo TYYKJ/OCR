@@ -1,4 +1,3 @@
-
 from torchvision import transforms
 from det import DBPostProcess, ResizeShortSize, DBDetModel
 
@@ -33,7 +32,6 @@ class DetInfer:
         else:
             box_list, score_list = [], []
         return box_list, score_list
-
 
 # if __name__ == '__main__':
 #     import cv2

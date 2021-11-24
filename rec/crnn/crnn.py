@@ -2,11 +2,11 @@ import pytorch_lightning as pl
 import torch.optim
 
 from ..encoders import get_encoder
-from ..necks import SequenceEncoder
 from ..heads import CTC
-from ..utils.label_convert import CTCLabelConverter
 from ..losses import CTCLoss
 from ..metric import RecMetric
+from ..necks import SequenceEncoder
+from ..utils.label_convert import CTCLabelConverter
 
 
 class CRNN(pl.LightningModule):
@@ -20,6 +20,8 @@ class CRNN(pl.LightningModule):
             train_loss_name: str = 'train_loss'
     ):
         super(CRNN, self).__init__()
+        # model = CRNN.load_from_checkpoint(PATH, alphabet_path='xxx')
+        self.save_hyperparameters(ignore=['alphabet_path'])
         self.encoder = get_encoder(encoder_name)
         self.neck = SequenceEncoder(in_channels=self.encoder.out_channels)
         self.head = CTC(self.neck.out_channels, classes)
