@@ -18,6 +18,7 @@ class DBDetModel(DetModel):
 
     def __init__(
             self,
+            pretrained_model_path: str,
             encoder_name: str = 'resnet50',
             thresh: float = 0.3,
             unclip_ratio: float = 1.5,
@@ -27,12 +28,13 @@ class DBDetModel(DetModel):
             train_loss_name: str = 'train_loss',
             val_loss_name: str = 'val_loss',
             weights: str = 'imagenet',
-            finetune: bool = False
     ):
         super(DBDetModel, self).__init__()
 
-        self.finetune = finetune
-        self.save_hyperparameters()
+        self.finetune = True if pretrained_model_path else False
+        self.pretrained_model_path = pretrained_model_path
+
+        self.save_hyperparameters(ignore='pretrained_model_path')
 
         self.encoder_name = encoder_name
 
