@@ -18,7 +18,7 @@ class ClassifyTrainer:
             model_name: str,
             classes_num: int,
             checkpoint_save_path: str,
-            resume_path: str | None = None
+            resume_path: str | None = None,
     ):
         pl.seed_everything(1997)
         self.checkpoint_save_path = checkpoint_save_path
@@ -38,7 +38,7 @@ class ClassifyTrainer:
             logger=self.logger
         )
 
-    def build_trainer(self, gpus: list, max_epochs: int, min_epochs: int = None):
+    def build_trainer(self, gpus: list, **kwargs):
         if len(gpus) >= 2:
             strategy = "ddp"
             gpus = len(gpus)
@@ -59,10 +59,9 @@ class ClassifyTrainer:
         trainer = pl.Trainer(
             gpus=gpus,
             strategy=strategy,
-            max_epochs=max_epochs,
-            min_epochs=min_epochs,
             logger=self.logger,
-            callbacks=[early_stop, checkpoint_callback, lr_monitor, rp]
+            callbacks=[early_stop, checkpoint_callback, lr_monitor, rp],
+            **kwargs
         )
 
         trainer.fit(self.model, self.datamodule, ckpt_path=self.resume_path)

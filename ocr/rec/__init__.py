@@ -87,8 +87,7 @@ class CRNNTrainer:
     def build_trainer(
             self,
             gpus: list,
-            max_epochs: int,
-            min_epochs: int | None = None,
+            **kwargs
     ):
         if len(gpus) >= 2:
             strategy = "ddp"
@@ -114,10 +113,9 @@ class CRNNTrainer:
         trainer = pl.Trainer(
             gpus=gpus,
             strategy=strategy,
-            max_epochs=max_epochs,
-            min_epochs=min_epochs,
             logger=logger,
             callbacks=[early_stop, checkpoint_callback, lr_monitor, rp],
+            **kwargs
         )
 
         trainer.fit(model, data, ckpt_path=self.resume_path)
