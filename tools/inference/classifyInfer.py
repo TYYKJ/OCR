@@ -27,7 +27,7 @@ class ClassifyInfer:
     def _load_model(self) -> ClassificationModel:
         return ClassificationModel.load_from_checkpoint(self.classify_model_path)
 
-    def get_classification_result(self, img: np.ndarray | Image):
+    def get_classification_result(self, img: np.ndarray | Image) -> str:
         if isinstance(img, np.ndarray):
             image = Image.fromarray(img)
             image = image.convert("RGB")
