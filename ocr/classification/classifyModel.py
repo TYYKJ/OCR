@@ -66,7 +66,7 @@ class ClassificationModel(pl.LightningModule):
 
         self.log('val_loss', value=loss, on_epoch=True)
         self.log('val_acc', value=val_acc, on_epoch=True)
-        self.wandb_logger.log_image(key="images", images=[grid])
+        self.wandb_logger.log_image(key=''.join(y[:6]), images=[grid])
 
     def configure_optimizers(self):
         return create_optimizer_v2(self.parameters(), opt='sgd', lr=0.01)
