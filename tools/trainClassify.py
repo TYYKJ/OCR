@@ -9,6 +9,7 @@ m = ClassifyTrainer(
     classes_num=2,
     checkpoint_save_path='/home/cat/PycharmProjects/OCR/weights',
     optimizer_name='adam',
-    lr=0.001
+    lr=0.001,
+    weight_decay=1e-4
 )
-m.build_trainer(gpus=[0, 1], max_epochs=100)
+m.build_trainer(gpus=[1], max_epochs=1)

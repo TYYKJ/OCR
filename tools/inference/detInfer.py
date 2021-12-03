@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import torch
 from torchvision import transforms
-
+import pytorch_lightning as pl
 from ocr.det import DBDetModel
 from ocr.det.detmodules import ResizeShortSize
 from ocr.det.postprocess import DBPostProcess
@@ -19,6 +19,7 @@ class DetInfer:
             device: str = 'cuda:0',
             threshold: float = 0.7
     ):
+        pl.seed_everything(1997)
         self.device = device
         self.det_model_path = det_model_path
         self.model = self._load_model()
@@ -122,9 +123,9 @@ class DetInfer:
         return [self._get_rotate_crop_image(img, box) for box in box_list] if box_list else None
 
 
-# if __name__ == '__main__':
-#     img = cv2.imread('/home/cat/PycharmProjects/OCR/tools/inference/test.jpg')
-#     d = DetInfer('/home/cat/PycharmProjects/OCR/weights/DB-dpn68-epoch=11-hmean=0.42-recall=0.33-precision=0.56.ckpt')
-#     imgs = d.get_img_text_area(img)
-#     for index, im in enumerate(imgs):
-#         cv2.imwrite(f'{index}.jpg', im)
+if __name__ == '__main__':
+    img = cv2.imread('/home/cat/PycharmProjects/OCR/tools/inference/test.jpg')
+    d = DetInfer('/home/cat/PycharmProjects/OCR/weights/DB-dpn68-epoch=11-hmean=0.42-recall=0.33-precision=0.56.ckpt')
+    imgs = d.get_img_text_area(img)
+    for index, im in enumerate(imgs):
+        cv2.imwrite(f'{index}.jpg', im)

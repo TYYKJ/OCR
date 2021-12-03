@@ -1,8 +1,8 @@
-<h1><p align="center" style="color: bisque">OCR</p></h1>
+<h1><p align="center" style="color: bisque">PL-OCR</p></h1>
 
 ## 简介
 
-基于PL的OCR检测识别。
+基于PytorchLightning的OCR检测识别以及分类。
 
 ## 文档
 
@@ -10,45 +10,18 @@
 
 ### 快速开始
 
-#### 检测模型
-
-```python
-from det import DBDetModel
-
-model = DBDetModel(
-    encoder_name='resnet50',
-    lr=0.001,
-    optimizer_name='adam',
-)
-```
-
-#### 识别模型
-
-```python
-from rec import CRNN
-
-model = CRNN(
-    # 类别+1
-    classes=3463 + 1,
-    encoder_name='resnet50vd',
-    lr=0.001,
-    alphabet_path='./dict.txt',
-)
-```
-
 #### 训练
+##### DB训练
+修改train.bash中第六行为 `python $(dirname $(readlink -f "$0"))/trainDet.py`
+使用`bash train.bash`进行训练
 
-- CRNN
-    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/rec_train/train.py
-- DB
-    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/train/det_train/train.py
+##### CRNN训练
+修改train.bash第六行为 `python $(dirname $(readlink -f "$0"))/trainCRNN.py`
+使用 `bash train.bash`进行训练
 
-#### 推理
-
-- CRNN
-    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/rec_infer.py
-- DB
-    - https://github.com/TYYKJ/torch-ocr/blob/master/tools/inference/det_infer.py
+##### 分类训练
+修改train.bash第六行为 `python $(dirname $(readlink -f "$0"))/trainClassify.py`
+使用 `bash train.bash`进行训练
 
 ### 参数配置
 
@@ -137,27 +110,9 @@ model = CRNN(
 </div>
 </details>
 
-#### 优化器
-
-本项目提供五种优化器方案, 具体配置可在实例化模型的时候填写, 默认优化器为Adam。 可用优化器:
-
-- adam
-- sparseadam
-- adamw
-- radam
-- plainradam
-
-### 工具包
-
-工具包中包含字典生成和数据集内容查看以及系统可用字体查看。 在使用matplotlib查看数据的时候,中文乱码问题可以使用系统自带的文字输入法来规避中文字符的乱码问题。
-
-#### 数据生成工具
-
-[数据生成文档](https://github.com/TYYKJ/limapOCR/blob/master/tools/generateBoat/README.md)
-
 ## 致谢
 
-本项目在开发过程中参考了 [PyTorchOCR](https://github.com/WenmuZhou/PytorchOCR/)项目以及 [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)项目,感谢大佬们的开源~
+本项目在开发过程中参考了 [PyTorchOCR](https://github.com/WenmuZhou/PytorchOCR/)以及 [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR),感谢大佬们的开源~
 
 
 

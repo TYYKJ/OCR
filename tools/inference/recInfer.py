@@ -1,7 +1,7 @@
 from __future__ import annotations
 import numpy as np
 import torch
-
+import pytorch_lightning as pl
 from ocr.rec import CRNN
 from ocr.rec.utils import RecDataProcess, CTCLabelConverter
 
@@ -17,6 +17,7 @@ class RecInfer:
             threshold: float = 0.7,
             device: str = 'cuda:0'
     ):
+        pl.seed_everything(1997)
         self.model_path = model_path
         self.dict_path = dict_path
 

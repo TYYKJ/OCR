@@ -31,6 +31,7 @@ class ClassificationDatamodule(pl.LightningDataModule):
         self.val_ds = get_dataset(val_root)
         self.bs = batch_size
         self.nw = num_workers
+        print(f'classes names: {self.train_ds.classes}')
 
     def train_dataloader(self) -> TRAIN_DATALOADERS:
         return DataLoader(
