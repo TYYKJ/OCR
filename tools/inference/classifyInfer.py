@@ -1,5 +1,4 @@
 from __future__ import annotations
-import cv2
 import numpy as np
 import torch
 from torchvision import transforms
@@ -51,6 +50,7 @@ class ClassifyInfer:
 
 
 # if __name__ == '__main__':
+#     import cv2
 #     imgt = cv2.imread('/home/cat/PycharmProjects/OCR/tools/inference/1.jpg')
 #     c = ClassifyInfer(classify_model_path='/home/cat/PycharmProjects/OCR/weights/Classify-resnet18-epoch=00-val_acc=0.89.ckpt', class_names=['0', '180'])
 #     name = c.get_classification_result(imgt)
