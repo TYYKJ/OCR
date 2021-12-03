@@ -3,6 +3,8 @@
 # @File    : dbnet
 # @Software: PyCharm
 # @explain :
+from __future__ import annotations
+
 __all__ = ['DBDetModel']
 
 from ..base import BaseModel
@@ -21,11 +23,10 @@ class DBDetModel(BaseModel):
             encoder_name: str = 'resnet50',
             thresh: float = 0.3,
             unclip_ratio: float = 1.5,
-            weight_decay: float = 1e-4,
             lr: float = 0.001,
             optimizer_name: str = 'sgd',
-            train_loss_name: str = 'train_loss',
-            val_loss_name: str = 'val_loss',
+            weight_decay: float | None = None,
+            momentum: float | None = None,
             weights: str = 'imagenet',
     ):
         super(DBDetModel, self).__init__()
@@ -38,9 +39,8 @@ class DBDetModel(BaseModel):
 
         self.lr = lr
         self.optimizer_name = optimizer_name
-        self.train_loss_name = train_loss_name
-        self.val_loss_name = val_loss_name
         self.weight_decay = weight_decay
+        self.momentum = momentum
 
         self.encoder = get_encoder(encoder_name, weights)
         self.neck = DBFpn(self.encoder.out_channels)

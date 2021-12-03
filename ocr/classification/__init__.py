@@ -18,11 +18,19 @@ class ClassifyTrainer:
             model_name: str,
             classes_num: int,
             checkpoint_save_path: str,
+            optimizer_name: str,
+            lr: float,
+            weight_decay: float | None = None,
+            momentum: float | None = None,
             resume_path: str | None = None,
     ):
         pl.seed_everything(1997)
         self.checkpoint_save_path = checkpoint_save_path
         self.resume_path = resume_path
+        self.optimizer_name = optimizer_name
+        self.lr = lr
+        self.weight_decay = weight_decay
+        self.momentum = momentum
 
         self.logger = WandbLogger(project='classify')
         self.datamodule = ClassificationDatamodule(
@@ -35,7 +43,11 @@ class ClassifyTrainer:
         self.model = ClassificationModel(
             classes_num=classes_num,
             model_name=model_name,
-            logger=self.logger
+            logger=self.logger,
+            optimizer_name=self.optimizer_name,
+            weight_decay=self.weight_decay,
+            momentum=self.momentum,
+            lr=self.lr
         )
 
     def build_trainer(self, gpus: list, **kwargs):
@@ -50,7 +62,7 @@ class ClassifyTrainer:
             monitor='val_acc',
             mode='max',
             dirpath=self.checkpoint_save_path,
-            filename=self.model.model_name + '-{epoch:02d}-{val_acc:.2f}',
+            filename='Classify-' + self.model.model_name + '-{epoch:02d}-{val_acc:.2f}',
             save_last=True,
         )
 

@@ -21,6 +21,8 @@ class DBTrainer:
             batch_size: int = 16,
             num_workers: int = 16,
             optimizer_name: str = 'sgd',
+            weight_decay: float | None = None,
+            momentum: float | None = None,
             weights: str = 'imagenet',
             resume_path: str | None = None,
     ):
@@ -32,6 +34,8 @@ class DBTrainer:
         self.val_data_path = val_data_path
         self.encoder_name = encoder_name
         self.lr = lr
+        self.weight_decay = weight_decay
+        self.momentum = momentum
         self.optimizer_name = optimizer_name
         self.weights = weights
         self.resume_path = resume_path
@@ -42,6 +46,8 @@ class DBTrainer:
             lr=self.lr,
             optimizer_name=self.optimizer_name,
             weights=self.weights,
+            weight_decay=self.weight_decay,
+            momentum=self.momentum
         )
 
     def load_datamodule(self):

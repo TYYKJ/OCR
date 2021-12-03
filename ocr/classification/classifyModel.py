@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytorch_lightning as pl
 import timm
 import torch
@@ -23,11 +24,19 @@ class ClassificationModel(pl.LightningModule):
             self,
             model_name: str,
             classes_num: int,
-            logger
+            optimizer_name: str,
+            lr: float,
+            logger,
+            weight_decay: float | None = None,
+            momentum: float | None = None,
     ):
         super(ClassificationModel, self).__init__()
         self.save_hyperparameters()
         self.model_name = model_name
+        self.optimizer_name = optimizer_name
+        self.lr = lr
+        self.weight_decay = weight_decay
+        self.momentum = momentum
         self.classes_num = classes_num
         self.wandb_logger = logger
         self.model = self.load_model()
@@ -58,15 +67,14 @@ class ClassificationModel(pl.LightningModule):
         out = self(x)
         loss = self.loss_fn(out, y)
 
-        sample_imgs = x[:6]
-        grid = torchvision.utils.make_grid(sample_imgs)
+        # sample_imgs = x[:6]
+        # grid = torchvision.utils.make_grid(sample_imgs)
 
         labels_hat = torch.argmax(out, dim=1)
         val_acc = torch.sum(y == labels_hat).item() / (len(y) * 1.0)
-
         self.log('val_loss', value=loss, on_epoch=True)
         self.log('val_acc', value=val_acc, on_epoch=True)
-        self.wandb_logger.log_image(key=''.join(y[:6]), images=[grid])
 
     def configure_optimizers(self):
-        return create_optimizer_v2(self.parameters(), opt='sgd', lr=0.01)
+        return create_optimizer_v2(self.parameters(), opt=self.optimizer_name, lr=self.lr,
+                                   weight_decay=self.weight_decay, momentum=self.momentum)

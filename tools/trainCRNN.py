@@ -15,9 +15,11 @@ m = CRNNTrainer(
     num_workers=8,
     optimizer_name='sgd',
     lr=0.001,
+    weight_decay=1e-4,
+    momentum=0.9
 )
 
 m.build_trainer(
     gpus=[0],
-    max_epochs=300,
+    max_epochs=1,
 )

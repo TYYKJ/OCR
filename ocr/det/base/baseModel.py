@@ -18,7 +18,7 @@ class BaseModel(pl.LightningModule):
         output = self.forward(data['img'])
         loss_dict = self.loss_func(output, batch)
 
-        self.log(name=self.train_loss_name, value=loss_dict['loss'])
+        self.log(name='train_loss', value=loss_dict['loss'])
         self.log(name='shrink_maps', value=loss_dict['loss_shrink_maps'])
         self.log(name='threshold_maps', value=loss_dict['loss_threshold_maps'])
         self.log(name='binary_maps', value=loss_dict['loss_binary_maps'])
@@ -42,6 +42,7 @@ class BaseModel(pl.LightningModule):
         return {'hmean': metric['fmeasure'].avg}
 
     def configure_optimizers(self):
-        optimizer = create_optimizer_v2(self.parameters(), opt=self.optimizer_name, lr=self.lr)
+        optimizer = create_optimizer_v2(self.parameters(), opt=self.optimizer_name,
+                                        lr=self.lr, weight_decay=self.weight_decay, momentum=self.momentum)
         lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max')
         return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": 'hmean'}

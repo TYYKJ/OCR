@@ -7,6 +7,8 @@ m = ClassifyTrainer(
     val_root='/home/cat/Documents/data/val',
     model_name='resnet18',
     classes_num=2,
-    checkpoint_save_path='/home/cat/PycharmProjects/OCR/weights'
+    checkpoint_save_path='/home/cat/PycharmProjects/OCR/weights',
+    optimizer_name='adam',
+    lr=0.001
 )
-m.build_trainer(gpus=[0], max_epochs=100)
+m.build_trainer(gpus=[0, 1], max_epochs=100)

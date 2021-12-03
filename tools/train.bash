@@ -3,4 +3,4 @@ PROJ_BIN=$(dirname "$BIN_FILE")
 PROJ_HOME=$(dirname $PROJ_BIN)
 
 export PYTHONPATH="${PYTHONPATH}:${PROJ_HOME}"
-python $(dirname $(readlink -f "$0"))/trainCRNN.py
+python $(dirname $(readlink -f "$0"))/trainClassify.py
