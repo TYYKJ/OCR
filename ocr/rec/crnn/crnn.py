@@ -7,7 +7,7 @@ from ..heads import CTC
 from ..losses import CTCLoss
 from ..metric import RecMetric
 from ..necks import SequenceEncoder
-from ..utils.label_convert import CTCLabelConverter
+from ..utils.labelConvert import CTCLabelConverter
 from ...utils import create_optimizer_v2
 
 

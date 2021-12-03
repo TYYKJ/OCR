@@ -1,1 +1,1 @@
-from .ctc_loss import CTCLoss
+from .ctcLoss import CTCLoss

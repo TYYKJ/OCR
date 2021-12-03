@@ -3,4 +3,4 @@
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
-from .det_metric import DetMetric
+from .detMetric import DetMetric

@@ -1,1 +1,1 @@
-from .ctc_head import CTC
+from .ctcHead import CTC
