@@ -1,28 +1,45 @@
-# @Time    : 2021/9/18 上午11:17
-# @Author  :
-# @File    : inference
-# @Software: PyCharm
-# @explain :
-import os
-
+from __future__ import annotations
 import numpy as np
 import torch
-from rec import CRNN, RecDataProcess, CTCLabelConverter
+
+from ocr.rec import CRNN
+from ocr.rec.utils import RecDataProcess, CTCLabelConverter
 
 
 class RecInfer:
-    def __init__(self, model_path, dict_path, batch_size=1):
-        CRNN(charset_path=dict_path, classes=18)
-        self.model = CRNN.load_from_checkpoint(model_path, charset_path=dict_path)
+    def __init__(
+            self,
+            model_path: str,
+            dict_path: str,
+            batch_size: int = 1,
+            std: float = 0.5,
+            mean: float = 0.5,
+            threshold: float = 0.7,
+            device: str = 'cuda:0'
+    ):
+        self.model_path = model_path
+        self.dict_path = dict_path
+
+        self.threshold = threshold
+
+        self.model = self._load_model()
+        self.model.to(device)
         self.model.eval()
         self.model.freeze()
 
-        self.process = RecDataProcess(input_h=32, mean=0.5, std=0.5)
+        self.process = RecDataProcess(input_h=32, mean=mean, std=std)
         self.converter = CTCLabelConverter(dict_path)
         self.batch_size = batch_size
+        self.device = device
 
-    def predict(self, imgs):
-        # 预处理根据训练来
+    def _load_model(self) -> CRNN:
+        """
+        加载模型
+        :return:
+        """
+        return CRNN.load_from_checkpoint(self.model_path, alphabet_path=self.dict_path)
+
+    def _predict(self, imgs: np.ndarray | list) -> list:
         if not isinstance(imgs, list):
             imgs = [imgs]
         imgs = [self.process.normalize_img(self.process.resize_with_specific_height(img)) for img in imgs]
@@ -35,7 +52,7 @@ class RecInfer:
             batch_imgs = np.stack(batch_imgs)
             tensor = torch.from_numpy(batch_imgs.transpose([0, 3, 1, 2])).float()
             with torch.no_grad():
-                out = self.model(tensor)
+                out = self.model(tensor.to(self.device))
                 out = out.softmax(dim=2)
             out = out.cpu().numpy()
             txts.extend([self.converter.decode(np.expand_dims(txt, 0)) for txt in out])
@@ -44,34 +61,24 @@ class RecInfer:
         out_txts = [txts[idx] for idx in idxs]
         return out_txts
 
-
-if __name__ == '__main__':
-    import cv2
-    from rec.utils import load
-    from tqdm import tqdm
-
-    # args = init_args()
-    data = load('/home/cat/文档/newcut/valcut.txt')
-    model = RecInfer(
-        '/home/cat/PycharmProjects/torch-ocr/tools/train/weights/CRNN-epoch=31-val_loss=2.82--eval_acc=0.31.ckpt',
-        dict_path='/home/cat/PycharmProjects/torch-ocr/tools/train/rec_train/dict.txt')
-    total = len(data)
-    correct = 0
-    not_correct_im = []
-    for item in tqdm(data[:100]):
-        im_name, label = item.split('\t')
-        im_path = os.path.join('/home/cat/文档/newcut/valcut',
-                               im_name)
-
-        img = cv2.imread(im_path)
-        out = model.predict(img)
-
-        if out[0][0][0] == label:
-            correct += 1
+    def _filter_text(self, imgs: np.ndarray | list) -> list | None:
+        result = self._predict(imgs)
+        filter_result = []
+        if len(result) != 0:
+            for item in result:
+                text, score = item[0]
+                filter_result.append(''.join([x for index, x in enumerate(text) if score[index] > self.threshold]))
+            return filter_result
         else:
-            not_correct_im.append(
-                [im_name, label, out[0][0][0]]
-            )
-    for item in not_correct_im:
-        print(item)
-    print((correct / total) * 100, '%')
+            return
+
+    def get_text(self, imgs: np.ndarray | list) -> list:
+        result = self._filter_text(imgs)
+        return result
+
+
+# if __name__ == '__main__':
+#     import cv2
+#     im = cv2.imread('/home/cat/Documents/icdar2015-ok/recognition/test/img_40_1.jpg')
+#     rec = RecInfer(model_path='../../weights/CRNN-resnet50vd-epoch=109-val_acc=0.40.ckpt', dict_path='/home/cat/Documents/icdar2017rctw/icdar2017/recognition/dict.txt')
+#     print(rec.get_text(im))
