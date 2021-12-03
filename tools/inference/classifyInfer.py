@@ -14,7 +14,6 @@ class ClassifyInfer:
             classify_model_path: str,
             class_names: list,
             device: str = 'cuda:0',
-            threshold: float = 0.7
     ):
         pl.seed_everything(1997)
         self.device = device
@@ -23,7 +22,6 @@ class ClassifyInfer:
         self.model.to(device)
         self.model.eval()
         self.model.freeze()
-        self.threshold = threshold
         self.classes_names = class_names
 
     def _load_model(self) -> ClassificationModel:
