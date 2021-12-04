@@ -18,11 +18,11 @@ class CRNN(pl.LightningModule):
             encoder_name: str,
             classes: int,
             alphabet_path: str,
-            lr: float,
-            momentum: float,
-            weight_decay: float,
             optimizer_name: str,
             logger: WandbLogger,
+            lr: float,
+            weight_decay: float = 0.,
+            momentum: float = 0.9,
     ):
         super(CRNN, self).__init__()
         self.save_hyperparameters(ignore=['alphabet_path'])
