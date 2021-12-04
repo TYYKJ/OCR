@@ -27,8 +27,8 @@ class ClassificationModel(pl.LightningModule):
             optimizer_name: str,
             lr: float,
             logger,
-            weight_decay: float | None = None,
-            momentum: float | None = None,
+            weight_decay: float = 0.,
+            momentum: float = 0.9,
     ):
         super(ClassificationModel, self).__init__()
         self.save_hyperparameters()
