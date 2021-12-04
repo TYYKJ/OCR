@@ -25,8 +25,8 @@ class DBDetModel(BaseModel):
             unclip_ratio: float = 1.5,
             lr: float = 0.001,
             optimizer_name: str = 'sgd',
-            weight_decay: float | None = None,
-            momentum: float | None = None,
+            weight_decay: float = 0.,
+            momentum: float = 0.9,
             weights: str = 'imagenet',
     ):
         super(DBDetModel, self).__init__()
