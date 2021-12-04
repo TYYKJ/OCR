@@ -21,8 +21,8 @@ class DBTrainer:
             batch_size: int = 16,
             num_workers: int = 16,
             optimizer_name: str = 'sgd',
-            weight_decay: float | None = None,
-            momentum: float | None = None,
+            weight_decay: float = 0.,
+            momentum: float = 0.9,
             weights: str = 'imagenet',
             resume_path: str | None = None,
     ):

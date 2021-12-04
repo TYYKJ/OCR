@@ -28,8 +28,8 @@ class CRNNTrainer:
             num_workers: int = 16,
             optimizer_name: str = 'sgd',
             lr: float = 0.001,
+            weight_decay: float = 0.,
             momentum: float = 0.9,
-            weight_decay: float = 1e-4,
             weights: str = 'imagenet',
             resume_path: str | None = None,
     ):
