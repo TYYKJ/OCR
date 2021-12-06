@@ -6,6 +6,9 @@ from ocr.rec import CRNN
 from ocr.rec.utils import RecDataProcess, CTCLabelConverter
 
 
+__all__ = ['RecInfer']
+
+
 class RecInfer:
     def __init__(
             self,
@@ -76,10 +79,3 @@ class RecInfer:
     def get_text(self, imgs: np.ndarray | list) -> list:
         result = self._filter_text(imgs)
         return result
-
-
-# if __name__ == '__main__':
-#     import cv2
-#     im = cv2.imread('/home/cat/Documents/icdar2015-ok/recognition/test/img_40_1.jpg')
-#     rec = RecInfer(model_path='../../weights/CRNN-resnet50vd-epoch=109-val_acc=0.40.ckpt', dict_path='/home/cat/Documents/icdar2017rctw/icdar2017/recognition/dict.txt')
-#     print(rec.get_text(im))
