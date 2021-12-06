@@ -39,7 +39,7 @@ class Inference:
         if cut_imgs:
             for index, cut_img in enumerate(cut_imgs):
                 if self.angle:
-                    if self.angle.get_classification_result(Image.fromarray(cut_img)) == '0':
+                    if self.angle.get_classification_result(cut_img) == '0':
                         if cut_image_save_path:
                             cv2.imwrite(f'{cut_image_save_path}/{index}.jpg', cut_img)
                         result.append(self.rec.get_text(cut_img))
