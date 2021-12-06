@@ -7,6 +7,9 @@ from PIL import Image
 import pytorch_lightning as pl
 
 
+__all__ = ['ClassifyInfer']
+
+
 class ClassifyInfer:
     def __init__(
             self,
@@ -31,7 +34,7 @@ class ClassifyInfer:
             image = Image.fromarray(img)
             image = image.convert("RGB")
         else:
-            image = img.convert("RGB")
+            image = img
 
         transform = transforms.Compose([
             transforms.Resize(256),
@@ -39,7 +42,6 @@ class ClassifyInfer:
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         image = transform(image)
         image = image.unsqueeze(0)
         with torch.no_grad():
@@ -47,11 +49,3 @@ class ClassifyInfer:
         pre = torch.nn.functional.softmax(pre[0], dim=0)
         pre = pre.cpu().numpy()
         return self.classes_names[np.argmax(pre)]
-
-
-# if __name__ == '__main__':
-#     import cv2
-#     imgt = cv2.imread('/home/cat/PycharmProjects/OCR/tools/inference/1.jpg')
-#     c = ClassifyInfer(classify_model_path='/home/cat/PycharmProjects/OCR/weights/Classify-resnet18-epoch=00-val_acc=0.89.ckpt', class_names=['0', '180'])
-#     name = c.get_classification_result(imgt)
-#     print(name)
