@@ -27,7 +27,7 @@ class RecDatasetTools:
         with open(txt_path, 'r') as f:
             content = f.readlines()
 
-        with open('test-no-space.txt', 'w') as f:
+        with open('train-no-space.txt', 'w') as f:
             for line in tqdm(content, desc='write info:'):
                 data = line.split('\t')
                 image_name = data[0]
@@ -86,7 +86,7 @@ class RecDatasetTools:
                 txt = f'{x}\t{y}\n'
                 f.write(txt)
 
-        with open('val.txt', 'w') as f:
+        with open('train.txt', 'w') as f:
             for x, y in zip(X_test, y_test):
                 y = y.strip('\n')
                 txt = f'{x}\t{y}\n'
@@ -102,20 +102,57 @@ class RecDatasetTools:
                 im = cv2.imread(os.path.join(img_path, img_name))
                 try:
                     _ = im.shape
-                    label = label.strip('\n')
-                    annos.append(f'{img_name}\t{label}\n')
+                    # label = label.strip('\n')
+                    # annos.append(f'{img_name}\t{label}\n')
                 except AttributeError:
                     print(img_name)
-        with open('val.txt', 'w') as f:
-            for item in annos:
-                f.write(item)
+        # with open('train.txt', 'w') as f:
+        #     for item in annos:
+        #         f.write(item)
+
+    @staticmethod
+    def del_info2(txt_path):
+        with open(txt_path, 'r') as f:
+            content = f.readlines()
+
+        with open('train.txt', 'w') as f:
+            for line in tqdm(content, desc='write info:'):
+                data = line.split('\t')
+                image_name = '/'.join(data[0].split('\\')[3:])
+                label = data[1]
+                write_content = image_name + '\t' + label + '\n'
+                f.write(write_content)
+
+    @staticmethod
+    def get_img_mean_std(txt_path):
+        with open(txt_path, 'r') as f:
+            content = f.readlines()
+
+        mean_list, std_list = [], []
+        for line in tqdm(content, desc='write info:'):
+            data = line.split('\t')
+            image_name = '/home/cat/Documents/all/' + data[0]
+            im = cv2.imread(image_name)
+
+            try:
+                (mean, stddv) = cv2.meanStdDev(im)
+                mean_list.append(mean[0])
+                std_list.append(stddv[0])
+            except cv2.error:
+                print(image_name)
+
+        print(sum(mean_list) / len(mean_list) / 255)
+        print(sum(std_list) / len(std_list) / 255)
 
 
 if __name__ == '__main__':
     tool = RecDatasetTools()
-    # tool.check_rec_dataset('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/val.txt',
+    tool.check_rec_dataset('/home/cat/Documents/all/train-no-space.txt', '/home/cat/Documents/all')
+    # tool.del_info2('/home/cat/Documents/all/train.txt')
+    # tool.check_rec_dataset('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt',
     #                        '/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train')
-    tool.make_dict('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt')
+    # tool.get_img_mean_std('/home/cat/Documents/all/train-no-space.txt')
+    # tool.get_img_mean_std('/home/cat/Documents/all/train.txt')
     # tool.split_dataset('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train-no-space.txt')
-    # tool.del_space('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt')
+    # tool.del_space('/home/cat/Documents/all/train.txt')
     # tool.del_info('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt')

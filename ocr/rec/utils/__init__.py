@@ -1,3 +1,3 @@
 from .createAug import *
-from .recDataProcess import RecDataProcess
 from .labelConvert import CTCLabelConverter
+from .recDataProcess import RecDataProcess

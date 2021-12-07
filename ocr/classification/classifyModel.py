@@ -1,10 +1,10 @@
 from __future__ import annotations
+
 import pytorch_lightning as pl
 import timm
 import torch
 import torch.nn as nn
 import torchmetrics
-import torchvision
 
 from ..utils import create_optimizer_v2
 
