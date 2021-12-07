@@ -1,4 +1,4 @@
-from ocr.det import DBTrainer
+from ocr import DBTrainer
 
 m = DBTrainer(
     train_data_path='/home/cat/Documents/ICDAR/ICDAR2019/train.json',

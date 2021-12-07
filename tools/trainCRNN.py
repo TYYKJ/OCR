@@ -1,4 +1,4 @@
-from ocr.rec import CRNNTrainer
+from ocr import CRNNTrainer
 
 m = CRNNTrainer(
     encoder_name='resnet50vd',
