@@ -7,7 +7,7 @@ from pytorch_lightning.loggers import WandbLogger
 from .crnn import CRNN
 from .datamodule import RecDataModule
 
-__all__ = ['CRNNTrainer']
+__all__ = ['CRNNTrainer', 'CRNN']
 
 
 class CRNNTrainer:

@@ -2,7 +2,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 import pytorch_lightning as pl
-from ocr.rec import CRNN
+from ocr import CRNN
 from ocr.rec.utils import RecDataProcess, CTCLabelConverter
 
 

@@ -7,7 +7,7 @@ import numpy as np
 import torch
 from torchvision import transforms
 import pytorch_lightning as pl
-from ocr.det import DBDetModel
+from ocr import DBDetModel
 from ocr.det.detmodules import ResizeShortSize
 from ocr.det.postprocess import DBPostProcess
 

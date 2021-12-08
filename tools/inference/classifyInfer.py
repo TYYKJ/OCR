@@ -2,7 +2,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 from torchvision import transforms
-from ocr.classification import ClassificationModel
+from ocr import ClassificationModel
 from PIL import Image
 import pytorch_lightning as pl
 
