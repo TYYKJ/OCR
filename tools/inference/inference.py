@@ -60,6 +60,7 @@ class Inference:
         """
         if not isinstance(img, np.ndarray):
             img = np.asarray(img)
+            img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
         result = []
 
