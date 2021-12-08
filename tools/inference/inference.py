@@ -12,26 +12,52 @@ from recInfer import RecInfer
 
 
 class Inference:
+    """OCR两阶段推理
+
+    Attributes:
+        det_model_path: 检测模型路径
+        rec_model_path: 识别模型路径
+        device：推理设备
+        dict_path：字典路径
+        classify_classes：分类类别数
+        angle_model_path：角度分类模型路径
+        std：方差
+        mean：均值
+        threshold：阈值
+    """
+
     def __init__(
             self,
             det_model_path: str,
             rec_model_path: str,
             device: str,
             dict_path: str,
-            classes: list | None,
+            classify_classes: str | None = None,
             angle_model_path: str | None = None,
             std: float = 0.5,
             mean: float = 0.5,
             threshold: float = 0.7,
     ):
+        if classify_classes is None:
+            classify_classes = []
         self.det = DetInfer(det_model_path=det_model_path, device=device, threshold=threshold)
         self.rec = RecInfer(model_path=rec_model_path, dict_path=dict_path, batch_size=1,
                             std=std, mean=mean, threshold=threshold, device=device)
         self.angle = ClassifyInfer(classify_model_path=angle_model_path,
-                                   class_names=classes) if angle_model_path else None
+                                   class_names=classify_classes) if angle_model_path else None
 
     def infer(self, img: Image | np.ndarray, img_save_name: str, cut_image_save_path: str | None = None) -> list:
+        """
+        返回推理结果
 
+        Args:
+            img: 图像
+            img_save_name: 保存名称
+            cut_image_save_path: 保存路径
+
+        Returns:
+            返回文字列表或空列表
+        """
         if not isinstance(img, np.ndarray):
             img = np.asarray(img)
 
