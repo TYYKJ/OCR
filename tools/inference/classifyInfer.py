@@ -1,11 +1,12 @@
 from __future__ import annotations
-import numpy as np
-import torch
-from torchvision import transforms
-from ocr import ClassificationModel
-from PIL import Image
-import pytorch_lightning as pl
 
+import numpy as np
+import pytorch_lightning as pl
+import torch
+from PIL import Image
+from torchvision import transforms
+
+from ocr import ClassificationModel
 
 __all__ = ['ClassifyInfer']
 

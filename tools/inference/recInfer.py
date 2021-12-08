@@ -1,10 +1,11 @@
 from __future__ import annotations
+
 import numpy as np
-import torch
 import pytorch_lightning as pl
+import torch
+
 from ocr import CRNN
 from ocr.rec.utils import RecDataProcess, CTCLabelConverter
-
 
 __all__ = ['RecInfer']
 
