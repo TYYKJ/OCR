@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 import cv2
 import numpy as np
 from PIL import Image
@@ -28,7 +30,7 @@ class Inference:
         self.angle = ClassifyInfer(classify_model_path=angle_model_path,
                                    class_names=classes) if angle_model_path else None
 
-    def infer(self, img: Image | np.ndarray, cut_image_save_path: str | None = None) -> list:
+    def infer(self, img: Image | np.ndarray, img_save_name: str, cut_image_save_path: str | None = None) -> list:
 
         if not isinstance(img, np.ndarray):
             img = np.asarray(img)
@@ -41,16 +43,16 @@ class Inference:
                 if self.angle:
                     if self.angle.get_classification_result(cut_img) == '0':
                         if cut_image_save_path:
-                            cv2.imwrite(f'{cut_image_save_path}/{index}.jpg', cut_img)
+                            cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
                         result.append(self.rec.get_text(cut_img))
                     else:
                         cut_img = cv2.flip(cut_img, -1)
                         if cut_image_save_path:
-                            cv2.imwrite(f'{cut_image_save_path}/{index}.jpg', cut_img)
+                            cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
                         result.append(self.rec.get_text(cut_img))
                 else:
                     if cut_image_save_path:
-                        cv2.imwrite(f'{cut_image_save_path}/{index}.jpg', cut_img)
+                        cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
                     result.append(self.rec.get_text(cut_img))
 
         return result
