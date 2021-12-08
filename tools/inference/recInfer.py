@@ -78,5 +78,4 @@ class RecInfer:
             return
 
     def get_text(self, imgs: np.ndarray | list) -> list:
-        result = self._filter_text(imgs)
-        return result
+        return self._filter_text(imgs)
