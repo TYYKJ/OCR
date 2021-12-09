@@ -53,7 +53,6 @@ class ClassificationModel(pl.LightningModule):
         return x
 
     def training_step(self, batch, batch_idx):
-        print(self)
         img, label = batch
         out = self.forward(img)
         loss = self.loss_fn(out, label)
