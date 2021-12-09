@@ -43,7 +43,6 @@ class ClassifyTrainer:
         self.model = ClassificationModel(
             classes_num=classes_num,
             model_name=model_name,
-            logger=self.logger,
             optimizer_name=self.optimizer_name,
             weight_decay=self.weight_decay,
             momentum=self.momentum,

@@ -1,6 +1,5 @@
 import pytorch_lightning as pl
 import torch
-from pytorch_lightning.loggers import WandbLogger
 
 from ..encoders import get_encoder
 from ..heads import CTC
@@ -15,12 +14,11 @@ class CRNN(pl.LightningModule):
 
     def __init__(
             self,
-            encoder_name: str,
             classes: int,
             alphabet_path: str,
-            optimizer_name: str,
-            logger: WandbLogger,
-            lr: float,
+            encoder_name: str = 'resnet18vd',
+            optimizer_name: str = 'sgd',
+            lr: float = 0.01,
             weight_decay: float = 0.,
             momentum: float = 0.9,
     ):
@@ -38,7 +36,6 @@ class CRNN(pl.LightningModule):
         self.metric = RecMetric(self.converter)
 
         self.lr = lr
-        self.wandb_logger = logger
 
     def forward(self, x):
         features = self.encoder(x)

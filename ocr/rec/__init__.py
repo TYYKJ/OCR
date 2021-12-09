@@ -72,7 +72,7 @@ class CRNNTrainer:
             use_augmentation=self.use_augmentation
         )
 
-    def build_model(self, logger: WandbLogger):
+    def build_model(self):
         return CRNN(
             encoder_name=self.encoder_name,
             lr=self.lr,
@@ -81,7 +81,6 @@ class CRNNTrainer:
             momentum=self.momentum,
             weight_decay=self.weight_decay,
             optimizer_name=self.optimizer_name,
-            logger=logger
         )
 
     def build_trainer(
@@ -95,7 +94,7 @@ class CRNNTrainer:
         else:
             strategy = None
         logger = WandbLogger(name='CRNN')
-        model = self.build_model(logger=logger)
+        model = self.build_model()
         data = self.load_datamodule()
 
         early_stop = EarlyStopping(patience=20, monitor='val_acc', mode='max')

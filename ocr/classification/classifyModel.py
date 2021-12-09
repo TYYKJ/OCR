@@ -22,11 +22,10 @@ def get_model(model_name: str, num_classes: int):
 class ClassificationModel(pl.LightningModule):
     def __init__(
             self,
-            model_name: str,
             classes_num: int,
-            optimizer_name: str,
-            lr: float,
-            logger,
+            model_name: str = 'resnet18',
+            optimizer_name: str = 'sgd',
+            lr: float = 0.001,
             weight_decay: float = 0.,
             momentum: float = 0.9,
     ):
@@ -38,7 +37,6 @@ class ClassificationModel(pl.LightningModule):
         self.weight_decay = weight_decay
         self.momentum = momentum
         self.classes_num = classes_num
-        self.wandb_logger = logger
         self.model = self.load_model()
         self.loss_fn = nn.CrossEntropyLoss()
         self.metric = torchmetrics.Accuracy()
@@ -55,6 +53,7 @@ class ClassificationModel(pl.LightningModule):
         return x
 
     def training_step(self, batch, batch_idx):
+        print(self)
         img, label = batch
         out = self.forward(img)
         loss = self.loss_fn(out, label)
