@@ -7,7 +7,8 @@ rec_model_path: '/home/cat/PycharmProjects/OCR/weights/CRNN-resnet50vd-epoch=109
 angle_model_path: '/home/cat/PycharmProjects/OCR/weights/Classify-efficientnetv2_s-epoch=24-val_acc=0.95.ckpt'
 device: 'cuda'
 dict_path: '/home/cat/Documents/icdar2017rctw/icdar2017/recognition/dict.txt'
-classes: ['0', '180']
+angle_classes: ['0', '180']
+object_classes: ['0', '180']
 cut_image_save_path: '/home/cat/PycharmProjects/OCR/tools/deployBackend'
 need_angle: '180'
 need_object: '180'
