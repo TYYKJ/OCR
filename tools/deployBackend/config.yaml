@@ -9,3 +9,5 @@ device: 'cuda'
 dict_path: '/home/cat/Documents/icdar2017rctw/icdar2017/recognition/dict.txt'
 classes: ['0', '180']
 cut_image_save_path: '/home/cat/PycharmProjects/OCR/tools/deployBackend'
+need_angle: '180'
+need_object: '180'

@@ -32,26 +32,49 @@ class Inference:
             rec_model_path: str,
             device: str,
             dict_path: str,
-            classify_classes: str | None = None,
-            angle_model_path: str | None = None,
             std: float = 0.5,
             mean: float = 0.5,
             threshold: float = 0.7,
+            **kwargs,
     ):
-        if classify_classes is None:
-            classify_classes = []
+
+        angle_classes: list | None = kwargs.get('angle_classes')
+        object_classes: list | None = kwargs.get('object_classes')
+        angle_classify_model_path: str | None = kwargs.get('angle_classify_model_path')
+        object_classify_model_path: str | None = kwargs.get('object_classify_model_path')
+
         self.det = DetInfer(det_model_path=det_model_path, device=device, threshold=threshold)
         self.rec = RecInfer(model_path=rec_model_path, dict_path=dict_path, batch_size=1,
                             std=std, mean=mean, threshold=threshold, device=device)
-        self.angle = ClassifyInfer(classify_model_path=angle_model_path,
-                                   class_names=classify_classes) if angle_model_path else None
 
-    def infer(self, img: Image | np.ndarray, img_save_name: str, cut_image_save_path: str | None = None) -> list:
+        if angle_classes and angle_classify_model_path:
+            self.angle = ClassifyInfer(classify_model_path=angle_classify_model_path,
+                                       class_names=angle_classes)
+        else:
+            self.angle = None
+
+        if object_classes and object_classify_model_path:
+            self.object = ClassifyInfer(
+                classify_model_path=object_classify_model_path,
+                class_names=object_classes
+            )
+        else:
+            self.object = None
+
+    def infer(
+            self,
+            img: Image | np.ndarray,
+            need_angle: str,
+            need_object: str,
+            img_save_name: str,
+            cut_image_save_path: str | None = None) -> list:
         """
         返回推理结果
 
         Args:
             img: 图像
+            need_angle: 需要的图像角度
+            need_object: 需要的文字类型
             img_save_name: 保存名称
             cut_image_save_path: 保存路径
 
@@ -67,19 +90,21 @@ class Inference:
         cut_imgs = self.det.get_img_text_area(img)
         if cut_imgs:
             for index, cut_img in enumerate(cut_imgs):
-                if self.angle:
-                    if self.angle.get_classification_result(cut_img) == '0':
-                        if cut_image_save_path:
-                            cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
-                        result.append(self.rec.get_text(cut_img))
-                    else:
-                        cut_img = cv2.flip(cut_img, -1)
-                        if cut_image_save_path:
-                            cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
-                        result.append(self.rec.get_text(cut_img))
-                else:
-                    if cut_image_save_path:
-                        cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
-                    result.append(self.rec.get_text(cut_img))
+                if self.object:
+                    if self.object.get_classification_result(cut_img) == need_object:
+                        if self.angle:
+                            if self.angle.get_classification_result(cut_img) == need_angle:
+                                if cut_image_save_path:
+                                    cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
+                                result.append(self.rec.get_text(cut_img))
+                            else:
+                                cut_img = cv2.flip(cut_img, -1)
+                                if cut_image_save_path:
+                                    cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
+                                result.append(self.rec.get_text(cut_img))
+                        else:
+                            if cut_image_save_path:
+                                cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
+                            result.append(self.rec.get_text(cut_img))
 
         return result

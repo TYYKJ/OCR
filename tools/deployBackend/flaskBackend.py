@@ -22,7 +22,9 @@ def stream_predict():
     result = model.infer(
         img=img,
         img_save_name=request.values.get('saveName'),
-        cut_image_save_path=config['cut_image_save_path']
+        cut_image_save_path=config['cut_image_save_path'],
+        need_angle=config['need_angle'],
+        need_object=config['need_object']
     )
     return jsonify({'status': 1, 'result': result})
 
@@ -35,9 +37,13 @@ if __name__ == "__main__":
         model = Inference(
             det_model_path=config['det_model_path'],
             rec_model_path=config['rec_model_path'],
-            angle_model_path=config['angle_model_path'], device=config['device'],
+            device=config['device'],
             dict_path=config['dict_path'],
-            classify_classes=config['classes'], std=0.5, mean=0.5, threshold=0.7
+            classify_classes=config['classes'], std=0.5, mean=0.5, threshold=0.7,
+            angle_classes=['0', '180'],
+            angle_classify_model_path=config['angle_model_path'],
+            object_classes=None,
+            object_classify_model_path=None
         )
         # start child thread as worker
         if len(config['device']) > 1:
