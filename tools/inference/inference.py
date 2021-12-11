@@ -6,9 +6,9 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from classifyInfer import ClassifyInfer
-from detInfer import DetInfer
-from recInfer import RecInfer
+from .classifyInfer import ClassifyInfer
+from .detInfer import DetInfer
+from .recInfer import RecInfer
 
 
 class Inference:
