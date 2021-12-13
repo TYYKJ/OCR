@@ -46,9 +46,9 @@ if __name__ == "__main__":
             object_classify_model_path=None
         )
         # start child thread as worker
-        if len(config['device']) > 1:
-            streamer = Streamer(model.infer, batch_size=64, max_latency=0.1, cuda_devices=tuple(config['device']),
-                                worker_num=len(config['device']))
+        if len(config['gpus']) > 1:
+            streamer = Streamer(model.infer, batch_size=64, max_latency=0.1, cuda_devices=tuple(config['gpus']),
+                                worker_num=len(config['gpus']))
         else:
             streamer = ThreadedStreamer(model.infer, batch_size=64, max_latency=0.1)
 
