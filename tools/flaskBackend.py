@@ -39,7 +39,7 @@ if __name__ == "__main__":
             rec_model_path=config['rec_model_path'],
             device=config['device'],
             dict_path=config['dict_path'],
-            std=0.5, mean=0.5, threshold=0.7,
+            rec_std=0.5, rec_mean=0.5, threshold=0.7,
             angle_classes=config['angle_classes'],
             angle_classify_model_path=config['angle_model_path'],
             object_classes=None,

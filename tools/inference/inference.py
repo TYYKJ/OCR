@@ -32,8 +32,8 @@ class Inference:
             rec_model_path: str,
             device: str,
             dict_path: str,
-            std: float = 0.5,
-            mean: float = 0.5,
+            rec_std: float = 0.5,
+            rec_mean: float = 0.5,
             threshold: float = 0.7,
             **kwargs,
     ):
@@ -45,7 +45,7 @@ class Inference:
 
         self.det = DetInfer(det_model_path=det_model_path, device=device, threshold=threshold)
         self.rec = RecInfer(model_path=rec_model_path, dict_path=dict_path, batch_size=1,
-                            std=std, mean=mean, threshold=threshold, device=device)
+                            std=rec_std, mean=rec_mean, threshold=threshold, device=device)
 
         if angle_classes and angle_classify_model_path:
             self.angle = ClassifyInfer(classify_model_path=angle_classify_model_path,
