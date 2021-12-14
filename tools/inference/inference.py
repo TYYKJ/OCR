@@ -95,12 +95,14 @@ class Inference:
                         if self.angle:
                             if self.angle.get_classification_result(cut_img) == need_angle:
                                 if cut_image_save_path:
-                                    cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
+                                    cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'),
+                                                cut_img)
                                 result.append(self.rec.get_text(cut_img))
                             else:
                                 cut_img = cv2.flip(cut_img, -1)
                                 if cut_image_save_path:
-                                    cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'), cut_img)
+                                    cv2.imwrite(os.path.join(cut_image_save_path, f'{img_save_name}_{index}.jpg'),
+                                                cut_img)
                                 result.append(self.rec.get_text(cut_img))
                         else:
                             if cut_image_save_path:
