@@ -16,10 +16,12 @@ m = CRNNTrainer(
     optimizer_name='sgd',
     lr=0.001,
     weight_decay=1e-8,
-    momentum=0.9
+    momentum=0.9,
+    resume_path='../weights/CRNN-resnet50vd-epoch=00-val_acc=0.18.ckpt',
+    use_augmentation=True
 )
 
 m.build_trainer(
-    gpus=[0],
-    max_epochs=1,
+    gpus=[1],
+    max_epochs=200,
 )

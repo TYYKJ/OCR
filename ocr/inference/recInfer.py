@@ -4,8 +4,8 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 
-from ocr import CRNN
-from ocr.rec.utils import RecDataProcess, CTCLabelConverter
+from ..rec import CRNN
+from ..rec.utils import RecDataProcess, CTCLabelConverter
 
 __all__ = ['RecInfer']
 
@@ -21,7 +21,7 @@ class RecInfer:
             threshold: float = 0.7,
             device: str = 'cuda:0'
     ):
-        pl.seed_everything(1997)
+        # pl.seed_everything(1997)
         self.model_path = model_path
         self.dict_path = dict_path
 
@@ -30,7 +30,7 @@ class RecInfer:
         self.model = self._load_model()
         self.model.to(device)
         self.model.eval()
-        self.model.freeze()
+        # self.model.freeze()
 
         self.process = RecDataProcess(input_h=32, mean=mean, std=std)
         self.converter = CTCLabelConverter(dict_path)

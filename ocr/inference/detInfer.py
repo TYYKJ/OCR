@@ -1,31 +1,34 @@
-import json
+from __future__ import annotations
+
+from typing import Tuple, List, Any
 
 import cv2
 import numpy as np
+import pytorch_lightning as pl
 import torch
-from labelme import utils
 from torchvision import transforms
 
-from ocr.det import DBDetModel
-from ocr.det.detmodules import ResizeShortSize
-from ocr.det.postprocess import DBPostProcess
+from ..det import DBDetModel
+from ..det.detmodules import ResizeShortSize
+from ..det.postprocess import DBPostProcess
+
+__all__ = ['DetInfer']
 
 
-class AutoLabel:
+class DetInfer:
     def __init__(
             self,
             det_model_path: str,
-            label_save_path: str,
             device: str = 'cuda:0',
-            threshold: float = 0.7,
+            threshold: float = 0.7
     ):
+        # pl.seed_everything(1997)
         self.device = device
-        self.label_save_path = label_save_path
         self.det_model_path = det_model_path
-        self.model = self.load_model()
+        self.model = self._load_model()
         self.model.to(device)
         self.model.eval()
-        self.model.freeze()
+        # self.model.freeze()
         self.threshold = threshold
         self.resize = ResizeShortSize(736, False)
         self.post_process = DBPostProcess()
@@ -34,14 +37,22 @@ class AutoLabel:
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
 
-    def classification(self, img: np.ndarray):
-        ...
-
-    def load_model(self):
+    def _load_model(self) -> DBDetModel:
+        """
+        加载模型
+        :return: DBDetModel类
+        """
         return DBDetModel.load_from_checkpoint(self.det_model_path)
 
     @staticmethod
-    def get_rotate_crop_image(img: np.ndarray, points: np.ndarray):
+    def _get_rotate_crop_image(img: np.ndarray, points: np.ndarray) -> np.ndarray:
+        """
+        旋转
+
+        :param img:
+        :param points:
+        :return:
+        """
         points = points.astype(np.float32)
         img_crop_width = int(
             max(
@@ -65,7 +76,12 @@ class AutoLabel:
             dst_img = np.rot90(dst_img)
         return dst_img
 
-    def predict_img(self, img):
+    def _predict(self, img: np.ndarray) -> Tuple[List[Any], List[Any]]:
+        """
+        预测图像
+        :param img: 图像
+        :return: 元组
+        """
         data = {'img': img, 'shape': [img.shape[:2]], 'text_polys': []}
         data = self.resize(data)
         tensor = self.transform(data['img'])
@@ -83,52 +99,28 @@ class AutoLabel:
             box_list, score_list = [], []
         return box_list, score_list
 
-    def filter_img(self, img: np.ndarray):
+    def _filter_img(self, img: np.ndarray) -> list | None:
+        """
+        过滤低于阈值的文本图像
 
-        height, weight = img.shape[0], img.shape[1]
-        all_object = []
-        box_list, score_list = self.predict_img(img)
+        :param img: 图像
+        :return: 高于阈值的图像列表或者None
+        """
+
+        box_list, score_list = self._predict(img)
         if len(box_list) != 0:
             box_list = [box_list[i] for i, score in enumerate(score_list) if score > self.threshold]
-            for item in box_list:
-                item = item.tolist()
-                # points.append(item)
-                all_object.append({
-                    "label": "###",
-                    "points": item,
-                    "group_id": None,
-                    "shape_type": "polygon",
-                    "flags": {}
-                })
+            return box_list
         else:
-            print('无文字内容')
-        return weight, height, all_object
+            return
 
-    def general_annotation(self, img: np.ndarray,
-                           img_name: str):
-        weight, height, all_object = self.filter_img(img)
+    def get_img_text_area(self, img: np.ndarray) -> list:
+        """
+        获取文本区域图像
 
-        info = {
-            "version": "4.5.6",
-            "flags": {},
-            'shapes': all_object,
-            "imagePath": img_name,
-            "imageData": utils.img_arr_to_b64(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).decode('utf-8'),
-            "imageHeight": height,
-            "imageWidth": weight
-        }
-        json_str = json.dumps(info, indent=4)
-        json_name = img_name.strip('.jpg')
-        with open(f'{self.label_save_path}/{json_name}.json', 'w') as f:
-            f.write(json_str)
+        :param img: 检测图像
+        :return: 文本图像列表
+        """
+        box_list = self._filter_img(img)
 
-
-if __name__ == '__main__':
-    a = AutoLabel(
-        det_model_path='/home/cat/PycharmProjects/OCR/weights/DB-dpn68-epoch=11-hmean=0.42-recall=0.33-precision=0.56.ckpt',
-        device='cpu',
-        label_save_path='/home/cat/PycharmProjects/OCR/tools/inference'
-    )
-
-    image = cv2.imread('/home/cat/PycharmProjects/OCR/tools/inference/test.jpg')
-    a.general_annotation(image, 'test.jpg')
+        return [self._get_rotate_crop_image(img, box) for box in box_list] if box_list else None

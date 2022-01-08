@@ -10,105 +10,14 @@
 
 ### 快速开始
 
+#### 安装
+
+`conda create --name <env> --file requirements.txt`
+`pip install opencv-python==4.5.4.60`
+
 #### 训练
-##### DB训练
-修改train.bash中第六行为 `python $(dirname $(readlink -f "$0"))/trainDet.py`
-使用`bash train.bash`进行训练
 
-##### CRNN训练
-修改train.bash第六行为 `python $(dirname $(readlink -f "$0"))/trainCRNN.py`
-使用 `bash train.bash`进行训练
-
-##### 分类训练
-修改train.bash第六行为 `python $(dirname $(readlink -f "$0"))/trainClassify.py`
-使用 `bash train.bash`进行训练
-
-### 参数配置
-
-#### 检测网络可用编码器
-
-<details>
-<summary style="margin-left: 25px;">ResNet</summary>
-<div style="margin-left: 25px;">
-
-|Encoder                         |
-|--------------------------------|
-|resnet18                        |
-|resnet34                        |
-|resnet50                        |
-|resnet101                       |
-|resnet152                       |
-|resnext50_32x4d                 |
-|resnext101_32x4d                |
-|resnext101_32x8d                |
-|resnext101_32x16d               |
-|resnext101_32x32d               |
-|resnext101_32x48d               |
-
-</div>
-</details>
-
-
-<details>
-<summary style="margin-left: 25px;">mobilenet_v2</summary>
-<div style="margin-left: 25px;">
-
-|Encoder                     |
-|----------------------------|
-|mobilenet_v2                |
-
-</div>
-</details>
-
-<details>
-<summary style="margin-left: 25px;">DPN</summary>
-<div style="margin-left: 25px;">
-
-|Encoder                     |
-|----------------------------|
-|dpn68                |
-|dpn68b                |
-|dpn92                |
-|dpn98                |
-|dpn107                |
-|dpn131                |
-
-</div>
-</details>
-
-<details>
-<summary style="margin-left: 25px;">SENet</summary>
-<div style="margin-left: 25px;">
-
-|Encoder                     |
-|----------------------------|
-|se_resnet50                |
-|se_resnet101                |
-|se_resnet152                |
-|se_resnext50_32x4d                |
-|se_resnext101_32x4d                |
-|senet154                |
-
-</div>
-</details>
-
-#### 识别网络可用编码器
-
-<details>
-<summary style="margin-left: 25px;">ResNet</summary>
-<div style="margin-left: 25px;">
-
-|Encoder                           |
-|----------------------------------|
-|resnet18vd                        |
-|resnet34vd                        |
-|resnet50vd                        |
-|resnet101vd                       |
-|resnet152vd                       |
-|resnet200vd                       |
-
-</div>
-</details>
+修改train.sh文件
 
 ## 致谢
 

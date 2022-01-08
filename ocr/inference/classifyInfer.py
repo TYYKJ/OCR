@@ -6,7 +6,7 @@ import torch
 from PIL import Image
 from torchvision import transforms
 
-from ocr import ClassificationModel
+from ..classification import ClassificationModel
 
 __all__ = ['ClassifyInfer']
 
@@ -18,13 +18,13 @@ class ClassifyInfer:
             class_names: list,
             device: str = 'cuda:0',
     ):
-        pl.seed_everything(1997)
+        # pl.seed_everything(1997)
         self.device = device
         self.classify_model_path = classify_model_path
         self.model = self._load_model()
         self.model.to(device)
         self.model.eval()
-        self.model.freeze()
+        # self.model.freeze()
         self.classes_names = class_names
 
     def _load_model(self) -> ClassificationModel:
