@@ -86,10 +86,18 @@ class JsonDataset(Dataset):
             for annotation in gt['annotations']:
                 if len(annotation['polygon']) == 0 or len(annotation['text']) == 0:
                     continue
-                polygons.append(annotation['polygon'])
-                texts.append(annotation['text'])
-                illegibility_list.append(annotation['illegibility'])
-                language_list.append(annotation['language'])
+                if len(annotation['polygon']) != 4:
+                    a = np.array(annotation['polygon'], dtype=np.int32)
+                    x, y, w, h = cv2.boundingRect(a)
+                    polygons.append([[x, y], [x + w, y], [x + w, y + h], [x, y + h]])
+                    texts.append('ignore')
+                    illegibility_list.append(True)
+                    language_list.append(annotation['language'])
+                else:
+                    polygons.append(annotation['polygon'])
+                    texts.append(annotation['text'])
+                    illegibility_list.append(annotation['illegibility'])
+                    language_list.append(annotation['language'])
                 if self.load_char_annotation:
                     for char_annotation in annotation['chars']:
                         if len(char_annotation['polygon']) == 0 or len(char_annotation['char']) == 0:
@@ -110,7 +118,7 @@ class JsonDataset(Dataset):
 
     def __getitem__(self, index):
         # try:
-        data = copy.deepcopy(self.data_list[index])
+        data: dict = copy.deepcopy(self.data_list[index])
         im = cv2.imread(data['img_path'])
         if self.img_mode == 'RGB':
             try:
@@ -137,29 +145,3 @@ class JsonDataset(Dataset):
 
     def __len__(self):
         return len(self.data_list)
-
-#
-# if __name__ == '__main__':
-#     import torch
-#     from torch.utils.data import DataLoader
-#
-#     from det.utils import show_img, draw_bbox
-#
-#     from matplotlib import pyplot as plt
-#
-#     dataset = JsonDataset(data_list='/home/data/OCRData/icdar2017_ocr/val.json')
-#     train_loader = DataLoader(dataset=dataset, batch_size=8, shuffle=True, num_workers=0)
-#     for i, data in enumerate(tqdm(train_loader)):
-#         img = data['img']
-#         shrink_label = data['shrink_map']
-#         threshold_label = data['threshold_map']
-#
-#         print(threshold_label.shape, threshold_label.shape, img.shape)
-#         show_img(img[0].numpy().transpose(1, 2, 0), title='img')
-#         show_img((shrink_label[0].to(torch.float)).numpy(), title='shrink_label')
-#         show_img((threshold_label[0].to(torch.float)).numpy(), title='threshold_label')
-#         # img = draw_bbox(img[0].numpy().transpose(1, 2, 0), np.array(data['text_polys']))
-#         # show_img(img, title='draw_bbox')
-#         plt.show()
-#
-#         pass

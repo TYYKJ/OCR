@@ -106,7 +106,7 @@ class RecDataLoader:
                                    num_workers=self.num_workers).__iter__()
 
     def __next__(self):
-        if self.dataiter == None:
+        if self.dataiter is None:
             self.build()
         if self.iteration == len(self.dataset) and len(self.queue_2):
             batch_data = self.queue_2

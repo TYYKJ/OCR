@@ -1,5 +1,5 @@
-import cv2
 import numpy as np
+import cv2
 
 __all__ = ['MakeShrinkMap']
 
@@ -98,29 +98,3 @@ class MakeShrinkMap:
     @staticmethod
     def polygon_area(polygon):
         return cv2.contourArea(polygon)
-        # edge = 0
-        # for i in range(polygon.shape[0]):
-        #     next_index = (i + 1) % polygon.shape[0]
-        #     edge += (polygon[next_index, 0] - polygon[i, 0]) * (polygon[next_index, 1] - polygon[i, 1])
-        #
-        # return edge / 2.
-
-#
-# if __name__ == '__main__':
-#     from shapely.geometry import Polygon
-#     import pyclipper
-#
-#     polygon = np.array([[0, 0], [100, 10], [100, 100], [10, 90]])
-#     a = shrink_polygon_py(polygon, 0.4)
-#     print(a)
-#     print(shrink_polygon_py(a, 1 / 0.4))
-#     b = shrink_polygon_pyclipper(polygon, 0.4)
-#     print(b)
-#     poly = Polygon(b)
-#     distance = poly.area * 1.5 / poly.length
-#     offset = pyclipper.PyclipperOffset()
-#     offset.AddPath(b, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
-#     expanded = np.array(offset.Execute(distance))
-#     bounding_box = cv2.minAreaRect(expanded)
-#     points = cv2.boxPoints(bounding_box)
-#     print(points)

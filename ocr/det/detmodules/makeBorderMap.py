@@ -50,8 +50,10 @@ class MakeBorderMap:
         padding = pyclipper.PyclipperOffset()
         padding.AddPath(subject, pyclipper.JT_ROUND,
                         pyclipper.ET_CLOSEDPOLYGON)
-
-        padded_polygon = np.array(padding.Execute(distance)[0])
+        try:
+            padded_polygon = np.array(padding.Execute(distance)[0])
+        except:
+            return
         cv2.fillPoly(mask, [padded_polygon.astype(np.int32)], 1.0)
 
         xmin = padded_polygon[:, 0].min()
@@ -81,27 +83,27 @@ class MakeBorderMap:
         xmax_valid = min(max(0, xmax), canvas.shape[1] - 1)
         ymin_valid = min(max(0, ymin), canvas.shape[0] - 1)
         ymax_valid = min(max(0, ymax), canvas.shape[0] - 1)
+        rever_distance = 1 - distance_map[
+                             ymin_valid - ymin:ymax_valid - ymax + height,
+                             xmin_valid - xmin:xmax_valid - xmax + width]
+        rever_distance[np.isnan(rever_distance)] = 0.99
         canvas[ymin_valid:ymax_valid + 1, xmin_valid:xmax_valid + 1] = np.fmax(
-            1 - distance_map[
-                ymin_valid - ymin:ymax_valid - ymax + height,
-                xmin_valid - xmin:xmax_valid - xmax + width],
+            rever_distance,
             canvas[ymin_valid:ymax_valid + 1, xmin_valid:xmax_valid + 1])
 
-    @staticmethod
-    def distance(xs, ys, point_1, point_2):
-        """
+    def distance(self, xs, ys, point_1, point_2):
+        '''
         compute the distance from point to a line
         ys: coordinates in the first axis
         xs: coordinates in the second axis
         point_1, point_2: (x, y), the end of the line
-        """
-        # height, width = xs.shape[:2]
+        '''
         square_distance_1 = np.square(xs - point_1[0]) + np.square(ys - point_1[1])
         square_distance_2 = np.square(xs - point_2[0]) + np.square(ys - point_2[1])
         square_distance = np.square(point_1[0] - point_2[0]) + np.square(point_1[1] - point_2[1])
 
         cosin = (square_distance - square_distance_1 - square_distance_2) / (
-                2 * np.sqrt(square_distance_1 * square_distance_2))
+                    2 * np.sqrt(square_distance_1 * square_distance_2))
         square_sin = 1 - np.square(cosin)
         square_sin = np.nan_to_num(square_sin)
 

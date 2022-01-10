@@ -11,7 +11,7 @@ import numpy as np
 from skimage.util import random_noise
 
 __all__ = ['RandomNoise', 'RandomResize', 'RandomScale', 'ResizeShortSize', 'RandomRotateImgBox', 'HorizontalFlip',
-           'VerticallFlip', 'ResizeFixedSize']
+           'VerticallFlip', 'ResizeFixedSize', 'ResizeLongSize']
 
 
 class RandomNoise:
@@ -34,7 +34,7 @@ class RandomScale:
     def __init__(self, scales, random_rate):
         """
         :param scales: 尺度
-        :param random_rate: 随机系数
+        :param ramdon_rate: 随机系数
         :return:
         """
         self.random_rate = random_rate
@@ -65,7 +65,7 @@ class RandomRotateImgBox:
     def __init__(self, degrees, random_rate, same_size=False):
         """
         :param degrees: 角度，可以是一个数值或者list
-        :param random_rate: 随机系数
+        :param ramdon_rate: 随机系数
         :param same_size: 是否保持和原图一样大
         :return:
         """
@@ -136,8 +136,8 @@ class RandomRotateImgBox:
 class RandomResize:
     def __init__(self, size, random_rate, keep_ratio=False):
         """
-        :param size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
-        :param random_rate: 随机系数
+        :param input_size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
+        :param ramdon_rate: 随机系数
         :param keep_ratio: 是否保持长宽比
         :return:
         """
@@ -204,7 +204,7 @@ def resize_image(img, short_size):
 class ResizeShortSize:
     def __init__(self, short_size, resize_text_polys=True):
         """
-        :param short_size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
+        :param size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
         :return:
         """
         self.short_size = short_size
@@ -232,7 +232,6 @@ class ResizeShortSize:
         resize_w = max(int(round(resize_w / 32) * 32), 32)
         img = cv2.resize(im, (int(resize_w), int(resize_h)))
         if self.resize_text_polys:
-            # text_polys *= scale
             text_polys[:, 0] *= ratio
             text_polys[:, 1] *= ratio
         data['img'] = img
@@ -300,7 +299,7 @@ class VerticallFlip:
 class ResizeFixedSize:
     def __init__(self, short_size, resize_text_polys=True):
         """
-        :param short_size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
+        :param size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
         :return:
         """
         self.short_size = short_size
@@ -346,10 +345,41 @@ class ResizeFixedSize:
         data['text_polys'] = text_polys
         return data
 
-# if __name__ == '__main__':
-#     r = RandomNoise(random_rate=0.3)
-#     im = r(data={
-#         'img': cv2.imread('/home/cattree/图片/BingWallpaper/20210925-MackenzieRiver_ZH-CN0214805768_UHD.jpg')
-#     })
-#
-#     cv2.imwrite('1a.jpg', im['img'])
+
+class ResizeLongSize:
+    def __init__(self, long_size, resize_text_polys=True):  # short_size,
+        """
+        :param size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
+        :return:
+        """
+        # self.short_size = short_size
+        self.long_size = long_size
+        self.resize_text_polys = resize_text_polys
+
+    def __call__(self, data: dict) -> dict:
+        """
+        对图片和文本框进行缩放
+        :param data: {'img':,'text_polys':,'texts':,'ignore_tags':}
+        :return:
+        """
+        im = data['img']
+        text_polys = data['text_polys']
+        h, w, _ = im.shape
+        if max(h, w) > self.long_size:
+            if h < w:
+                ratio = float(self.long_size) / w
+            else:
+                ratio = float(self.long_size) / h
+        else:
+            ratio = 1.
+        resize_h = int(h * ratio)
+        resize_w = int(w * ratio)
+        resize_h = max(int(round(resize_h / 32) * 32), 32)
+        resize_w = max(int(round(resize_w / 32) * 32), 32)
+        img = cv2.resize(im, (int(resize_w), int(resize_h)))
+        if self.resize_text_polys:
+            text_polys[:, 0] *= ratio
+            text_polys[:, 1] *= ratio
+        data['img'] = img
+        data['text_polys'] = text_polys
+        return data

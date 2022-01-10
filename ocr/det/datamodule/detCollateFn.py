@@ -24,11 +24,7 @@ class DetCollectFN:
                     if k not in to_tensor_keys:
                         to_tensor_keys.append(k)
                     if isinstance(v, np.ndarray):
-                        try:
-                            v = torch.tensor(v)
-                        except TypeError:
-                            print(batch)
-                            exit(-1)
+                        v = torch.tensor(v)
                     if isinstance(v, PIL.Image.Image):
                         v = transforms.ToTensor()(v)
                 data_dict[k].append(v)

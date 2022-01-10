@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019/12/4 18:06
 # @Author  : zhoujun
+import numpy as np
 import imgaug
 import imgaug.augmenters as iaa
-import numpy as np
 
 
 class AugmenterBuilder(object):
@@ -58,7 +58,7 @@ class IaaAugment:
         for poly in data['text_polys']:
             new_poly = self.may_augment_poly(aug, shape, poly)
             line_polys.append(new_poly)
-        data['text_polys'] = np.array(line_polys, dtype=object)
+        data['text_polys'] = np.array(line_polys)
         return data
 
     @staticmethod

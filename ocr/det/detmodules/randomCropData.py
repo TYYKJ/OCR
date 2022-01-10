@@ -48,18 +48,19 @@ class EastRandomCropData:
         text_polys_crop = []
         ignore_tags_crop = []
         texts_crop = []
-
-        for poly, text, tag in zip(text_polys, texts, ignore_tags):
-            poly = ((np.array(poly) - (crop_x, crop_y)) * scale).astype('float32')
-            if not self.is_poly_outside_rect(poly, 0, 0, w, h):
-                text_polys_crop.append(poly)
-                ignore_tags_crop.append(tag)
-                texts_crop.append(text)
-        data['img'] = img
-        data['text_polys'] = text_polys_crop
-        data['ignore_tags'] = ignore_tags_crop
-        data['texts'] = texts_crop
-
+        try:
+            for poly, text, tag in zip(text_polys, texts, ignore_tags):
+                poly = ((np.array(poly) - (crop_x, crop_y)) * scale).astype('float32')
+                if not self.is_poly_outside_rect(poly, 0, 0, w, h):
+                    text_polys_crop.append(poly)
+                    ignore_tags_crop.append(tag)
+                    texts_crop.append(text)
+            data['img'] = img
+            data['text_polys'] = text_polys_crop
+            data['ignore_tags'] = ignore_tags_crop
+            data['texts'] = texts_crop
+        except:
+            a = 1
         return data
 
     @staticmethod
@@ -117,8 +118,6 @@ class EastRandomCropData:
         h_array = np.zeros(h, dtype=np.int32)
         w_array = np.zeros(w, dtype=np.int32)
         for points in text_polys:
-            points = np.array(points)
-            points = points.astype(float)
             points = np.round(points, decimals=0).astype(np.int32)
             minx = np.min(points[:, 0])
             maxx = np.max(points[:, 0])
@@ -166,7 +165,7 @@ class PSERandomCrop:
         self.size = size
 
     def __call__(self, data):
-        imgs = data['img']
+        imgs = data['imgs']
 
         h, w = imgs[0].shape[0:2]
         th, tw = self.size

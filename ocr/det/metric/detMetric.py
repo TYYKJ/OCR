@@ -32,16 +32,6 @@ class DetMetric:
         self.evaluator = DetectionIoUEvaluator(is_output_polygon=is_output_polygon)
 
     def __call__(self, batch, output, box_thresh=0.6):
-        """
-        batch: (image, polygons, ignore_tags
-        batch: a dict produced by dataloaders.
-            image: tensor of shape (N, C, H, W).
-            polygons: tensor of shape (N, K, 4, 2), the polygons of objective regions.
-            ignore_tags: tensor of shape (N, K), indicates whether a region is ignorable or not.
-            shape: the original shape of images.
-            filename: the original filenames of images.
-        output: (polygons, ...)
-        """
         results = []
         gt_polyons_batch = batch['text_polys'].cpu()
         ignore_tags_batch = batch['ignore_tags']
@@ -54,17 +44,13 @@ class DetMetric:
                 pred = [dict(points=pred_polygons[i]) for i in range(len(pred_polygons))]
             else:
                 pred = []
-                # print(pred_polygons.shape)
                 for i in range(pred_polygons.shape[0]):
                     if pred_scores[i] >= box_thresh:
-                        # print(pred_polygons[i,:,:].tolist())
                         pred.append(dict(points=pred_polygons[i, :, :].astype(np.int)))
-                # pred = [dict(points=pred_polygons[i,:,:].tolist()) if pred_scores[i] >= box_thresh for i in range(pred_polygons.shape[0])]
             results.append(self.evaluator.evaluate_image(gt, pred))
         return results
 
     def gather_measure(self, raw_metrics):
-
         raw_metrics = [image_metrics
                        for batch_metrics in raw_metrics
                        for image_metrics in batch_metrics]

@@ -6,6 +6,10 @@ from ...utils import create_optimizer_v2
 
 class BaseModel(pl.LightningModule):
 
+    def __init__(self):
+        super(BaseModel, self).__init__()
+        self.raw_metrics = []
+
     def forward(self, x):
         features = self.encoder(x)
         features = self.neck(features)
@@ -31,14 +35,14 @@ class BaseModel(pl.LightningModule):
         output = self.forward(data['img'])
         boxes, scores = self.postprocess(output.cpu().numpy(), batch['shape'])
         raw_metric = self.metric(batch, (boxes, scores))
-
-        return raw_metric
+        self.raw_metrics.append(raw_metric)
 
     def validation_epoch_end(self, outputs):
-        metric = self.metric.gather_measure(outputs)
+        metric = self.metric.gather_measure(self.raw_metrics)
         self.log('recall', value=metric['recall'].avg)
         self.log('precision', value=metric['precision'].avg)
         self.log('hmean', value=metric['fmeasure'].avg)
+        self.raw_metrics.clear()
         return {'hmean': metric['fmeasure'].avg}
 
     def configure_optimizers(self):

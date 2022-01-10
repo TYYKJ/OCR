@@ -37,6 +37,8 @@ class CRNN(pl.LightningModule):
 
         self.lr = lr
 
+        self.all_acc = []
+
     def forward(self, x):
         features = self.encoder(x)
         features = self.neck(features)
@@ -56,9 +58,9 @@ class CRNN(pl.LightningModule):
         acc = acc_dict['n_correct'] / cur_batch_size
         norm_edit_dis = 1 - acc_dict['norm_edit_dis'] / cur_batch_size
 
-        self.log(name='train_loss', value=loss_dict.get('loss'), on_step=False, on_epoch=True)
-        self.log(name='train_acc', value=acc, on_step=False, on_epoch=True)
-        self.log(name='norm_edit_dis', value=norm_edit_dis, on_step=False, on_epoch=True)
+        self.log(name='train_loss', value=loss_dict.get('loss'))
+        self.log(name='train_acc', value=acc)
+        self.log(name='norm_edit_dis', value=norm_edit_dis)
 
         return loss_dict.get('loss')
 
@@ -72,10 +74,13 @@ class CRNN(pl.LightningModule):
         acc_dict = self.metric(predict, batch['label'])
 
         acc = acc_dict['n_correct'] / cur_batch_size
-        # df = acc_dict['show_str']
-        # self.wandb_logger.log_text(key='Predict', dataframe=df)
-        self.log(name='val_loss', value=loss_dict.get('loss'), on_step=False, on_epoch=True)
-        self.log(name='val_acc', value=acc, on_step=False, on_epoch=True)
+        self.all_acc.append(acc)
+        self.log(name='val_loss', value=loss_dict.get('loss'))
+        self.log(name='norm_edit_dis', value=loss_dict.get('norm_edit_dis'))
+
+    def validation_epoch_end(self, outputs):
+        avg_acc = sum(self.all_acc) / len(self.all_acc)
+        self.log(name='val_acc', value=avg_acc)
 
     def configure_optimizers(self):
         optimizer = create_optimizer_v2(self.parameters(), opt=self.optimizer_name, lr=self.lr,
