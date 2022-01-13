@@ -3,7 +3,7 @@
 # @File    : __init__.py
 # @Software: PyCharm
 # @explain :
+from .classifyInfer import ClassifyInfer
+from .detInfer import DetInfer
 from .inference import Inference
 from .recInfer import RecInfer
-from .detInfer import DetInfer
-from .classifyInfer import ClassifyInfer

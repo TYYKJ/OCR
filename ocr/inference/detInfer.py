@@ -4,7 +4,6 @@ from typing import Tuple, List, Any
 
 import cv2
 import numpy as np
-import pytorch_lightning as pl
 import torch
 from torchvision import transforms
 

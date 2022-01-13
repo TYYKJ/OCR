@@ -1,8 +1,9 @@
-import numpy as np
-import cv2
-import os
 import random
+
+import cv2
+import numpy as np
 from tqdm import tqdm
+
 # calculate means and std
 train_txt_path = './train_val_list.txt'
 

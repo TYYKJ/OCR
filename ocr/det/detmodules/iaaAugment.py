@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019/12/4 18:06
 # @Author  : zhoujun
-import numpy as np
 import imgaug
 import imgaug.augmenters as iaa
+import numpy as np
 
 
 class AugmenterBuilder(object):

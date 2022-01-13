@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pytorch_lightning as pl
-from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint, LearningRateMonitor, RichProgressBar
+from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor, RichProgressBar
 from pytorch_lightning.loggers import WandbLogger
 
 from .crnn import CRNN
@@ -20,6 +20,7 @@ class CRNNTrainer:
             classes: int,
             alphabet_path: str,
             input_h: int,
+            project_name: str = '',
             use_augmentation: bool = False,
             encoder_name: str = 'resnet18vd',
             mean: float = 0.5,
@@ -45,6 +46,7 @@ class CRNNTrainer:
         self.use_augmentation = use_augmentation
         self.mean = mean
         self.std = std
+        self.project_name = project_name
 
         self.encoder_name = encoder_name
 
@@ -97,12 +99,12 @@ class CRNNTrainer:
         model = self.build_model()
         data = self.load_datamodule()
 
-        early_stop = EarlyStopping(patience=20, monitor='val_acc', mode='max')
+        # early_stop = EarlyStopping(patience=20, monitor='val_acc', mode='max')
         checkpoint_callback = ModelCheckpoint(
             monitor='val_acc',
             mode='max',
             dirpath=self.checkpoint_save_path,
-            filename='CRNN-' + model.encoder_name + '-{epoch:02d}-{val_acc:.2f}',
+            filename=f'{self.project_name}-CRNN-' + model.encoder_name + '-{epoch:02d}-{val_acc:.2f}',
             save_last=True,
         )
 

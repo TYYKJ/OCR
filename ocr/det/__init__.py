@@ -16,6 +16,7 @@ class DBTrainer:
             train_data_path: str,
             val_data_path: str,
             checkpoint_save_path: str,
+            project_name: str = '',
             encoder_name: str = 'dpn68',
             lr: float = 0.001,
             batch_size: int = 16,
@@ -29,6 +30,7 @@ class DBTrainer:
         pl.seed_everything(1997)
         self.bs = batch_size
         self.nw = num_workers
+        self.project_name = project_name
         self.checkpoint_save_path = checkpoint_save_path
         self.train_data_path = train_data_path
         self.val_data_path = val_data_path
@@ -79,7 +81,7 @@ class DBTrainer:
             monitor='hmean',
             mode='max',
             dirpath=self.checkpoint_save_path,
-            filename='DB-' + model.encoder_name + '-{epoch:02d}-{hmean:.2f}-{recall:.2f}-{precision:.2f}',
+            filename=f'{self.project_name}-DB-' + model.encoder_name + '-{epoch:02d}-{hmean:.2f}-{recall:.2f}-{precision:.2f}',
             save_last=True,
         )
 
