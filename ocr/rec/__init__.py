@@ -113,7 +113,7 @@ class CRNNTrainer:
             gpus=gpus,
             strategy=strategy,
             logger=logger,
-            callbacks=[early_stop, checkpoint_callback, lr_monitor, rp],
+            callbacks=[checkpoint_callback, lr_monitor, rp],
             **kwargs
         )
 

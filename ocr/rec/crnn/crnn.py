@@ -76,11 +76,12 @@ class CRNN(pl.LightningModule):
         acc = acc_dict['n_correct'] / cur_batch_size
         self.all_acc.append(acc)
         self.log(name='val_loss', value=loss_dict.get('loss'))
-        self.log(name='norm_edit_dis', value=loss_dict.get('norm_edit_dis'))
+        # self.log(name='norm_edit_dis', value=loss_dict.get('norm_edit_dis'))
 
     def validation_epoch_end(self, outputs):
         avg_acc = sum(self.all_acc) / len(self.all_acc)
         self.log(name='val_acc', value=avg_acc)
+        self.all_acc.clear()
 
     def configure_optimizers(self):
         optimizer = create_optimizer_v2(self.parameters(), opt=self.optimizer_name, lr=self.lr,

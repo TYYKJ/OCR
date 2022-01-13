@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+import cv2
 import numpy as np
-import pytorch_lightning as pl
 import torch
 
 from ..rec import CRNN
@@ -15,7 +15,6 @@ class RecInfer:
             self,
             model_path: str,
             dict_path: str,
-            batch_size: int = 1,
             std: float = 0.5,
             mean: float = 0.5,
             threshold: float = 0.7,
@@ -34,7 +33,6 @@ class RecInfer:
 
         self.process = RecDataProcess(input_h=32, mean=mean, std=std)
         self.converter = CTCLabelConverter(dict_path)
-        self.batch_size = batch_size
         self.device = device
 
     def _load_model(self) -> CRNN:
@@ -44,27 +42,23 @@ class RecInfer:
         """
         return CRNN.load_from_checkpoint(self.model_path, alphabet_path=self.dict_path)
 
-    def _predict(self, imgs: np.ndarray | list) -> list:
-        if not isinstance(imgs, list):
-            imgs = [imgs]
-        imgs = [self.process.normalize_img(self.process.resize_with_specific_height(img)) for img in imgs]
-        widths = np.array([img.shape[1] for img in imgs])
-        idxs = np.argsort(widths)
-        txts = []
-        for idx in range(0, len(imgs), self.batch_size):
-            batch_idxs = idxs[idx:min(len(imgs), idx + self.batch_size)]
-            batch_imgs = [self.process.width_pad_img(imgs[idx], imgs[batch_idxs[-1]].shape[1]) for idx in batch_idxs]
-            batch_imgs = np.stack(batch_imgs)
-            tensor = torch.from_numpy(batch_imgs.transpose([0, 3, 1, 2])).float()
-            with torch.no_grad():
-                out = self.model(tensor.to(self.device))
-                out = out.softmax(dim=2)
+    def _predict(self, img: np.ndarray) -> list:
+        im = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        max_img_w = im.shape[1]
+        im = self.process.normalize_img(im)
+        im = self.process.resize_with_specific_height(im)
+        im = self.process.width_pad_img(im, max_img_w)
+        im = im.transpose([2, 0, 1])
+        im = im[None]
+        im = torch.from_numpy(im)
+
+        im = im.to(self.device)
+        with torch.no_grad():
+            out = self.model(im)
+            out = out.softmax(dim=2)
             out = out.cpu().numpy()
-            txts.extend([self.converter.decode(np.expand_dims(txt, 0)) for txt in out])
-        # 按输入图像的顺序排序
-        idxs = np.argsort(idxs)
-        out_txts = [txts[idx] for idx in idxs]
-        return out_txts
+        result = [self.converter.decode(np.expand_dims(txt, 0)) for txt in out]
+        return result
 
     def _filter_text(self, imgs: np.ndarray | list) -> list | None:
         result = self._predict(imgs)

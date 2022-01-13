@@ -86,7 +86,7 @@ class RecDatasetTools:
                 txt = f'{x}\t{y}\n'
                 f.write(txt)
 
-        with open('train.txt', 'w') as f:
+        with open('val.txt', 'w') as f:
             for x, y in zip(X_test, y_test):
                 y = y.strip('\n')
                 txt = f'{x}\t{y}\n'
@@ -131,7 +131,7 @@ class RecDatasetTools:
         mean_list, std_list = [], []
         for line in tqdm(content, desc='write info:'):
             data = line.split('\t')
-            image_name = '/home/cat/Documents/all/' + data[0]
+            image_name = '/media/cat/D/yellowPai0110/yellowPai/train/' + data[0]
             im = cv2.imread(image_name)
 
             try:
@@ -147,12 +147,13 @@ class RecDatasetTools:
 
 if __name__ == '__main__':
     tool = RecDatasetTools()
-    tool.check_rec_dataset('/home/cat/Documents/all/train-no-space.txt', '/home/cat/Documents/all')
+    tool.make_dict('/home/cat/Documents/yellowPai0110/yellowPai/train.txt')
+    # tool.check_rec_dataset('/home/cat/Documents/all/train-no-space.txt', '/home/cat/Documents/all')
     # tool.del_info2('/home/cat/Documents/all/train.txt')
     # tool.check_rec_dataset('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt',
     #                        '/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train')
-    # tool.get_img_mean_std('/home/cat/Documents/all/train-no-space.txt')
+    # tool.get_img_mean_std('/media/cat/D/yellowPai0110/yellowPai/train.txt')
     # tool.get_img_mean_std('/home/cat/Documents/all/train.txt')
-    # tool.split_dataset('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train-no-space.txt')
+    # tool.split_dataset('/home/cat/Documents/yellowPai0110/yellowPai/train.txt')
     # tool.del_space('/home/cat/Documents/all/train.txt')
     # tool.del_info('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt')

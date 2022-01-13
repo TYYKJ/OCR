@@ -205,34 +205,38 @@ class MakeDetJsonDataset:
             'data_list': []
         }
         files = glob.glob(os.path.join(parent_path, '*.json'))
-        for file in files:
+        for file in tqdm(files):
             with open(file, 'r') as f:
-                data = json.loads(f.read())
-                img_name = data['imagePath']
-                annotations = []
-                for item in data['shapes']:
-                    annotations.append(
+                try:
+                    data = json.loads(f.read())
+                    img_name = data['imagePath']
+                    annotations = []
+                    for item in data['shapes']:
+                        annotations.append(
+                            {
+                                'polygon': item['points'],
+                                'text': item['label'],
+                                'illegibility': False,
+                                "language": "Latin",
+                                "chars": [
+                                    {
+                                        "polygon": [],
+                                        "char": "",
+                                        "illegibility": False,
+                                        "language": "Latin"
+                                    }
+                                ]
+                            }
+                        )
+                    cache['data_list'].append(
                         {
-                            'polygon': item['points'],
-                            'text': item['label'],
-                            'illegibility': False,
-                            "language": "Latin",
-                            "chars": [
-                                {
-                                    "polygon": [],
-                                    "char": "",
-                                    "illegibility": False,
-                                    "language": "Latin"
-                                }
-                            ]
+                            'img_name': img_name,
+                            'annotations': annotations
                         }
                     )
-                cache['data_list'].append(
-                    {
-                        'img_name': img_name,
-                        'annotations': annotations
-                    }
-                )
+                except json.decoder.JSONDecodeError:
+                    print(file)
+                    continue
 
         with open('train.json', 'w') as f:
             json.dump(cache, f, indent=4)
@@ -240,17 +244,19 @@ class MakeDetJsonDataset:
 
 if __name__ == '__main__':
     det = MakeDetJsonDataset()
-    det.move_img_file(
-        source_paths=[
-            '/home/cat/Downloads/train_full_images_0',
-            '/home/cat/Downloads/train_full_images_1'
-        ],
-        obj_path='/home/cat/Downloads/image'
-    )
+    det.move_img_file(['/media/cat/D/yellowPai0110/yellowPai/val'], '/media/cat/D/yellowPai0110/yellowPai/train')
+    # det.labelme_format_transform('/media/cat/D/CCPD2019/json')
+    # det.move_img_file(
+    #     source_paths=[
+    #         '/home/cat/Downloads/train_full_images_0',
+    #         '/home/cat/Downloads/train_full_images_1'
+    #     ],
+    #     obj_path='/home/cat/Downloads/image'
+    # )
     # det.remove_img('/home/cat/Documents/PreTrainOCRData/val_img/COCO_train2014_000000393297.jpg')
 
-    # det.split_det_dataset(det_dataset_path='/home/cat/Documents/PreTrainOCRData/train.json',
-    #                       img_path='/home/cat/Documents/PreTrainOCRData/image')
+    det.split_det_dataset(det_dataset_path='/media/cat/D/CCPD2019/train.json',
+                          img_path='/media/cat/D/CCPD2019/ccpd_base')
     # det.check_img(
     #     '/home/cat/Documents/PreTrainOCRData/train.json',
     #     img_path='/home/cat/Documents/PreTrainOCRData/image',
