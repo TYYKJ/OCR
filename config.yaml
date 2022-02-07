@@ -6,9 +6,9 @@ det_model_path: '/home/cat/PycharmProjects/OCR/weights/DB-dpn68-epoch=11-hmean=0
 rec_model_path: '/home/cat/PycharmProjects/OCR/weights/CRNN-resnet50vd-epoch=109-val_acc=0.40.ckpt'
 angle_model_path: '/home/cat/PycharmProjects/OCR/weights/Classify-efficientnetv2_s-epoch=24-val_acc=0.95.ckpt'
 device: 'cuda'
-dict_path: '/home/cat/Documents/icdar2017rctw/icdar2017/recognition/dict.txt'
-angle_classes: ['0', '180']
-object_classes: ['0', '180']
+dict_path: '/home/cat/Documents/icdar2017rctw/icdar2017/recognition/huayi-dict.txt'
+angle_classes: [ '0', '180' ]
+object_classes: [ '0', '180' ]
 cut_image_save_path: '/home/cat/PycharmProjects/OCR/tools/'
 need_angle: '0'
 need_object: '180'

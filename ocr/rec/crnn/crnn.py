@@ -21,6 +21,7 @@ class CRNN(pl.LightningModule):
             lr: float = 0.01,
             weight_decay: float = 0.,
             momentum: float = 0.9,
+            encoder_type: str = 'reshape'
     ):
         super(CRNN, self).__init__()
         self.save_hyperparameters(ignore=['alphabet_path'])
@@ -29,7 +30,7 @@ class CRNN(pl.LightningModule):
         self.weight_decay = weight_decay
         self.encoder_name = encoder_name
         self.encoder = get_encoder(encoder_name)
-        self.neck = SequenceEncoder(in_channels=self.encoder.out_channels)
+        self.neck = SequenceEncoder(in_channels=self.encoder.out_channels, encoder_type=encoder_type)
         self.head = CTC(self.neck.out_channels, classes)
         self.converter = CTCLabelConverter(alphabet_path)
         self.losses = CTCLoss(blank_idx=0)
@@ -60,7 +61,7 @@ class CRNN(pl.LightningModule):
 
         self.log(name='train_loss', value=loss_dict.get('loss'))
         self.log(name='train_acc', value=acc)
-        self.log(name='norm_edit_dis', value=norm_edit_dis)
+        self.log(name='train norm_edit_dis', value=norm_edit_dis)
 
         return loss_dict.get('loss')
 
@@ -84,7 +85,8 @@ class CRNN(pl.LightningModule):
         self.all_acc.clear()
 
     def configure_optimizers(self):
-        optimizer = create_optimizer_v2(self.parameters(), opt=self.optimizer_name, lr=self.lr,
-                                        momentum=self.momentum, weight_decay=self.weight_decay)
+        # optimizer = create_optimizer_v2(self.parameters(), opt=self.optimizer_name, lr=self.lr,
+        #                                 momentum=self.momentum, weight_decay=self.weight_decay)
+        optimizer = torch.optim.SGD(self.parameters(), lr=self.lr)
         lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max')
         return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": 'val_acc'}

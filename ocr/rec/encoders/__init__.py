@@ -1,8 +1,10 @@
 from .resnetvd import resnetvd_encoders
+from .mobilenetv3 import mobilenetv3_encoders
 
 encoders = {}
 
 encoders.update(resnetvd_encoders)
+encoders.update(mobilenetv3_encoders)
 
 
 def get_encoder(encoder_name: str):

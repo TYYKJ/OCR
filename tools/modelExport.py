@@ -1,5 +1,5 @@
-import pytorch_lightning as pl
 import torch
+
 from ocr import DBDetModel
 
 

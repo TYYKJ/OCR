@@ -147,13 +147,13 @@ class RecDatasetTools:
 
 if __name__ == '__main__':
     tool = RecDatasetTools()
-    tool.make_dict('/home/cat/Documents/yellowPai0110/yellowPai/train.txt')
+    tool.make_dict('/home/cat/Documents/icdar2015-ok/recognition/train-no-space.txt')
     # tool.check_rec_dataset('/home/cat/Documents/all/train-no-space.txt', '/home/cat/Documents/all')
     # tool.del_info2('/home/cat/Documents/all/train.txt')
-    # tool.check_rec_dataset('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt',
-    #                        '/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train')
+    # tool.check_rec_dataset('/home/cat/PycharmProjects/OCR/makeDataset/train.txt',
+    #                        '/media/cat/D/CCPD2019/ccpd_base')
     # tool.get_img_mean_std('/media/cat/D/yellowPai0110/yellowPai/train.txt')
     # tool.get_img_mean_std('/home/cat/Documents/all/train.txt')
-    # tool.split_dataset('/home/cat/Documents/yellowPai0110/yellowPai/train.txt')
+    # tool.split_dataset('/home/cat/PycharmProjects/OCR/makeDataset/ccpdData.txt')
     # tool.del_space('/home/cat/Documents/all/train.txt')
     # tool.del_info('/home/cat/Documents/icdar2017rctw/icdar2017/recognition/train.txt')

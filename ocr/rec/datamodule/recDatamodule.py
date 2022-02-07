@@ -58,10 +58,10 @@ class RecDataModule(pl.LightningDataModule):
         )
 
     def val_dataloader(self):
-        return RecDataLoader(
+        return DataLoader(
             dataset=self.val_dataset,
             batch_size=self.batch_size,
-            shuffle=True,
+            shuffle=False,
             num_workers=self.num_workers,
             collate_fn=self.rec_collate_fn
         )
