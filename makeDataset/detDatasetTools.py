@@ -70,15 +70,19 @@ class MakeDetJsonDataset:
         :param obj_path: 目标文件夹
         :return:
         """
-
-        for source_path in source_paths:
+        def m(source_path):
             source_files = os.listdir(source_path)
             if source_files:
                 for file in tqdm(source_files):
                     if not file.endswith('txt'):
-                        shutil.copy(os.path.join(source_path, file), obj_path)
+                        try:
+                            shutil.copy(os.path.join(source_path, file), obj_path)
+                        except OSError:
+                            pass
             else:
                 print(source_path + '没有图片')
+        for source_path in source_paths:
+            threading.Thread(target=m, args=(source_path, )).start()
 
     @staticmethod
     def concat_ocr_json(json_file_path_list: list, img_path, json_save_path):
@@ -244,7 +248,7 @@ class MakeDetJsonDataset:
 
 if __name__ == '__main__':
     det = MakeDetJsonDataset()
-    det.move_img_file(['/media/cat/D/yellowPai0110/yellowPai/val'], '/media/cat/D/yellowPai0110/yellowPai/train')
+    det.move_img_file(['/media/cat/D/yellowPai0110/yellowPai/train', '/media/cat/D/yellowPai0110/yellowPai/val'], '/media/cat/D/yellowPai0110/yellowPai/image')
     # det.labelme_format_transform('/media/cat/D/CCPD2019/json')
     # det.move_img_file(
     #     source_paths=[
@@ -255,8 +259,8 @@ if __name__ == '__main__':
     # )
     # det.remove_img('/home/cat/Documents/PreTrainOCRData/val_img/COCO_train2014_000000393297.jpg')
 
-    det.split_det_dataset(det_dataset_path='/media/cat/D/CCPD2019/train.json',
-                          img_path='/media/cat/D/CCPD2019/ccpd_base')
+    # det.split_det_dataset(det_dataset_path='/media/cat/D/CCPD2019/train.json',
+    #                       img_path='/media/cat/D/CCPD2019/ccpd_base')
     # det.check_img(
     #     '/home/cat/Documents/PreTrainOCRData/train.json',
     #     img_path='/home/cat/Documents/PreTrainOCRData/image',

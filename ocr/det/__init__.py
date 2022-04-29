@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint, LearningRateMonitor, RichProgressBar
 from pytorch_lightning.loggers import WandbLogger
-
+import numpy as np
 from .DBNet import DBDetModel
 from .datamodule import DetDataModule
 
@@ -27,7 +27,7 @@ class DBTrainer:
             weights: str = 'imagenet',
             resume_path: str | None = None,
     ):
-        pl.seed_everything(1997)
+        pl.seed_everything(42)
         self.bs = batch_size
         self.nw = num_workers
         self.project_name = project_name
@@ -63,6 +63,8 @@ class DBTrainer:
     def build_trainer(
             self,
             gpus: list,
+            epochs: int,
+            gradient_accum: int = 1,
             **kwargs
     ):
         if len(gpus) >= 2:
@@ -74,16 +76,19 @@ class DBTrainer:
         model = self.build_model()
         data = self.load_datamodule()
 
-        logger = WandbLogger(name='DBNet')
+        logger = WandbLogger(name=self.project_name, project='DBNet')
 
-        early_stop = EarlyStopping(patience=20, monitor='hmean', mode='max')
+        early_stop = EarlyStopping(patience=100, monitor='hmean', mode='max')
         checkpoint_callback = ModelCheckpoint(
             monitor='hmean',
             mode='max',
             dirpath=self.checkpoint_save_path,
-            filename=f'{self.project_name}-DB-' + model.encoder_name + '-{epoch:02d}-{hmean:.2f}-{recall:.2f}-{precision:.2f}',
+            filename=f'{self.project_name}-DB-' +
+                     model.encoder_name + '-{epoch:02d}-{hmean:.2f}-{recall:.2f}-{precision:.2f}',
             save_last=True,
         )
+
+        max_steps = epochs * int(np.ceil(len(data.train_dataloader()) / gradient_accum))
 
         lr_monitor = LearningRateMonitor(logging_interval='epoch')
         rp = RichProgressBar(leave=True)
@@ -93,6 +98,7 @@ class DBTrainer:
             strategy=strategy,
             logger=logger,
             callbacks=[early_stop, checkpoint_callback, lr_monitor, rp],
+            max_steps=max_steps,
             **kwargs
         )
 

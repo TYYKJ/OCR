@@ -48,5 +48,14 @@ class BaseModel(pl.LightningModule):
     def configure_optimizers(self):
         optimizer = create_optimizer_v2(self.parameters(), opt=self.optimizer_name,
                                         lr=self.lr, weight_decay=self.weight_decay, momentum=self.momentum)
-        lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max')
+        lr_scheduler = {
+            'scheduler': torch.optim.lr_scheduler.OneCycleLR(optimizer,
+                                                             max_lr=self.lr,
+                                                             total_steps=self.trainer.max_steps,
+                                                             anneal_strategy='linear',
+                                                             cycle_momentum=False,
+                                                             pct_start=0.1),
+            'interval': 'step',
+            'frequency': 1
+        }
         return {'optimizer': optimizer, 'lr_scheduler': lr_scheduler, "monitor": 'hmean'}

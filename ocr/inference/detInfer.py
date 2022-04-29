@@ -113,7 +113,16 @@ class DetInfer:
         else:
             return
 
-    def get_img_text_area(self, img: np.ndarray) -> list:
+    def get_box_points_list(self, img: np.ndarray) -> list | None:
+        """
+        获取文本区域图像坐标列表
+
+        :param img: 检测图像
+        :return: 文本图像坐标列表
+        """
+        return self._filter_img(img)
+
+    def get_img_text_area(self, img: np.ndarray) -> list | None:
         """
         获取文本区域图像
 

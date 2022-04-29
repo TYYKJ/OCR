@@ -20,7 +20,7 @@ class CTCLabelConverter(object):
             self.dict[char] = i + 1
         self.character = ['[blank]'] + dict_character + [' ']  # dummy '[blank]' token for CTCLoss (index 0)
 
-    def encode(self, text, batch_max_length=None):
+    def encode(self, text):
         """convert text-label into text-index.
         input:
             text: text labels of each image. [batch_size]
@@ -57,3 +57,10 @@ class CTCLabelConverter(object):
                         conf.append(prob[i])
                 result_list.append((''.join(result), conf))
         return result_list
+
+
+if __name__ == '__main__':
+    c = CTCLabelConverter(character='/home/cat/PycharmProjects/OCR/makeDataset/dict.txt')
+    print(torch.unsqueeze(c.encode('ctl')[0], 0))
+    print(torch.unsqueeze(c.encode('ctl')[0], 0).shape)
+    print(c.decode(torch.unsqueeze(c.encode('ctl')[0], 0).permute(0, 2, 1)))

@@ -70,7 +70,7 @@ class ClassifyTrainer:
         trainer = pl.Trainer(
             gpus=gpus,
             strategy=strategy,
-            logger=self.logger,
+            # logger=self.logger,
             callbacks=[early_stop, checkpoint_callback, lr_monitor, rp],
             **kwargs
         )

@@ -17,7 +17,7 @@ class Im2Seq(nn.Module):
 class EncoderWithRNN(nn.Module):
     def __init__(self, in_channels, **kwargs):
         super(EncoderWithRNN, self).__init__()
-        hidden_size = kwargs.get('hidden_size', 256)
+        hidden_size = kwargs.get('hidden_size', 48)
         self.out_channels = hidden_size * 2
         self.lstm = nn.LSTM(in_channels, hidden_size, bidirectional=True, num_layers=2, batch_first=True)
 
